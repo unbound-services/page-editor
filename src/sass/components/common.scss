@@ -1,0 +1,183 @@
+$commonMaxWidth: 900px;
+
+
+.common {
+  &-p {
+    max-width: $commonMaxWidth;
+    line-height: 24px;
+    margin: 0 auto;
+    margin-bottom: 20px;
+    color: $charcoal;
+    &--white {
+      color: #fff;
+    }
+  }
+
+  // headings
+
+  &-heading {
+    max-width: $commonMaxWidth;
+    margin: 0 auto;
+    margin-bottom: 10px;
+    font-weight: bold;
+    text-transform: uppercase;
+    color: $charcoal;
+    &--primary {
+      color: $brand-color;
+    }
+    &--chauf {
+      color: $sub-brand-people;
+    }
+    &--dist {
+      color: $sub-brand-bourbon;
+    }
+    &--chart {
+      color: $sub-brand-chart;
+    }
+    &--large {
+      font-size: 24px;
+    }
+    &--medium {
+      font-size: 20px;
+      margin-bottom: 10px;
+    }
+    &--small {
+      font-size: 18px;
+    }
+  }
+
+  //lists
+
+  &-list {
+    max-width: $commonMaxWidth;
+    margin: 0 auto;
+    margin-bottom: 30px;
+    padding: 0;
+    padding-left: 40px;
+    list-style: disc;
+    &__item {
+
+    }
+  }
+
+  //table
+
+  &-table {
+    width: 100%;
+    max-width: 900px;
+    margin: 0 auto;
+    margin-bottom: 20px;
+    &__body {
+      margin: 0 auto;
+    }
+    &__cell {
+      display: block;
+      text-align: left;
+      width: 100%;
+      padding: 10px;
+      border: thin solid grey;
+    }
+    &__heading {
+      font-weight: bold;
+      background: #ffdec7;
+
+      &--primary{
+        background-color:#02c7d76b;
+      }
+    }
+
+    &__data {
+      background: #fff5ed;
+
+      &--primary{
+        background-color: #02c7d70d
+      }
+    }
+  }
+
+  //testimonial
+  &-testimonial{
+
+    margin-bottom:50px;
+    border-bottom: 1px $brand-color solid;
+    padding-bottom:20px;
+
+    &-section{
+      &--chart{     
+        .common-testimonial{
+          border-bottom-color:$sub-brand-chart;
+          &__customer{
+            color:$sub-brand-chart;
+          }
+        }
+      }
+      &--dist{
+        .common-testimonial{
+          border-bottom-color:$sub-brand-bourbon;
+          &__customer{
+            color:$sub-brand-bourbon;
+          }
+        }
+      }
+      &--chauf{
+        .common-testimonial{
+          border-bottom-color:$sub-brand-people;
+          &__customer{
+            color:$sub-brand-people;
+          }
+        }
+      }
+    }
+    
+    &__customer{
+      text-align: right;
+      color: $brand-color;
+      display: block;
+      font-weight:900;
+    }
+  }
+}
+
+
+@media all and (min-width: 900px) {
+
+  .common {
+
+    &-heading {
+      &--large {
+        font-size: 24px;
+      }
+      &--medium {
+        font-size: 20px;
+      }
+      &--small {
+        font-size: 18px;
+      }
+    }
+
+    &-table {
+      &__cell {
+        display: inline-block;
+        width: 50%;
+      }
+    }
+  }
+}
+
+@media all and (min-width: 900px) {
+
+  .common {
+    &-heading {
+      &--large {
+        font-size: 24px;
+      }
+      &--medium {
+        font-size: 20px;
+      }
+      &--small {
+        font-size: 18px;
+      }
+
+    }
+  }
+}

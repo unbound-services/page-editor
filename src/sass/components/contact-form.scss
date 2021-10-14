@@ -1,0 +1,85 @@
+
+
+.contact-form-section {
+  &__content {
+    max-width: 1200px;
+    margin: auto;
+  }
+}
+
+.form {
+  display: block;
+  max-width: 600px;
+  margin: auto;
+  margin-bottom: 40px;
+  padding-top: 20px;
+  text-align: left;
+
+
+  &__label {
+    display: block;
+    line-height: 30px;
+    margin-bottom: 10px;
+    &--small {
+      line-height: 20px;
+      font-size: 12px;
+      color: $light-charcoal;
+    }
+    &--required {
+      color: red;
+    }
+  }
+
+  &__input {
+    display: block;
+    width: 100%;
+    padding: 5px;
+    margin: auto;
+    margin-bottom: 20px;
+    &--group {
+      margin-bottom: 2px;
+    }
+  }
+  &__textarea {
+    display: block;
+    width: 100%;
+    padding: 5px;
+    min-height: 150px;
+    margin: auto;
+    margin-bottom: 20px;
+  }
+  &__submit-button {
+    color: white;
+    padding: 5px 20px;
+    border: none;
+    background-color: #69d1e3;
+  }
+
+}
+
+
+@media all and (min-width: 500px) {
+  .form {
+    &__group {
+      display: flex;
+      justify-content: space-around;
+    }
+
+    &__label {
+      display: block;
+      &--small {
+
+      }
+      &--group {
+        width: 100%;
+        &:first-child {
+          margin-right: 20px;
+        }
+      }
+    }
+
+  }
+
+
+
+}

@@ -1,0 +1,390 @@
+// Variables
+@import 'variables';
+@import 'office/office-components';
+body, html {
+	min-height: 100%;
+	font-family: arial;
+}
+
+.office-side-bar {
+	position: fixed;
+	left: 0;
+	top: 0;
+	bottom: 0;
+	width: 200px;
+	background: #25282A;
+
+	&__branding {
+		padding-top: 20px;
+		max-width: 80px;
+		display: block;
+		margin: 0 auto;
+	}
+}
+
+
+// ============================
+//			MAIN OFFICE MENU
+// ============================
+	.office-main-menu{
+		text-indent: none;
+		list-style: none;
+		padding-left: 0;
+		margin-left: 0;
+
+		&__option {
+			color: white;
+			line-height: 1.5;
+			width: 100%;
+			border-bottom: 1px #444455 solid;
+
+			& a {
+				color: white;
+				text-decoration: none;
+				padding: 8px;
+				display: block;
+				&:hover {
+					background: #555566;
+				}
+			}
+		}
+}
+
+
+// ============================
+//			MAIN OFFICE CONTENT
+// ============================
+.office-content{
+	box-sizing: border-box;
+	padding-left: 250px;
+	margin-top:40px;
+	margin-bottom:100px;
+}
+
+.office-announcements {
+	background:#eeeeee;
+	padding:20px;
+
+	&__no-announcements {
+		color:#aaaaaa;
+		font-weight:bold;
+		text-align:center;
+	}
+}
+
+
+
+.card {
+	border:1px #eeeeee solid;
+	padding:20px;
+	max-width:500px;
+	margin:10px 0;
+}
+
+
+.base-form {
+
+	max-width:300px;
+
+	&__label {
+		display:block;
+		color:#aaaaaa;
+		font-weight:bold;
+		margin-bottom:10px;
+	}
+	&__label-text {
+		margin-bottom: 10px;
+	}
+	&__instructions {
+		margin-bottom: 10px;
+		font-weight: normal;
+	}
+	&__input, &__select {
+		display: block;
+	}
+
+	&__submit{
+		cursor:pointer;
+	}
+}
+
+.codebox {
+	background: #eeeeee;
+	border: 1px #dddddd solid;
+	max-width: 600px;
+	width:90%;
+	overflow-y:scroll;
+	height:200px;
+}
+
+// ============================
+//		COMMON OFFICE SECTIONS
+//=============================
+.common-office-section{
+	&__h1 {
+    font-size: 48px;
+    font-weight: bold;
+    text-transform: uppercase;
+
+    margin-bottom: 20px;
+  }
+
+  &__h2{
+  	font-size:1.5rem;
+  	text-transform: uppercase;
+  	margin: 20px 0;
+  }
+
+  &__h3{
+  	font-size:1.1rem;
+  	text-transform: uppercase;
+  	margin: 20px 0;
+  }
+
+  &__ul{
+  	margin:20px 20px 50px 20px;
+  }
+
+  &__li{
+		background: #f8f8f8;
+		padding: 5px;
+		border: thin solid #eee;
+		margin: 5px 0;
+  }
+	&__a {
+		display: inline-block;
+		width: 100%;
+	}
+
+	&__inline-form-button {
+		display:inline-block;
+	}
+}
+
+
+// ============================
+//		COMMON OFFICE TABLE
+//=============================
+
+.common-office-table {
+	&__head {
+	}
+	&__header {
+		height: 50px;
+		min-width: 100px;
+		text-align: left;
+		padding: 0 15px;
+		border: thin solid grey;
+	}
+	&__body {
+	}
+	&__row {
+		border: thin solid grey;
+		&--head {
+			background: #02C7D7;
+		}
+		&:nth-child(even){
+			background: #d0f6f9;
+		}
+
+	}
+	&__data {
+		height: 30px;
+		padding: 0 15px;
+		border: thin solid grey;
+	}
+
+}
+
+// ============================
+//	COMMON OFFICE SINGLE TABLE
+//=============================
+
+.common-office-single-table {
+	margin-bottom:20px;
+	&__body {
+	}
+	&__header {
+		height: 50px;
+		min-width: 100px;
+		text-align: left;
+		padding: 0 15px;
+		background: #02C7D7;
+		border: thin solid grey;
+	}
+
+	&__row {
+		border: thin solid grey;
+
+	}
+	&__data {
+		height: 30px;
+		padding: 0 15px;
+		border: thin solid grey;
+	}
+}
+
+
+// ============================
+//			COMMON OFFICE OPTIONS TABLE
+// =============================
+.office-options-table {
+	border: 2px #eff5f5 solid;
+	
+	&__tr {
+		&:nth-child(2n) {
+			background:#eff5f5;
+		}
+	}
+
+	&__td, &__th{
+		padding:10px 15px;
+	}
+
+	&__th {
+		text-align:left;
+		font-weight:bold;
+		font-size:0.95em;
+		text-transform: uppercase;
+	}
+
+}
+
+// ============================
+//			ERRORS
+//=============================
+.common-office-error-block {
+	border: 2px #ffaa44 solid;
+	margin: 20px 0;
+	padding: 20px;
+	background: #ffeeaa;
+}
+
+// ============================
+//			TOURS SECTIONS
+//=============================
+.tours-section{
+	&__h1 {
+    font-size: 48px;
+    font-weight: bold;
+    text-transform: uppercase;
+
+    margin-bottom: 20px;
+  }
+
+  &__h2{
+  	font-size:1.5rem;
+  	text-transform: uppercase;
+  	margin: 20px 0;
+  }
+
+  &__ul{
+  	margin:20px 20px 50px 20px;
+  }
+
+  &__li{
+		background: #f8f8f8;
+		padding: 5px;
+		border: thin solid #eee;
+		margin: 5px 0;
+  }
+	&__a {
+		display: inline-block;
+		width: 100%;
+		height: 100%;
+	}
+}
+
+// ============================
+//			BREADCRUMBS
+//=============================
+.office-breadcrumbs{
+	color:#02C7D7;
+	font-weight:bold;
+	margin-bottom:50px;
+	padding-left:30px;
+	text-transform:uppercase;
+	font-size:.8rem;
+	margin-top:-10px;
+	letter-spacing: 1px;
+
+	&__a{
+		color:#02C7D7;
+	}
+}
+
+// ============================
+//			Reservations content
+// ============================
+
+.reservations-section {
+  &__title {
+    font-size: 48px;
+    font-weight: bold;
+    text-transform: uppercase;
+
+    margin-bottom: 20px;
+  }
+
+  &__h2{
+  	font-size:1.5rem;
+  	text-transform: uppercase;
+  	margin: 20px 0;
+  }
+
+}
+
+.reservations-table {
+	&__head {
+	}
+	&__header {
+		height: 50px;
+		min-width: 100px;
+		text-align: left;
+		padding: 0 15px;
+		border: thin solid grey;
+	}
+	&__body {
+	}
+	&__row {
+		border: thin solid grey;
+		&--head {
+			background: #02C7D7;
+		}
+		&:nth-child(even){
+			background: #d0f6f9;
+		}
+
+	}
+	&__data {
+		height: 30px;
+		padding: 0 15px;
+		border: thin solid grey;
+	}
+
+}
+
+.reservation-single-table {
+	margin-bottom:20px;
+	&__body {
+	}
+	&__header {
+		height: 50px;
+		min-width: 100px;
+		text-align: left;
+		padding: 0 15px;
+		background: #02C7D7;
+		border: thin solid grey;
+	}
+
+	&__row {
+		border: thin solid grey;
+
+	}
+	&__data {
+		height: 30px;
+		padding: 0 15px;
+		border: thin solid grey;
+	}
+
+}

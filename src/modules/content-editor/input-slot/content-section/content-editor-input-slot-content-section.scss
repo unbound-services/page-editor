@@ -1,0 +1,26 @@
+
+
+.content-section-controls{
+
+
+    &__wrapper{
+        position:relative;
+        border:2px rgba(2, 199, 215, 0.52) solid;
+        padding-top:50px;
+        margin-bottom:10px;
+    }
+
+    &__inner{
+        position:absolute;
+        height:auto;
+        top:0;
+        left:0;
+        padding:10px;
+        background:rgba(2, 199, 215, 0.52);
+        z-index: 100;
+
+        button {
+            margin-right: 10px;
+        }
+    }
+}

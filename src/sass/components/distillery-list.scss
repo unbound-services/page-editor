@@ -1,0 +1,61 @@
+.distillery-list {
+  text-align: center;
+  &__column {
+    display: inline-block;
+    margin: 0 auto;
+    text-align: left;
+    vertical-align: top;
+    &-entry {
+      margin: 0;
+      padding: 0;
+      margin-bottom: 25px;
+    }
+  }
+
+  &__h2 {
+    font-size: 25px;
+    font-weight: bold;
+    text-transform: uppercase;
+    margin-bottom: 10px;
+  }
+  &__ul {
+    margin: 0;
+    padding: 0;
+  }
+  &__li {
+    margin: 0;
+    padding: 0;
+  }
+  &__a {
+    color: inherit;
+    text-decoration: none;
+    &:hover{
+      color:#02C7D7;
+    }
+  }
+}
+
+
+@media all and (min-width: 600px) {
+  .distillery-list {
+
+    &__column {
+      max-width: 42%;
+      text-align: center;
+      &:first-child {
+        margin-right: 40px;
+      }
+      &-entry {
+        text-align: left;
+      }
+    }
+    &__ul {
+      margin: 0;
+      padding: 0;
+    }
+    &__li {
+      margin: 0;
+      padding: 0;
+    }
+  }
+}

@@ -1,0 +1,18 @@
+
+
+
+.content-editor-spacer {
+    &__amount {
+        color:#dddddd;
+        font-size:2em;
+        font-weight:bold;
+        display:block;
+        text-align:center;
+        -webkit-user-select: none;
+    }
+
+    &__button {
+        cursor: pointer;
+        padding: 10px;
+    }
+}

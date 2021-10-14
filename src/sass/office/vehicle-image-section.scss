@@ -1,0 +1,20 @@
+.office-v-type-img-form {
+
+}
+
+
+.office-v-type-images {
+	&__vehicle {
+		display: inline-block;
+		width: auto;
+		margin: 20px;
+	}
+	&__remove-button {
+		float: right;
+		cursor: pointer;
+	}
+	&__img {
+		width: 300px;
+		height: auto;
+	}
+}

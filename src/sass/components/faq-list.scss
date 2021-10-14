@@ -1,0 +1,28 @@
+.faq-list {
+  padding-top: 20px;
+  max-width: 900px;
+  margin: 0 auto;
+  margin-bottom: 100px;
+  &__li {
+    margin: 0;
+    padding: 30px;
+    &:nth-child(odd) {
+      background: #ffdabf;
+    }
+  }
+  &__question {
+    font-size: 25px;
+    font-weight: bold;
+    text-transform: uppercase;
+    margin-bottom: 10px;
+    color: $charcoal;
+  }
+  &__answer {
+    color: $charcoal;
+  }
+  &__answer-list {
+    list-style: disc;
+    list-style-position: inside;
+    padding-left: 20px;
+  }
+}
