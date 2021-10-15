@@ -2,7 +2,7 @@ import React, {useCallback} from 'react';
 import ReactDom from 'react-dom';
 import agent from 'superagent'
 
-import Drawer from '../../../../modules/common/drawer/common-drawer.js';
+import Drawer from '../../../common/drawer/common-drawer.js';
 import ImageUpload from './upload/content-editor-common-image-drawer-upload.js'
 //const csrf = document.head.querySelector("[name~=csrf-token][content]").content;
 
