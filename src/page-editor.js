@@ -9,9 +9,6 @@ import Drawer from './modules/common/drawer/common-drawer.js';
 
 import agent from 'superagent'
 
-import componentList from './page-editor-components'; 
-
-
 
 class PageEditor extends React.Component {
 
@@ -72,7 +69,7 @@ class PageEditor extends React.Component {
             const pageMarkup = ReactServer.renderToString(
                 <EditorContext.Provider value={{setState: stateDeeper("editorState", this.state,  baseSetState),
                     editorState:demoState,
-                    componentList,
+                    componentList: this.props.componentList,
                     editing: false,
                     previewing: false}}>
                     <ContentSection isRoot />
@@ -182,7 +179,7 @@ class PageEditor extends React.Component {
                 <hr />
                 <EditorContext.Provider value={{setState: stateDeeper("editorState", this.state,  baseSetState),
                     editorState:demoState,
-                    componentList,
+                    componentList: this.props.componentList,
                     editing: !preview,
                     previewing: preview}}>
                     <ContentSection isRoot />
