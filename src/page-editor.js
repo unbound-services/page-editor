@@ -1,11 +1,8 @@
-import React, { useContext } from 'react';
-import ReactDom from 'react-dom';
+import React from 'react';
 import ReactServer  from 'react-dom/server.browser';
 
-import EditorContext, { stateDeeper, incState } from './modules/content-editor/content-editor-editor-context.js';
+import EditorContext, { stateDeeper } from './modules/content-editor/content-editor-editor-context.js';
 import ContentSection from './modules/content-editor/input-slot/content-section/content-editor-input-slot-content-section.js';
-
-import agent from 'superagent'
 
 import componentList from './page-editor-components'; 
 
@@ -51,7 +48,7 @@ class PageEditor extends React.Component {
         }
 
 
-        const onSave = ()=>{
+        const saveData = ()=>{
 
             const pageMarkup = ReactServer.renderToString(
                 <EditorContext.Provider value={{setState: stateDeeper("editorState", this.state,  baseSetState),
@@ -62,7 +59,6 @@ class PageEditor extends React.Component {
                     <ContentSection isRoot />
                 </EditorContext.Provider>
             );
-            const csrf = document.head.querySelector("[name~=csrf-token][content]").content;
 
 			// submit the form
             const pageState = this.state.editorState;
@@ -71,19 +67,13 @@ class PageEditor extends React.Component {
                 pageMarkup,
             }
             
-            agent.post(`/pages/${window.pageIndex}`, data)
-                .set('X-CSRF-TOKEN',csrf)
-                .then((res)=>{
-                    this.setState({ changes: false})
-                    alert("Changes Saved")
-
-            });
+            this.props.onSave(data)
         }
 
         return <div>
                 <div className='page-editor__menu'>
                     <button className='page-editor__button' onClick={e=>{e.preventDefault();e.stopPropagation(); this.setState({preview: !preview});}}>{!preview ? 'Preview' : 'Edit'}</button>
-                    <button className='page-editor__button' onClick={onSave}>Save Changes {this.state.changes ? "*" : ""} </button>
+                    <button className='page-editor__button' onClick={saveData}>Save Changes {this.state.changes ? "*" : ""} </button>
                 </div>
                 <hr />
                 <EditorContext.Provider value={{setState: stateDeeper("editorState", this.state,  baseSetState),

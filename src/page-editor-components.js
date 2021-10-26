@@ -2,23 +2,11 @@ import React, { useContext } from 'react';
 import EditorValue  from './modules/content-editor/input-slot/editor-value/content-editor-input-slot-editor-value.js';
 import RichTextInput from './modules/content-editor/input-slot/rich-text-input/content-editor-input-slot-rich-text-input.js';
 import FileInput from './modules/content-editor/input-slot/file-input/content-editor-input-slot-file-input.js'
-
-//import VehicleSlideshow from './modules/content-editor/components/vehicle-slideshow/content-editor-components-vehicle-slideshow.js';
-import TourCard from './modules/content-editor/components/tour-card/content-editor-components-tour-card.js';
-import Policy from './modules/content-editor/policy/content-editor-policy.js';
-
 import StringInput from './modules/content-editor/input-slot/string-input/content-editor-input-slot-string-input.js';
 import SelectInput from './modules/content-editor/input-slot/select-input/content-editor-input-slot-select-input.js';
 import NumberSelectInput from './modules/content-editor/input-slot/number-select-input/content-editor-input-slot-number-select-input.js';
-import EditorContext, { stateDeeper, incState } from './modules/content-editor/content-editor-editor-context.js';
-import ContactForm from './modules/content-editor/components/contact-form/content-editor-components-contact-form.js';
-import DistilledFAQ from './modules/content-editor/components/distilled-faq/content-editor-components-distilled-faq.js';
-import StandardServicesAccordian from './modules/content-editor/components/standard-services-accordian/content-editor-components-standard-services-accordian.js';
-import TripPolicyTable from './modules/content-editor/components/trip-policy-cancelation-table/content-editor-components-trip-policy-cancelation-table.js';
-import SpacerComponent from './modules/content-editor/components/spacer/content-editor-components-spacer.js';
-import IconSection from './modules/content-editor/components/icon-section/content-editor-components-icon-section.js';
 import SlotSection from './modules/content-editor/input-slot/slot-section/content-editor-input-slot-slot-section.js';
-import Video from './modules/content-editor/components/video/content-editor-components-video.js';
+
 
 
 // our sample component
@@ -84,8 +72,7 @@ const columnSection = (props) => {
 const componentList = {
   // "firstDemo": { displayName: "First Demo", comp: someComponent },
   // "secondDemo": { displayName: "SecondDemo", comp: demoComponent },
-    "pegasus-column-with-text":  { displayName: "Columns With Text", comp: columnSection},
-    "spacer" : { displayName: "Spacer", comp: SpacerComponent },
+    "column-with-text":  { displayName: "Columns With Text", comp: columnSection},
 }
 
 export default componentList;
