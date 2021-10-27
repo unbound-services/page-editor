@@ -77,9 +77,10 @@ class ContentSection extends InputSlot {
                 if(editing && context.componentList[item.comp]) {
                     const componentDisplayName = context.componentList[item.comp].displayName ? context.componentList[item.comp].displayName : item.comp; 
                     optionButtons = [];
-                    if( key > 0 ) optionButtons.push(<button onClick={moveUp(key)}>Move Up</button>)
-                    if( key < currentChildren.length-1 ) optionButtons.push(<button onClick={moveDown(key)}>Move Down</button>)
-                    optionButtons.push(<button onClick={removeComponent(key)}>Delete {componentDisplayName}</button>)
+                    if( key > 0 ) optionButtons.push(<button key={`${item.comp}-up-button`} onClick={moveUp(key)}>Move Up</button>)
+                    if( key < currentChildren.length-1 ) optionButtons.push(<button key={`${item.comp}-down-button`} onClick={moveDown(key)}>Move Down</button>)
+                    console.log('COMP', item.comp);
+                    optionButtons.push(<button key={`${item.comp}-delete-button`} onClick={removeComponent(key)}>Delete {componentDisplayName}</button>)
                 }
 
                 return <React.Fragment key={key}>
