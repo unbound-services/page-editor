@@ -1,4 +1,3 @@
-import './sass/components/master.scss';
 import { PageEditor } from './page-editor';
 import componentList from './page-editor-components';
 
