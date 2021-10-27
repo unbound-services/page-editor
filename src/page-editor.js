@@ -4,8 +4,6 @@ import ReactServer  from 'react-dom/server.browser';
 import EditorContext, { stateDeeper } from './modules/content-editor/content-editor-editor-context.js';
 import ContentSection from './modules/content-editor/input-slot/content-section/content-editor-input-slot-content-section.js';
 
-import componentList from './page-editor-components'; 
-
 
 
 class PageEditor extends React.Component {
@@ -53,7 +51,7 @@ class PageEditor extends React.Component {
             const pageMarkup = ReactServer.renderToString(
                 <EditorContext.Provider value={{setState: stateDeeper("editorState", this.state,  baseSetState),
                     editorState:demoState,
-                    componentList,
+                    componentList: this.props.componentList,
                     editing: false,
                     previewing: false}}>
                     <ContentSection isRoot />
@@ -78,7 +76,7 @@ class PageEditor extends React.Component {
                 <hr />
                 <EditorContext.Provider value={{setState: stateDeeper("editorState", this.state,  baseSetState),
                     editorState:demoState,
-                    componentList,
+                    componentList: this.props.componentList,
                     editing: !preview,
                     previewing: preview}}>
                     <ContentSection isRoot />

@@ -110,8 +110,8 @@ class ContentSection extends InputSlot {
         let addButton = null;
         if(context.editing) {
             addButton = <div className="add-button" style={{marginTop:20, border:"2px #02C7D7 solid"}}>
-                <span className="page-editor__button" onClick={addComponent}> + Add Component</span>
-                <select onChange={(e)=>this.setState({ component: e.target.value})}>
+                <span className="page-editor__button" onClick={addComponent} data-testid="add-component-button"> + Add Component</span>
+                <select onChange={(e)=>this.setState({ component: e.target.value})} data-testid="add-component-listbox">
                     {sortedComponentList.map ( (index) => {
                         const value = componentList[index]
                         const displayName = value.displayName ? value.displayName : value;
