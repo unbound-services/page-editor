@@ -1,8 +1,46 @@
 // Fonts
 @import url('https://fonts.googleapis.com/css?family=Nunito');
 
-// Variables
-@import 'variables';
-
 // Bootstrap
 @import '~bootstrap/scss/bootstrap';
+
+.page-editor{
+	&__menu{
+		padding: 10px 16px;
+		background: #25282ab8;
+		color: white;
+		position: fixed;
+		bottom: 0;
+		width: 100%;
+		z-index: 1000;
+	}
+
+	&__button{
+		padding:10px;
+		color:white;
+		margin-right:10px;
+		border:none;
+		background-color:#02C7D7;
+		text-transform: uppercase;
+		letter-spacing: 1px;
+		cursor:pointer;
+		font-weight:bold;
+		font-size:12px;
+		display:inline-block;
+		transition: background 0.2s;
+		&:hover {
+			background:#02f0C0;
+		}
+	}
+
+	&__drawer-contents{
+		color:white;
+
+	}
+}
+
+.pe-drawer-contents{
+	&__option{
+		margin:20px 10px;
+	}
+}
