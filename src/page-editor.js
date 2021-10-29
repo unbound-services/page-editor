@@ -1,5 +1,5 @@
 import React from 'react';
-import ReactServer  from 'react-dom/server.browser';
+import render from 'preact-render-to-string';
 
 import EditorContext, { stateDeeper } from './modules/content-editor/content-editor-editor-context.js';
 import ContentSection from './modules/content-editor/input-slot/content-section/content-editor-input-slot-content-section.js';
@@ -48,7 +48,7 @@ class PageEditor extends React.Component {
 
         const saveData = ()=>{
 
-            const pageMarkup = ReactServer.renderToString(
+            const pageMarkup = render(
                 <EditorContext.Provider value={{setState: stateDeeper("editorState", this.state,  baseSetState),
                     editorState:demoState,
                     componentList: this.props.componentList,

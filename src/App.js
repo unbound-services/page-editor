@@ -1,6 +1,7 @@
+import { render } from 'preact';
 import { PageEditor } from './page-editor';
 import componentList from './page-editor-components';
-
+import "./app.scss";
 function App() {
   return (
     <div className="container">
@@ -15,4 +16,4 @@ function App() {
   );
 }
 
-export default App;
+render(App(), document.body)
