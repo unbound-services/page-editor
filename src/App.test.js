@@ -1,4 +1,4 @@
-import { render, screen, within, fireEvent } from '@testing-library/react';
+import { render, screen, within, fireEvent } from '@testing-library/preact';
 import { PageEditor } from './page-editor';
 
 const TestComponent = () =>{
