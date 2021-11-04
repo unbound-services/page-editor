@@ -10,13 +10,13 @@ class PageEditor extends React.Component {
 
     constructor(props){
         super(props);
-
+        console.log("props: ", props)
         this.state = {
-            editorState: { children: []},
-                        preview: false,
-                        changes: false,
-                        advancedOpen:false,
-                        pageEditorDrawerOpen: false,
+            editorState: props.pageData,
+            preview: false,
+            changes: false,
+            advancedOpen:false,
+            pageEditorDrawerOpen: false,
         }
 
         if(window.pageData) this.state.editorState = window.pageData;
@@ -46,7 +46,13 @@ class PageEditor extends React.Component {
         }
 
 
-        const saveData = ()=>{
+        const saveData = () => {
+            if (this.props.onSave === false) {
+                console.log("No onSave function connected to app")
+                return
+            }
+
+            console.log("onSave: ", this.props.onSave)
 
             const pageMarkup = render(
                 <EditorContext.Provider value={{setState: stateDeeper("editorState", this.state,  baseSetState),
