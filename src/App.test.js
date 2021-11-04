@@ -1,5 +1,6 @@
 import { render, screen, within, fireEvent } from '@testing-library/preact';
 import { PageEditor } from './page-editor';
+import PageEditorApp from './page-editor-app';
 
 const TestComponent = () =>{
   return <div data-testid='test-component'>test!</div>;
@@ -27,3 +28,10 @@ test('can place component', () => {
   expect(componentAddedBefore).toBeNull();
   expect(componentAddedAfter).toBeInTheDocument();
 });
+
+test('can initialize page editor app', () => {
+  const AppInstance = new PageEditorApp();
+  AppInstance.initializeApp(document.body);
+  const pageEditorExists = screen.getByTestId('page-editor');
+  expect(pageEditorExists).toBeInTheDocument();
+})
