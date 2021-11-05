@@ -35,3 +35,50 @@ test('can initialize page editor app', () => {
   const pageEditorExists = screen.getByTestId('page-editor');
   expect(pageEditorExists).toBeInTheDocument();
 })
+
+test('can add a component via the app interface', () => {
+  const AppInstance = new PageEditorApp();
+  AppInstance.addComponent("test", "Test", TestComponent);
+  AppInstance.initializeApp(document.body);
+  const componentIsOnList = within(screen.getByTestId('add-component-listbox')).getByText('Test');
+  expect(componentIsOnList).toBeInTheDocument();
+})
+
+test('save function outputs data', () => {
+  const AppInstance = new PageEditorApp();
+  let saveData = false;
+  function saveFunction(data) {
+    saveData = data;
+  }
+  AppInstance.addComponent("test", "Test", TestComponent);
+  AppInstance.initializeApp(document.body, saveFunction);
+
+  const dropDown = screen.getByTestId('add-component-listbox');
+  const addbutton = screen.getByTestId('add-component-button');
+  const saveButton = screen.getByTestId('save-page-button');
+  fireEvent.change(dropDown, { target: { value: 'test' } });
+  fireEvent.click(addbutton);
+  fireEvent.click(saveButton);
+  
+  console.log("saveData: ", saveData)
+  expect(saveData.pageState.children.length).toBe(1);
+})
+
+test('load prop properly translates data', () => {
+  const AppInstance = new PageEditorApp();
+  AppInstance.addComponent("test", "Test", TestComponent);
+  const data = {
+    pageState: {
+      children: [
+        {
+          comp: "test",
+          props: {}
+        }
+      ]
+    }
+  }
+
+  AppInstance.initializeApp(document.body, false, data)
+  const isComponentOnPage = screen.queryByText('test!');
+  expect(isComponentOnPage).toBeInTheDocument();
+})

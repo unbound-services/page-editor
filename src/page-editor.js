@@ -77,7 +77,7 @@ class PageEditor extends React.Component {
         return <div>
                 <div className='page-editor__menu'>
                     <button className='page-editor__button' onClick={e=>{e.preventDefault();e.stopPropagation(); this.setState({preview: !preview});}}>{!preview ? 'Preview' : 'Edit'}</button>
-                    <button className='page-editor__button' onClick={saveData}>Save Changes {this.state.changes ? "*" : ""} </button>
+                    <button className='page-editor__button' onClick={saveData} data-testid="save-page-button">Save Changes {this.state.changes ? "*" : ""} </button>
                 </div>
                 <hr />
                 <EditorContext.Provider value={{setState: stateDeeper("editorState", this.state,  baseSetState),
