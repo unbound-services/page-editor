@@ -1,7 +1,7 @@
-import InputSlot from "../content-editor-input-slot";
+import InputSlot from "../input-slot";
 import React, { useState } from 'react';
-import EditorContext, { incState } from "../../content-editor-editor-context";
-import "./content-editor-input-slot-content-section.scss";
+import EditorContext, { incState } from "../../content-editor/content-editor-editor-context";
+import "./input-slot-content-section.scss";
 
 class ContentSection extends InputSlot {
 
