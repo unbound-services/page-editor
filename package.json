@@ -1,7 +1,13 @@
 {
   "name": "page-editor",
   "version": "0.1.0",
-  "private": true,
+  "private": false,
+  "description": "Drop-In document editor to generate webpages and pdfs",
+  "author": { "name": "Unbound"},
+  "main": "pkg_build/index.ts",
+  "module": "pkg_build/index.js",
+  "files": ["pkg_build", "README.md"],
+  "repository": {"type": "git", "url": "https://github.com/unbound-services/page-editor-playground"},
   "dependencies": {
     "@babel/preset-env": "^7.15.8",
     "@testing-library/jest-dom": "^5.11.4",
@@ -19,6 +25,7 @@
   "scripts": {
     "watch": "webpack watch --mode development --config webpack.config.js",
     "build": "webpack --config webpack.config.js",
+    "package": "del /F /Q pkg_build && babel src/lib --out-dir pkg_build --copy-files && yarn pack",
     "test": "jest"
   },
   "eslintConfig": {
@@ -40,6 +47,7 @@
     ]
   },
   "devDependencies": {
+    "@babel/cli": "^7.16.0",
     "@babel/core": "^7.15.8",
     "@babel/preset-react": "^7.14.5",
     "babel-loader": "^8.2.3",

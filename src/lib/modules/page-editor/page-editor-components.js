@@ -1,9 +1,9 @@
 import React, { useContext } from 'react';
 
-import Columns from './modules/components/columns/columns';
-import Heading from './modules/components/heading/heading';
-import Paragraph from './modules/components/paragraph/paragraph';
-import Spacer from './modules/components/spacer/spacer';
+import Columns from '../components/columns/columns';
+import Heading from '../components/heading/heading';
+import Paragraph from '../components/paragraph/paragraph';
+import Spacer from '../components/spacer/spacer';
 
 // our sample component
 // const someComponent = (props) => {

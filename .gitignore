@@ -11,6 +11,10 @@
 # production
 /dist
 /dist/*
+/pkg
+/pkg/*
+/pkg_build
+/pkg_build/*
 
 # misc
 .DS_Store
@@ -18,6 +22,7 @@
 .env.development.local
 .env.test.local
 .env.production.local
+page-editor*.tgz
 
 npm-debug.log*
 yarn-debug.log*
