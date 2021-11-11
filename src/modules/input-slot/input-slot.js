@@ -1,5 +1,5 @@
 import React from 'react';
-import EditorContext from "../content-editor-editor-context";
+import EditorContext from "../content-editor/content-editor-editor-context";
 
 class InputSlot extends React.Component {
 

@@ -17,7 +17,7 @@
     "web-vitals": "^1.0.1"
   },
   "scripts": {
-    "watch": "webpack watch --mode development --config webpack.config.js", 
+    "watch": "webpack watch --mode development --config webpack.config.js",
     "build": "webpack --config webpack.config.js",
     "test": "jest"
   },

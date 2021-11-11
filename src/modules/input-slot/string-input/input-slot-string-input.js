@@ -1,4 +1,4 @@
-import InputSlot from "../content-editor-input-slot";
+import InputSlot from "../input-slot";
 import React from 'react';
 
 class StringInput extends InputSlot {

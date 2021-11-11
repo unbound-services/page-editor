@@ -2,7 +2,7 @@ import React from 'react';
 import render from 'preact-render-to-string';
 
 import EditorContext, { stateDeeper } from './modules/content-editor/content-editor-editor-context.js';
-import ContentSection from './modules/content-editor/input-slot/content-section/content-editor-input-slot-content-section.js';
+import ContentSection from './modules/input-slot/content-section/input-slot-content-section.js';
 
 
 

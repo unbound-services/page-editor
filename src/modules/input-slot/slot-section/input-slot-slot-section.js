@@ -1,5 +1,5 @@
 import React, {useContext} from 'react';
-import EditorContext, { stateDeeper } from '../../content-editor-editor-context';
+import EditorContext, { stateDeeper } from '../../content-editor/content-editor-editor-context';
 
 
 
