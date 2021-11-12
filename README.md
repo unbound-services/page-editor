@@ -1,1 +1,1 @@
-Playground evironment to restructure and experiement with the page editor
+A work in progress
