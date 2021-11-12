@@ -1,6 +1,6 @@
 import { render, screen, within, fireEvent } from '@testing-library/preact';
-import { PageEditor } from './page-editor';
-import PageEditorApp from './page-editor-app';
+import { PageEditor } from './lib';
+import { PageEditorApp } from './lib';
 
 const TestComponent = () =>{
   return <div data-testid='test-component'>test!</div>;

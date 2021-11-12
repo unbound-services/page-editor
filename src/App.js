@@ -1,4 +1,4 @@
-import PageEditorApp from "./page-editor-app";
+import PageEditorApp from './lib/modules/page-editor/page-editor-app'
 import "./app.scss";
 
 
