@@ -1,26 +1,37 @@
+@import './reset.scss';
+@import './variables';
+
 // Fonts
 @import url('https://fonts.googleapis.com/css?family=Nunito');
 
-// Bootstrap
-@import '~bootstrap/scss/bootstrap';
-
 .page-editor{
+	display: inline-block;
+    width: calc(100% - 40px);
+    min-height: 100%;
+    margin: 20px;
+    margin-bottom: 100px;
+	padding: 15px;
+    padding-bottom: 60px;
+    box-sizing: border-box;
+
+	border: thin solid $greyBorder;
 	&__menu{
-		padding: 10px 16px;
-		background: #25282ab8;
-		color: white;
 		position: fixed;
+		width: calc(100% - 43px);
+		box-sizing: border-box;
+		padding: 8px 20px;
+		background: $greyBG;
+		color: white;
 		bottom: 0;
-		width: 100%;
-		z-index: 1000;
 	}
 
 	&__button{
-		padding:10px;
-		color:white;
-		margin-right:10px;
+		padding:12px;
+		margin-right:20px;
+		border-radius: 12px;
+		background: $lightGreyBG;
+		color: black;
 		border:none;
-		background-color:#02C7D7;
 		text-transform: uppercase;
 		letter-spacing: 1px;
 		cursor:pointer;
