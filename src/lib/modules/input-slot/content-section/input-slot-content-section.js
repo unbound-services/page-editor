@@ -109,7 +109,7 @@ class ContentSection extends InputSlot {
         // component for adding a new component
         let addButton = null;
         if(context.editing) {
-            addButton = <div className="add-component" style={{marginTop:20, border:"2px #02C7D7 solid"}}>
+            addButton = <div className="add-component">
                 <button className="add-component__button" onClick={addComponent} data-testid="add-component-button"> + Add Component</button>
                 <select className="add-component__component-list" onChange={(e)=>this.setState({ component: e.target.value})} data-testid="add-component-listbox">
                     {sortedComponentList.map ( (index) => {

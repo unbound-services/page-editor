@@ -9,7 +9,7 @@ export default class PageEditorApp {
   
     initializeApp(domObject, onSave = false, pageData = {children: []}){
       const app = (
-        <div id="page-editor" data-testid="page-editor">
+        <div class="page-editor" data-testid="page-editor">
           <PageEditor componentList={this.components} pageData={pageData} onSave={onSave} />
         </div>
       )

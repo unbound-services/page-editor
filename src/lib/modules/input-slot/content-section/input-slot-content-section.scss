@@ -1,11 +1,11 @@
-
+@import '../../../../sass/variables';
 
 .content-section-controls{
 
 
     &__wrapper{
         position:relative;
-        border:2px rgba(2, 199, 215, 0.52) solid;
+        border:2px #3a3a3a solid;
         padding-top:50px;
         margin-bottom:10px;
     }
@@ -16,7 +16,7 @@
         top:0;
         left:0;
         padding:10px;
-        background:rgba(2, 199, 215, 0.52);
+        background:#7e7e7e;
         z-index: 100;
 
         button {
@@ -26,16 +26,28 @@
 }
 
 .add-component {
-    display: block;
-    width: 150px;
-
+    display: inline-block;
+    padding: 20px;
+    margin-top: 20px;
+    background: $greyBG;
+    $buttonWidth: 250px;
     &__button {
         display: block;
+        width: $buttonWidth;
+        padding: 12px;
         margin-bottom: 10px;
-        width: 100%;
+        border-radius: 12px;
+        background: $lightGreyBG;
+        border: none;
+        font-size: 12px;
+        font-weight: bold;
+        text-transform: uppercase;
+        
     }
     &__component-list {
         display: block;
-        width: 100%;
+        width: $buttonWidth;
+        padding: 10px;
+        border-radius: 12px;
     }
 }

@@ -1,5 +1,5 @@
 import PageEditorApp from './lib/modules/page-editor/page-editor-app'
-import "./app.scss";
+import "./sass/app.scss";
 
 
 
