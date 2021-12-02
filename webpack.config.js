@@ -2,9 +2,15 @@ const path = require('path');
 
 const config = {
   entry: './src/app.js',
+  experiments: {
+    outputModule: true
+  },
   output: {
     path: path.resolve(__dirname, 'dist'),
-    filename: 'bundle.js'
+    filename: 'bundle.js',
+    library: {
+      type: 'module'
+    }
   },
   module: {
     rules: [
@@ -30,7 +36,9 @@ const config = {
       "react-dom": "preact/compat",     // Must be below test-utils
       "react/jsx-runtime": "preact/jsx-runtime"
     },
-  }
+  },
+
+  target: 'web'
 
 };
 

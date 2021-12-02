@@ -21,6 +21,7 @@ export default class PageEditorApp {
     }
 }
 
+export {PageEditorApp}
 // below is an example of the current functions and how to use them 
 
 // NewEditor.addComponent("component-slug", "Component Display Name", component)

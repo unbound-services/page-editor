@@ -17,12 +17,14 @@
 	border: thin solid $greyBorder;
 	&__menu{
 		position: fixed;
-		width: calc(100% - 43px);
+		width: calc(100% - 40px);
 		box-sizing: border-box;
 		padding: 8px 20px;
 		background: $greyBG;
 		color: white;
 		bottom: 0;
+		left: 50%;
+		transform: translateX(-50%);
 	}
 
 	&__button{
