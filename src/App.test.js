@@ -2,6 +2,7 @@ import { render, screen, within, fireEvent } from '@testing-library/preact';
 import { PageEditor } from './lib';
 import { PageEditorApp } from './lib';
 
+
 const TestComponent = () =>{
   return <div data-testid='test-component'>test!</div>;
 }
@@ -9,6 +10,7 @@ const TestComponent = () =>{
 const testComponentList = {
   "test-component" : { displayName: "Test Component", comp: TestComponent },
 }
+
 
 test('component shows up in list', () => {
   render(<PageEditor componentList={testComponentList} />);
@@ -34,6 +36,7 @@ test('can initialize page editor app', () => {
   AppInstance.initializeApp(document.body);
   const pageEditorExists = screen.getByTestId('page-editor');
   expect(pageEditorExists).toBeInTheDocument();
+  cleanDom()
 })
 
 test('can add a component via the app interface', () => {
@@ -42,43 +45,100 @@ test('can add a component via the app interface', () => {
   AppInstance.initializeApp(document.body);
   const componentIsOnList = within(screen.getByTestId('add-component-listbox')).getByText('Test');
   expect(componentIsOnList).toBeInTheDocument();
+  cleanDom()
 })
 
 test('save function outputs data', () => {
-  const AppInstance = new PageEditorApp();
+  
   let saveData = false;
   function saveFunction(data) {
+    console.log("saveData before function: ", saveData)
     saveData = data;
   }
-  AppInstance.addComponent("test", "Test", TestComponent);
-  AppInstance.initializeApp(document.body, saveFunction);
 
+  render(<PageEditor componentList={testComponentList} onSave={saveFunction} />);
   const dropDown = screen.getByTestId('add-component-listbox');
   const addbutton = screen.getByTestId('add-component-button');
   const saveButton = screen.getByTestId('save-page-button');
-  fireEvent.change(dropDown, { target: { value: 'test' } });
+  fireEvent.change(dropDown, { target: { value: 'test-component' } });
   fireEvent.click(addbutton);
   fireEvent.click(saveButton);
-  
-  console.log("saveData: ", saveData)
+
   expect(saveData.pageState.children.length).toBe(1);
+
+
 })
 
-test('load prop properly translates data', () => {
-  const AppInstance = new PageEditorApp();
-  AppInstance.addComponent("test", "Test", TestComponent);
-  const data = {
-    pageState: {
-      children: [
-        {
-          comp: "test",
-          props: {}
-        }
-      ]
-    }
+// test('load prop properly translates data', () => {
+//   const AppInstance = new PageEditorApp();
+//   AppInstance.addComponent("test", "Test", TestComponent);
+//   const data = {
+//     pageState: {
+//       children: [
+//         {
+//           comp: "test",
+//           props: {}
+//         }
+//       ]
+//     }
+//   }
+
+//   AppInstance.initializeApp(document.body, false, data)
+//   const isComponentOnPage = screen.queryByText('test!');
+//   expect(isComponentOnPage).toBeInTheDocument();
+// })
+
+function testComponent (testComponent, componentName, expectedProps){
+  const testList = {
+    "test" : { displayName: componentName, comp: testComponent },
   }
+  test(`${componentName} component shows up in the list`, () => {
+    console.log("inside the first test")
+    render(<PageEditor componentList={testList} />);
+    const dropDown = screen.getByTestId('add-component-listbox');
+    const componentIsOnList = within(dropDown).getByText(componentName);
+    expect(componentIsOnList).toBeInTheDocument();
+  })
 
-  AppInstance.initializeApp(document.body, false, data)
-  const isComponentOnPage = screen.queryByText('test!');
-  expect(isComponentOnPage).toBeInTheDocument();
-})
+  test(`${componentName} component has the expected props`, () => {
+    
+    let saveData = false;
+    function saveFunction(data) {
+      saveData = data;
+      console.log("save data after save: ", saveData);
+    }
+    
+    render(<PageEditor componentList={testList} onSave={data => saveFunction(data)} />);
+    
+    const dropDown = screen.getByTestId('add-component-listbox');
+    const addbutton = screen.getByTestId('add-component-button');
+    const saveButton = screen.getByTestId('save-page-button');
+    fireEvent.click(saveButton);
+
+    fireEvent.change(dropDown, { target: { value: 'test' } });
+    fireEvent.click(addbutton);
+    fireEvent.click(saveButton);
+
+    expect(saveData.pageState).toEqual(expectedProps)
+  })
+}
+
+// Example of testing a component with the component testing function
+// testComponent(
+//   TestComponent, 
+//   "Heading",
+//   {
+//     children: [
+//       {
+//         comp: "test",
+//         props: {}
+//       }
+//     ]
+//   }
+// )
+
+
+function cleanDom() {
+  let pageEditor = document.getElementsByClassName("page-editor")[0];
+  pageEditor.parentNode.removeChild(pageEditor)
+}
