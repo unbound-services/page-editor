@@ -19,6 +19,10 @@ export default class PageEditorApp {
     addComponent(compSlug, compDisplayName, component){
       this.components[compSlug] = {displayName: compDisplayName, comp: component}
     }
+
+    getDefaultComponents(){
+      return componentList;
+    }
 }
 
 export {PageEditorApp}
