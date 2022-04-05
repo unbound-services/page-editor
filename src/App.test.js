@@ -4,7 +4,7 @@ import PageEditorApp from './lib';
 import StringInput from './lib/modules/input-slot/string-input/input-slot-string-input';
 import Heading from './lib/modules/components/heading/heading';
 import Paragraph from './lib/modules/components/paragraph/paragraph';
-import { debug } from 'webpack';
+// import { debug } from 'webpack';
 
 
 const TestComponent = (props) => {
@@ -139,7 +139,7 @@ function testComponent (testComponent, componentName, expectedProps, expectedMar
     if (setupCallback) {
       setupCallback()
     }
-    debug();
+    // debug();
     fireEvent.click(saveButton);
 
     console.log(`${componentName} component pageState: `, saveData.pageState);
