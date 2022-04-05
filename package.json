@@ -1,5 +1,5 @@
 {
-  "name": "page-editor",
+  "name": "unbound-page-editor",
   "version": "0.1.0",
   "private": false,
   "description": "Drop-In document editor to generate webpages and pdfs",

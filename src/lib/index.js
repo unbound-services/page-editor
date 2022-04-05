@@ -3,4 +3,6 @@ import { PageEditor } from "./modules/page-editor/page-editor";
 import componentList from "./modules/page-editor/page-editor-components";
 
 console.log("PageEditorApp")
-export { PageEditorApp, PageEditor, componentList };
+export { PageEditor, componentList };
+
+export default PageEditorApp;

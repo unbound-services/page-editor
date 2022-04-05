@@ -37,7 +37,7 @@ const heading = props => {
             </div>
         )
     } else {
-        <TagName className={customClass}>{text}</TagName>
+       return <TagName className={customClass}>{text}</TagName>
     }
 }
 

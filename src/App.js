@@ -6,7 +6,9 @@ import "./sass/app.scss";
 let NewEditor = new PageEditorApp()
 
 
-
-NewEditor.initializeApp(document.body)
+const onSave = (data) => {
+    console.log("data in onSave", data)
+}
+NewEditor.initializeApp(document.body, onSave)
 
 

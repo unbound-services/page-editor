@@ -1,15 +1,22 @@
 import { render, screen, within, fireEvent } from '@testing-library/preact';
 import { PageEditor } from './lib';
-import { PageEditorApp } from './lib';
+import PageEditorApp from './lib';
+import StringInput from './lib/modules/input-slot/string-input/input-slot-string-input';
+import Heading from './lib/modules/components/heading/heading';
+import Paragraph from './lib/modules/components/paragraph/paragraph';
+import { debug } from 'webpack';
 
 
-const TestComponent = () =>{
-  return <div data-testid='test-component'>test!</div>;
+const TestComponent = (props) => {
+  const {text = "test!" } = props;
+  return <StringInput sectionName="text" data-testid="test-component" />
+
 }
 
 const testComponentList = {
   "test-component" : { displayName: "Test Component", comp: TestComponent },
 }
+
 
 
 test('component shows up in list', () => {
@@ -52,7 +59,7 @@ test('save function outputs data', () => {
   
   let saveData = false;
   function saveFunction(data) {
-    console.log("saveData before function: ", saveData)
+    console.log("data in test save function: ", data, "pageState in test save: ", data.pageState)
     saveData = data;
   }
 
@@ -64,10 +71,23 @@ test('save function outputs data', () => {
   fireEvent.click(addbutton);
   fireEvent.click(saveButton);
 
-  expect(saveData.pageState.children.length).toBe(1);
-
+  console.log("page state: ", saveData.pageState)
+  expect(saveData.pageState).toEqual({
+    children: [
+      {
+        comp: "test",
+        props: {
+          text: "test!"
+        }
+      }
+    ]
+  })
+  console.log("page Markup: ", saveData.pageMarkup)
+  expect(saveData.pageMarkup).toBe('<div><div data-testid="test-component">test!</div></div>');
 
 })
+
+
 
 // test('load prop properly translates data', () => {
 //   const AppInstance = new PageEditorApp();
@@ -88,7 +108,7 @@ test('save function outputs data', () => {
 //   expect(isComponentOnPage).toBeInTheDocument();
 // })
 
-function testComponent (testComponent, componentName, expectedProps){
+function testComponent (testComponent, componentName, expectedProps, expectedMarkup, setupCallback = false){
   const testList = {
     "test" : { displayName: componentName, comp: testComponent },
   }
@@ -100,7 +120,7 @@ function testComponent (testComponent, componentName, expectedProps){
     expect(componentIsOnList).toBeInTheDocument();
   })
 
-  test(`${componentName} component has the expected props`, () => {
+  test(`${componentName} component saves in the expected way`, () => {
     
     let saveData = false;
     function saveFunction(data) {
@@ -108,37 +128,62 @@ function testComponent (testComponent, componentName, expectedProps){
       console.log("save data after save: ", saveData);
     }
     
-    render(<PageEditor componentList={testList} onSave={data => saveFunction(data)} />);
-    
+    const {debug} = render(<PageEditor componentList={testList} onSave={data => saveFunction(data)} />);
+
     const dropDown = screen.getByTestId('add-component-listbox');
     const addbutton = screen.getByTestId('add-component-button');
     const saveButton = screen.getByTestId('save-page-button');
-    fireEvent.click(saveButton);
 
     fireEvent.change(dropDown, { target: { value: 'test' } });
     fireEvent.click(addbutton);
+    if (setupCallback) {
+      setupCallback()
+    }
+    debug();
     fireEvent.click(saveButton);
 
+    console.log(`${componentName} component pageState: `, saveData.pageState);
+    console.log(`${componentName} component pageMarkup: `, saveData.pageMarkup);
     expect(saveData.pageState).toEqual(expectedProps)
+    expect(saveData.pageMarkup).toBe(expectedMarkup)
   })
-}
 
-// Example of testing a component with the component testing function
-// testComponent(
-//   TestComponent, 
-//   "Heading",
-//   {
-//     children: [
-//       {
-//         comp: "test",
-//         props: {}
-//       }
-//     ]
-//   }
-// )
+}
 
 
 function cleanDom() {
   let pageEditor = document.getElementsByClassName("page-editor")[0];
   pageEditor.parentNode.removeChild(pageEditor)
 }
+
+// testComponent(
+//   TestComponent,
+//   "Test",
+//   { children: [ { comp: 'test' , props: {} } ] },
+//   '<div><div data-testid="test-component">test!</div></div>' 
+// )
+
+
+// testComponent(
+//   Heading,
+//   "Heading",
+//   { children: [ { comp: 'test', props: {} } ] },
+//   '<div></div>',
+//   function(){
+//     const field = screen.getByRole('textbox', {name: 'Heading Text'})
+//     fireEvent.change(field, {value: 'Test'})
+//   }
+// )
+
+
+
+// testComponent(
+//   Paragraph,
+//   "Paragraph",
+//   { children: [ { comp: 'test', props: {} } ] },
+//   '<div></div>',
+//   function(){
+//     const field = screen.getByRole('textbox', {name: 'Paragraph'})
+//     fireEvent.change(field, {value: 'Test'})
+//   }
+// )

@@ -1,5 +1,5 @@
 import React from 'react';
-import render from 'preact-render-to-string';
+import renderToString from 'preact-render-to-string';
 
 import EditorContext, { stateDeeper } from '../content-editor/content-editor-editor-context.js';
 import ContentSection from '../input-slot/content-section/input-slot-content-section.js';
@@ -52,20 +52,22 @@ class PageEditor extends React.Component {
                 return
             }
 
-            console.log("onSave: ", this.props.onSave)
+            console.log("demoState", demoState)
 
-            const pageMarkup = render(
+            const pageMarkup = renderToString(
                 <EditorContext.Provider value={{setState: stateDeeper("editorState", this.state,  baseSetState),
                     editorState:demoState,
                     componentList: this.props.componentList,
                     editing: false,
-                    previewing: false}}>
+                    previewing: true}}>
                     <ContentSection isRoot />
                 </EditorContext.Provider>
             );
 
 			// submit the form
             const pageState = this.state.editorState;
+            
+            console.log("Page State in saveData function: ", pageState)
 
             const data = {pageState,
                 pageMarkup,
