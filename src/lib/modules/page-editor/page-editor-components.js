@@ -4,6 +4,7 @@ import Columns from '../components/columns/columns';
 import Heading from '../components/heading/heading';
 import Paragraph from '../components/paragraph/paragraph';
 import Spacer from '../components/spacer/spacer';
+import Separator from '../components/separator/separator';
 
 // our sample component
 // const someComponent = (props) => {
@@ -36,7 +37,8 @@ const componentList = {
     "column-with-text":  { displayName: "Columns With Text", comp: Columns },
     "heading": { displayName: "Heading", comp: Heading },
     "paragraph": { displayName: "Paragraph", comp: Paragraph },
-    "spacer": { displayName: "Spacer", comp: Spacer }
+    "spacer": { displayName: "Spacer", comp: Spacer },
+    "separator": { displayName: "Separator", comp: Separator },
 }
 
 export default componentList;
