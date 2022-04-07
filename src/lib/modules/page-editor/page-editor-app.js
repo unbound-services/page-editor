@@ -7,7 +7,11 @@ export default class PageEditorApp {
       this.components = componentList;
     }
   
-    initializeApp(domObject, onSave = false, pageData = {children: []}){
+    initializeApp(domObject, onSave = false, pageData = {children: []}, newComponentList = false){
+      if(newComponentList) {
+        this.components = newComponentList;
+      }
+
       const app = (
         <div class="page-editor" data-testid="page-editor">
           <PageEditor componentList={this.components} pageData={pageData} onSave={onSave} />
@@ -16,8 +20,17 @@ export default class PageEditorApp {
       render(app, domObject)
     }
   
-    addComponent(compSlug, compDisplayName, component){
-      this.components[compSlug] = {displayName: compDisplayName, comp: component}
+    addComponents(components, compSlug=false, compDisplayName=false){
+      if (components[0] && "comp" in components) {
+        this.components = components;
+        return
+      } 
+      if (!components) {
+        console.error("trying to call the add components function without a properly formatted components list or component")
+        return
+      }
+
+      this.components[compSlug] = {displayName: compDisplayName, comp: components}
     }
 
     getDefaultComponents(){

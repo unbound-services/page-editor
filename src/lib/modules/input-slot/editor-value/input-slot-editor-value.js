@@ -1,5 +1,5 @@
 import React from 'react';
-import InputSlot from '../content-editor-input-slot';
+import InputSlot from '../input-slot';
 
 
 
