@@ -15,8 +15,7 @@ const paragraph = props => {
                 hidden
             />
             <RichTextInput 
-                sectionName="text"
-                value={text} 
+                sectionName="text" 
                 label="Text"
                 inputClass={customClass}
             />

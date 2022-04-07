@@ -7,14 +7,12 @@ import 'react-quill/dist/quill.snow.css';
 class RichTextInput extends InputSlot {
     
     editorRender(){
-        const { sectionName, label='', hidden=false, tagName='div', inputClass, useTheme='snow', ...otherProps } = this.props;
+        const { value="", sectionName, label='', hidden=false, tagName='div', inputClass, useTheme='snow', ...otherProps } = this.props;
 
         const TagName = tagName;
         const { editorState: state, editing} = this.context
-        const onChange = (content, delta, source, editor) => {
-            this.context.setState({...state, [sectionName]: {
-                content: content, quillState: editor.getContents()
-            }});
+        const onChange = (e) => {
+            this.context.setState({...state, [sectionName]: e});
         }
         console.log('state', state)
 
@@ -29,9 +27,8 @@ class RichTextInput extends InputSlot {
             {label} 
             <ReactQuill
                 onChange={onChange}
-                value={state[sectionName] ? state[sectionName]["quillState"] : ''}
+                value={state[sectionName] || ''}
                 theme={useTheme}
-                style="height: 400px"
             />
             </React.Fragment>
         } else {
@@ -39,7 +36,7 @@ class RichTextInput extends InputSlot {
                 return null;
             }
             return <TagName className={inputClass}  dangerouslySetInnerHTML={{
-                    __html: state[sectionName].content
+                    __html: state[sectionName]
                   }} {...otherProps} >
             </TagName>
         }
