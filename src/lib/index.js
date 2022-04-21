@@ -11,5 +11,4 @@ import StringInput from "./modules/input-slot/string-input/input-slot-string-inp
 import InputSlot from "./modules/input-slot/input-slot";
 
 export { PageEditor, componentList, ContentSection, EditorValue, NumberSelect, RichText, SelectInput, SlotSection, StringInput, InputSlot };
-
 export default PageEditorApp;

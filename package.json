@@ -25,8 +25,8 @@
   "scripts": {
     "watch": "webpack watch --mode development --config webpack.config.js",
     "build": "webpack --mode production --config webpack.config.js",
-    "package": "del /F /Q pkg_build && babel src/lib --out-dir pkg_build --copy-files && yarn pack",
-    "bundle": "del /F /Q pkg_build && webpack --mode production --config webpack.config.js --entry /src/lib/index.js -o pkg_build",
+    "package": "rimraf /F /Q pkg_build && babel src/lib --out-dir pkg_build --copy-files && yarn pack",
+    "bundle": "rimraf /F /Q pkg_build && webpack --mode production --config webpack.config.js --entry /src/lib/index.js -o pkg_build",
     "test": "jest",
     "test-bundle": "webpack --config ./webpack.config.test.js"
   },
@@ -61,6 +61,7 @@
     "css-loader": "^6.5.0",
     "identity-obj-proxy": "^3.0.0",
     "jest": "^27.3.1",
+    "rimraf": "^3.0.2",
     "sass": "^1.43.2",
     "sass-loader": "^12.3.0",
     "style-loader": "^3.3.1",
