@@ -1,45 +1,46 @@
-const path = require('path');
+const path = require("path");
 
 const config = {
-  entry: './src/app.js',
+  entry: "./src/app.js",
   experiments: {
-    outputModule: true
+    outputModule: true,
   },
   output: {
-    path: path.resolve(__dirname, 'dist'),
-    filename: 'bundle.js',
+    path: path.resolve(__dirname, "dist"),
+    filename: "bundle.js",
     library: {
-      type: 'module'
-    }
+      type: "module",
+    },
   },
   module: {
     rules: [
       {
+        test: /\.tsx?$/,
+        use: "ts-loader",
+        exclude: /node_modules/,
+      },
+      {
         test: /\.(js|jsx)$/,
-        use: 'babel-loader',
-        exclude: /node_modules/
+        use: "babel-loader",
+        exclude: /node_modules/,
       },
       {
         test: /\.(scss|css)$/,
-        use: [
-          'style-loader',
-          'css-loader',
-          'sass-loader'
-        ]
-      }
-    ]
+        use: ["style-loader", "css-loader", "sass-loader"],
+      },
+    ],
   },
-  resolve: { 
-    alias: { 
-      "react": "preact/compat",
+  resolve: {
+    extensions: [".css", ".ts", ".tsx", ".js", ".jsx", ".scss", ".sass"],
+    alias: {
+      react: "preact/compat",
       "react-dom/test-utils": "preact/test-utils",
-      "react-dom": "preact/compat",     // Must be below test-utils
-      "react/jsx-runtime": "preact/jsx-runtime"
+      "react-dom": "preact/compat", // Must be below test-utils
+      "react/jsx-runtime": "preact/jsx-runtime",
     },
   },
 
-  target: 'web'
-
+  target: "web",
 };
 
 module.exports = config;
