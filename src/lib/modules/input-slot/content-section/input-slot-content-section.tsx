@@ -5,12 +5,11 @@ import EditorContext, {
 } from "../../content-editor/content-editor-editor-context";
 import "./input-slot-content-section.scss";
 
-export type ContentSectionProps = {
+export interface ContentSectionProps {
   sectionName?: string;
   tagName?: string;
   isRoot?: boolean;
-  [otherOptions: string]: unknown; // any number of fields
-};
+}
 
 export type ContentSectionState = {
   component: any;
@@ -134,15 +133,19 @@ export class ContentSection extends InputSlot<
     const componentList = context.componentList;
 
     // method for adding a new component to the content section state
-    const addComponent = (e) => {
+    const addComponent = (e, component = null) => {
       let neweditorState = { ...editorState, children: [...currentChildren] };
-      e.preventDefault();
-      e.stopPropagation();
+      if (e) {
+        e.preventDefault();
+        e.stopPropagation();
+      }
 
       // probably should find a better way to do this
-      const whichComponent = state.component
-        ? state.component
-        : sortedComponentList[0];
+      let whichComponent = component;
+      if (!whichComponent)
+        whichComponent = state.component
+          ? state.component
+          : sortedComponentList[0];
       neweditorState.children.push({ comp: whichComponent, props: {} });
       context.setState(neweditorState);
     };
@@ -161,9 +164,12 @@ export class ContentSection extends InputSlot<
           </button>
           <select
             className="add-component__component-list"
-            onChange={(e) =>
-              this.setState({ component: e.currentTarget.value })
-            }
+            onChange={(e) => {
+              const newComponent = e.currentTarget.value;
+              this.setState({ component: newComponent });
+
+              addComponent(null, newComponent);
+            }}
             data-testid="add-component-listbox">
             {sortedComponentList.map((index) => {
               const value = componentList[index];
@@ -230,13 +236,7 @@ const ComponentSlotWrapper = (props) => {
 
   const buttonSection = (
     <div className="content-section-controls__inner">
-      <strong
-        style={{
-          color: "white",
-          fontWeight: "bold",
-          fontSize: "10px",
-          display: "block",
-        }}>
+      <strong className="content-section-controls__component-type">
         {props.componentName}
       </strong>
       {props.optionButtons}

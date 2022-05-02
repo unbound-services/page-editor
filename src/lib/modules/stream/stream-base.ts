@@ -1,4 +1,8 @@
+import { StreamContextGetStreamCallbackType } from "./stream-context";
 
-
-const something: string = "SOMETHING!!"
-console.log('hello world!', something)
+export class StreamBase<FieldType = any> {
+  public get(
+    callback: StreamContextGetStreamCallbackType,
+    fields?: FieldType
+  ) {}
+}

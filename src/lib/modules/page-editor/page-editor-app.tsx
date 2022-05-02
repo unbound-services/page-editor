@@ -2,8 +2,17 @@ import { render } from "react-dom";
 import React from "react";
 import { PageEditor } from "./page-editor";
 import componentList from "./page-editor-components";
+import { StreamBase } from "../stream/stream-base";
+import { StreamDriver } from "../stream/stream-driver";
+import { StreamContext } from "../stream/stream-context";
 
 export default class PageEditorApp {
+  protected _streamDriver: StreamDriver;
+
+  public get streamDriver() {
+    return this._streamDriver;
+  }
+
   protected components;
   protected plugins;
   constructor() {
@@ -25,14 +34,19 @@ export default class PageEditorApp {
       this.plugins = plugins;
     }
 
+    // if there isn't a streamdriver then create it
+    this._streamDriver = new StreamDriver();
+
     const app = (
       <div class="page-editor" data-testid="page-editor">
-        <PageEditor
-          componentList={this.components}
-          plugins={this.plugins}
-          pageData={pageData}
-          onSave={onSave}
-        />
+        <StreamContext.Provider value={this.streamDriver.asContextValue()}>
+          <PageEditor
+            componentList={this.components}
+            plugins={this.plugins}
+            pageData={pageData}
+            onSave={onSave}
+          />
+        </StreamContext.Provider>
       </div>
     );
     render(app, domObject);
@@ -61,8 +75,6 @@ export default class PageEditorApp {
       };
     }
   }
-
-  addStream() {}
 
   getDefaultComponents() {
     return componentList;

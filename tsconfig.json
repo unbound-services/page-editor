@@ -1,11 +1,16 @@
 {
     "compilerOptions": {
-      "outDir": "./dist/",
+      "outDir": "./pkg_build/",
+      "declarationDir": "./pkg_build/",
       "noImplicitAny": false,
       "module": "es6",
+    //   "lib": ["es2015", "es2016", "es2017", "dom"],
+
       "target": "es5",
       "jsx": "react",
+      "sourceMap":true,
       "allowJs": true,
+      "declaration": true,
       "moduleResolution": "node",
       "allowSyntheticDefaultImports":true,
 
@@ -16,5 +21,6 @@
             "react-dom": ["./node_modules/preact/compat/"]
           }
 
-    }
+    },
+    "include": ["src/**/*"],
   }

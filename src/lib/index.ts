@@ -10,5 +10,16 @@ import SlotSection from "./modules/input-slot/slot-section/input-slot-slot-secti
 import StringInput from "./modules/input-slot/string-input/input-slot-string-input";
 import InputSlot from "./modules/input-slot/input-slot";
 
-export { PageEditor, componentList, ContentSection, EditorValue, NumberSelect, RichText, SelectInput, SlotSection, StringInput, InputSlot };
+export {
+  PageEditor,
+  componentList,
+  ContentSection,
+  EditorValue,
+  NumberSelect,
+  RichText,
+  SelectInput,
+  SlotSection,
+  StringInput,
+  InputSlot,
+};
 export default PageEditorApp;

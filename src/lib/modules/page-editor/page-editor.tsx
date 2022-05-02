@@ -8,6 +8,8 @@ import EditorContext, {
   stateDeeper,
 } from "../content-editor/content-editor-editor-context";
 import { ContentSection } from "../input-slot/content-section/input-slot-content-section";
+import { StreamContext } from "../stream/stream-context";
+import { StreamDriver } from "../stream/stream-driver";
 
 // page editor prop types
 export type PageEditorStateType = {
@@ -26,6 +28,7 @@ export type PageEditorPropType = {
   onSave: PageEditorOnsaveFunction | boolean;
   pageData: any;
 };
+
 export class PageEditor extends React.Component<
   PageEditorPropType,
   PageEditorStateType
@@ -138,6 +141,7 @@ export class PageEditor extends React.Component<
               More Page Options
             </button>
         </div>
+
         <EditorContext.Provider
           value={{
             setState: stateDeeper("editorState", this.state, baseSetState),
