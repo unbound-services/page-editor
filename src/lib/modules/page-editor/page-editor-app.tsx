@@ -5,24 +5,31 @@ import componentList from "./page-editor-components";
 
 export default class PageEditorApp {
   protected components;
+  protected plugins;
   constructor() {
     this.components = componentList;
+    this.plugins = {};
   }
 
   initializeApp(
     domObject,
     onSave = false,
     pageData = { children: [] },
-    newComponentList = false
+    newComponentList = false,
+    plugins = {}
   ) {
     if (newComponentList) {
       this.components = newComponentList;
+    }
+    if (Object.keys(plugins).length > 0) {
+      this.plugins = plugins;
     }
 
     const app = (
       <div class="page-editor" data-testid="page-editor">
         <PageEditor
           componentList={this.components}
+          plugins={this.plugins}
           pageData={pageData}
           onSave={onSave}
         />
