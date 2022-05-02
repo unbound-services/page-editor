@@ -1,7 +1,7 @@
 import { PageEditorApp } from "./modules/page-editor/page-editor-app";
 import { PageEditor } from "./modules/page-editor/page-editor";
 import componentList from "./modules/page-editor/page-editor-components";
-import ContentSection from "./modules/input-slot/content-section/input-slot-content-section";
+import { ContentSection } from "./modules/input-slot/content-section/input-slot-content-section";
 import EditorValue from "./modules/input-slot/editor-value/input-slot-editor-value";
 import NumberSelect from "./modules/input-slot/number-select-input/input-slot-number-select-input";
 import RichText from "./modules/input-slot/rich-text-input/input-slot-rich-text-input";

@@ -1,7 +1,7 @@
 import React, { useContext } from "react";
 import NumberSelectInput from "../../input-slot/number-select-input/input-slot-number-select-input";
 import SlotSection from "../../input-slot/slot-section/input-slot-slot-section";
-import ContentSection from "../../input-slot/content-section/input-slot-content-section";
+import { ContentSection } from "../../input-slot/content-section/input-slot-content-section";
 const column = (props) => {
   const { text = "", count } = props;
 
