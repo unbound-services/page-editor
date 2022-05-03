@@ -14,6 +14,7 @@ import { StreamDriver } from "../stream/stream-driver";
 // page editor prop types
 export type PageEditorStateType = {
   editorState: any;
+  pageMetaState: any;
   preview: any;
   changes: any;
   advancedOpen: boolean;
@@ -27,6 +28,7 @@ export type PageEditorPropType = {
   plugins: any;
   onSave: PageEditorOnsaveFunction | boolean;
   pageData: any;
+  pageMeta: any;
 };
 
 export class PageEditor extends React.Component<
@@ -38,6 +40,7 @@ export class PageEditor extends React.Component<
 
     const initialState: PageEditorStateType = {
       editorState: props.pageData,
+      pageMetaState: props.pageMeta,
       preview: false,
       changes: false,
       advancedOpen: false,
@@ -79,6 +82,15 @@ export class PageEditor extends React.Component<
       this.setState( {pageEditorDrawerOpen: !this.state.pageEditorDrawerOpen});
   }
 
+    const updatePageMetaState = (key, value) => {
+      this.setState({
+        pageMetaState: {
+            ...this.state.pageMetaState,
+            [key]: value
+        }
+      });
+    };
+
     const saveData = () => {
       if (!this.props.onSave) {
         console.log("No onSave function connected to app");
@@ -103,10 +115,11 @@ export class PageEditor extends React.Component<
 
       // submit the form
       const pageState = this.state.editorState;
+      const metaState = this.state.pageMetaState;
 
       console.log("Page State in saveData function: ", pageState);
 
-      const data = { pageState, pageMarkup };
+      const data = { pageState, pageMarkup, metaState };
 
       // if there's an onsave then call it
       if (this.props.onSave) {
@@ -117,7 +130,10 @@ export class PageEditor extends React.Component<
     return (
       <div>
         <Drawer open={this.state.pageEditorDrawerOpen} onClose={togglePageDrawer}>
-          <PageMeta />
+          <PageMeta
+            pageMeta={this.state.pageMetaState}
+            updatePageMetaState={updatePageMetaState}
+          />
         </Drawer>
         <div className="page-editor__menu">
           <button

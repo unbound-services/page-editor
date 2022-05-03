@@ -24,6 +24,7 @@ export default class PageEditorApp {
     domObject,
     onSave = false,
     pageData = { children: [] },
+    pageMeta = { name: "", slug: "", status: "draft" },
     newComponentList = false,
     plugins = {}
   ) {
@@ -44,6 +45,7 @@ export default class PageEditorApp {
             componentList={this.components}
             plugins={this.plugins}
             pageData={pageData}
+            pageMeta={pageMeta}
             onSave={onSave}
           />
         </StreamContext.Provider>
