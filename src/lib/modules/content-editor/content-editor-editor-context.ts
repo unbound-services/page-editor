@@ -5,6 +5,7 @@ const EditorContext = React.createContext<{
   setState: (newState) => void;
   editorState: any;
   componentList: any;
+  plugins: any;
   editing: boolean;
   previewing: boolean;
 }>(null);

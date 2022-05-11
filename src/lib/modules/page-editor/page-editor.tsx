@@ -1,6 +1,9 @@
 import React from "react";
 import renderToString from "preact-render-to-string";
 
+import Drawer from "../common/drawer/common-drawer";
+import { PageMeta } from "../page-meta/page-meta";
+
 import EditorContext, {
   stateDeeper,
 } from "../content-editor/content-editor-editor-context";
@@ -9,6 +12,7 @@ import { ContentSection } from "../input-slot/content-section/input-slot-content
 // page editor prop types
 export type PageEditorStateType = {
   editorState: any;
+  pageMetaState: any;
   preview: any;
   changes: any;
   advancedOpen: boolean;
@@ -19,8 +23,10 @@ export type PageEditorOnsaveFunction = (data: any) => void;
 
 export type PageEditorPropType = {
   componentList: any;
+  plugins: any;
   onSave: PageEditorOnsaveFunction | boolean;
   pageData: any;
+  pageMeta: any;
 };
 
 export class PageEditor extends React.Component<
@@ -32,6 +38,7 @@ export class PageEditor extends React.Component<
 
     const initialState: PageEditorStateType = {
       editorState: props.pageData,
+      pageMetaState: props.pageMeta,
       preview: false,
       changes: false,
       advancedOpen: false,
@@ -69,6 +76,19 @@ export class PageEditor extends React.Component<
       this.setState({ ...obj, changes: true });
     };
 
+    const togglePageDrawer = () => {
+      this.setState( {pageEditorDrawerOpen: !this.state.pageEditorDrawerOpen});
+  }
+
+    const updatePageMetaState = (key, value) => {
+      this.setState({
+        pageMetaState: {
+            ...this.state.pageMetaState,
+            [key]: value
+        }
+      });
+    };
+
     const saveData = () => {
       if (!this.props.onSave) {
         console.log("No onSave function connected to app");
@@ -83,6 +103,7 @@ export class PageEditor extends React.Component<
             setState: stateDeeper("editorState", this.state, baseSetState),
             editorState: demoState,
             componentList: this.props.componentList,
+            plugins: this.props.plugins,
             editing: false,
             previewing: true,
           }}>
@@ -92,10 +113,11 @@ export class PageEditor extends React.Component<
 
       // submit the form
       const pageState = this.state.editorState;
+      const metaState = this.state.pageMetaState;
 
       console.log("Page State in saveData function: ", pageState);
 
-      const data = { pageState, pageMarkup };
+      const data = { pageState, pageMarkup, metaState };
 
       // if there's an onsave then call it
       if (this.props.onSave) {
@@ -105,6 +127,12 @@ export class PageEditor extends React.Component<
 
     return (
       <div>
+        <Drawer open={this.state.pageEditorDrawerOpen} onClose={togglePageDrawer}>
+          <PageMeta
+            pageMeta={this.state.pageMetaState}
+            updatePageMetaState={updatePageMetaState}
+          />
+        </Drawer>
         <div className="page-editor__menu">
           <button
             className="page-editor__button"
@@ -121,6 +149,11 @@ export class PageEditor extends React.Component<
             data-testid="save-page-button">
             Save Changes {this.state.changes ? "*" : ""}{" "}
           </button>
+          <button
+            className='page-editor__button'
+            onClick={togglePageDrawer}>
+              More Page Options
+            </button>
         </div>
 
         <EditorContext.Provider
@@ -128,6 +161,7 @@ export class PageEditor extends React.Component<
             setState: stateDeeper("editorState", this.state, baseSetState),
             editorState: demoState,
             componentList: this.props.componentList,
+            plugins: this.props.plugins,
             editing: !preview,
             previewing: preview,
           }}>

@@ -16,18 +16,25 @@ export default class PageEditorApp {
   }
 
   protected components;
+  protected plugins;
   constructor() {
     this.components = componentList;
+    this.plugins = {};
   }
 
   initializeApp(
     domObject,
     onSave: (data: object) => boolean | void,
     pageData = { children: [] },
-    newComponentList = false
+    pageMeta = { name: "", slug: "", status: "draft" },
+    newComponentList = false,
+    plugins = {}
   ) {
     if (newComponentList) {
       this.components = newComponentList;
+    }
+    if (Object.keys(plugins).length > 0) {
+      this.plugins = plugins;
     }
 
     // if there isn't a streamdriver then create it
@@ -38,7 +45,9 @@ export default class PageEditorApp {
         <StreamContext.Provider value={this.streamDriver}>
           <PageEditor
             componentList={this.components}
+            plugins={this.plugins}
             pageData={pageData}
+            pageMeta={pageMeta}
             onSave={onSave}
           />
           <StreamDrawer />
