@@ -1,8 +1,10 @@
-import { StreamContextGetStreamCallbackType } from "./stream-context";
+export type StreamGetCallback<ValueType = any> = (
+  streamPayload: ValueType[]
+) => void;
 
-export class StreamBase<FieldType = any> {
+export class StreamBase<FieldType = any, ValueType = any> {
   public get(
-    callback: StreamContextGetStreamCallbackType,
+    callback: StreamGetCallback<ValueType>,
     fields?: FieldType
-  ) {}
+  ): void {}
 }

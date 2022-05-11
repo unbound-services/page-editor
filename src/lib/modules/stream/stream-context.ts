@@ -1,14 +1,13 @@
 import React from "react";
+import { StreamGetCallback } from "./stream-base";
 
-export type StreamContextType = {
+export interface StreamContextType {
   streamList: string[];
   getStream: (
     streamName: string,
-    fields: any,
-    callback: StreamContextGetStreamCallbackType
+    callback: StreamGetCallback,
+    fields?: any
   ) => void;
-};
-
-export type StreamContextGetStreamCallbackType = (streamPayload: any) => void;
+}
 
 export const StreamContext = React.createContext<StreamContextType>(null);

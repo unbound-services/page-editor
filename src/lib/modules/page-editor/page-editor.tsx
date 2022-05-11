@@ -5,8 +5,6 @@ import EditorContext, {
   stateDeeper,
 } from "../content-editor/content-editor-editor-context";
 import { ContentSection } from "../input-slot/content-section/input-slot-content-section";
-import { StreamContext } from "../stream/stream-context";
-import { StreamDriver } from "../stream/stream-driver";
 
 // page editor prop types
 export type PageEditorStateType = {

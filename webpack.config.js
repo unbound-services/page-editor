@@ -1,7 +1,7 @@
 const path = require("path");
 
 const config = {
-  entry: "./src/app.js",
+  entry: "./src/app.ts",
   experiments: {
     outputModule: true,
   },

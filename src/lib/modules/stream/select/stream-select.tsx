@@ -20,14 +20,19 @@ const StreamComp = ({ onChange, value }) => {
   const [currentVal, setCurrentVal] = useState(null);
 
   const onClick = () => {
-    stream.getStream("demoStream", {}, (val) => {
-      onChange(val);
+    stream.getStream("test-stream", (val) => {
+      onChange(val[0]);
     });
   };
 
+  let displayVal = null;
+  if (value) {
+    displayVal = <img src={value.src} />;
+  }
+
   return (
     <div>
-      {value}
+      {displayVal}
       <button onClick={onClick}>Select From Stream</button>
     </div>
   );

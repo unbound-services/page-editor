@@ -9,6 +9,10 @@ import SelectInput from "./modules/input-slot/select-input/input-slot-select-inp
 import SlotSection from "./modules/input-slot/slot-section/input-slot-slot-section";
 import StringInput from "./modules/input-slot/string-input/input-slot-string-input";
 import InputSlot from "./modules/input-slot/input-slot";
+import { StreamBase } from "./modules/stream/stream-base";
+import { HTTPStream } from "./modules/stream/http/stream-http";
+import { StreamDriver } from "./modules/stream/stream-driver";
+import { StreamDrawerDriver } from "./modules/stream/drawer/stream-drawer-driver";
 
 export {
   PageEditor,
@@ -21,5 +25,9 @@ export {
   SlotSection,
   StringInput,
   InputSlot,
+  StreamBase,
+  HTTPStream,
+  StreamDriver,
+  StreamDrawerDriver,
 };
 export default PageEditorApp;

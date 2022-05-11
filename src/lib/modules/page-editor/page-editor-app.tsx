@@ -5,6 +5,8 @@ import componentList from "./page-editor-components";
 import { StreamBase } from "../stream/stream-base";
 import { StreamDriver } from "../stream/stream-driver";
 import { StreamContext } from "../stream/stream-context";
+import { StreamDrawer } from "../stream/drawer/stream-drawer";
+import { StreamDrawerDriver } from "../stream/drawer/stream-drawer-driver";
 
 export default class PageEditorApp {
   protected _streamDriver: StreamDriver;
@@ -20,7 +22,7 @@ export default class PageEditorApp {
 
   initializeApp(
     domObject,
-    onSave = false,
+    onSave: (data: object) => boolean | void,
     pageData = { children: [] },
     newComponentList = false
   ) {
@@ -29,20 +31,25 @@ export default class PageEditorApp {
     }
 
     // if there isn't a streamdriver then create it
-    this._streamDriver = new StreamDriver();
+    this._streamDriver = this.createStreamDriver();
 
     const app = (
       <div class="page-editor" data-testid="page-editor">
-        <StreamContext.Provider value={this.streamDriver.asContextValue()}>
+        <StreamContext.Provider value={this.streamDriver}>
           <PageEditor
             componentList={this.components}
             pageData={pageData}
             onSave={onSave}
           />
+          <StreamDrawer />
         </StreamContext.Provider>
       </div>
     );
     render(app, domObject);
+  }
+
+  createStreamDriver(): StreamDriver {
+    return new StreamDrawerDriver();
   }
 
   addComponents(
