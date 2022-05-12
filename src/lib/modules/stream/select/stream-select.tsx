@@ -25,14 +25,8 @@ const StreamComp = ({ onChange, value }) => {
     });
   };
 
-  let displayVal = null;
-  if (value) {
-    displayVal = <img src={value.src} />;
-  }
-
   return (
     <div>
-      {displayVal}
       <button onClick={onClick}>Select From Stream</button>
     </div>
   );
@@ -62,9 +56,16 @@ export class StreamSelect extends InputSlot<
       this.context.setState({ ...state, [sectionName]: newValue });
     };
 
+    const currentVal = state[sectionName];
+    let displayVal = null;
+    if (currentVal) {
+      displayVal = <img src={currentVal.src} />;
+    }
+
     if (editing) {
       return (
         <TagName {...inputClass} {...otherProps}>
+          {displayVal}
           <StreamComp onChange={onChange} value={state[sectionName]} />
         </TagName>
       );
@@ -72,9 +73,10 @@ export class StreamSelect extends InputSlot<
       if (hidden) {
         return null;
       }
+
       return (
-        <TagName {...inputClass} {...otherProps}>
-          {state[sectionName]}
+        <TagName {...otherProps}>
+          {displayVal}
           {children}
         </TagName>
       );
