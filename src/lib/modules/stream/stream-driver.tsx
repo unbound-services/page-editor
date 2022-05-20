@@ -1,3 +1,6 @@
+import React, { FunctionComponent } from "react";
+
+import { JsxExpression } from "typescript";
 import { StreamBase, StreamGetCallback } from "./stream-base";
 import type { StreamContextType } from "./stream-context";
 
@@ -5,6 +8,12 @@ export type StreamList = { [streamName: string]: StreamBase };
 
 export class StreamDriver<CallbackType = any> {
   protected streams: StreamList = {};
+  protected component: React.FunctionComponent;
+
+  constructor() {
+    this.createStreamComponent();
+  }
+
   addStream(streamName: string, stream: StreamBase) {
     this.streams[streamName] = stream;
   }
@@ -18,6 +27,16 @@ export class StreamDriver<CallbackType = any> {
    */
   get streamList(): string[] {
     return Object.keys(this.streams);
+  }
+
+  protected createStreamComponent(): void {
+    this.component = (props) => {
+      return <div>hello</div>;
+    };
+  }
+
+  getComponent(): React.FunctionComponent {
+    return this.component;
   }
 
   /**

@@ -1,8 +1,10 @@
 import InputSlot from "../../input-slot/input-slot";
-import React from "react";
+import React, { Fragment } from "react";
 import { useContext } from "react";
 import { StreamContext } from "../stream-context";
 import { useState } from "react";
+import { useEditorContext } from "../../input-slot/input-slot-hooks";
+import { useEffect } from "react";
 
 // todo: inheritence
 export interface StreamInputProps {
@@ -32,8 +34,47 @@ const StreamComp = ({ onChange, value }) => {
   );
 };
 
+export const StreamButton = ({ sectionName, setButtonRender }) => {
+  const editorContext = useEditorContext(sectionName);
+  const stream = useContext(StreamContext);
+
+  const onClick = () => {
+    stream.getStream("test-stream", (val) => {
+      editorContext.setState(val[0].src);
+    });
+  };
+
+  useEffect(() => {
+    setButtonRender(() => {
+      return <button onClick={onClick}>Select From Stream</button>;
+    });
+    console.log("called set button render");
+  }, []);
+
+  return null;
+};
+
+export const StreamSelect = ({ targetImage, setButtonRender, ...props }) => {
+  let displayVal = null;
+  if (targetImage) {
+    displayVal = <img src={targetImage} />;
+  } else {
+    displayVal = <span style={{ padding: 20 }}>Image Placeholder</span>;
+  }
+  return (
+    <Fragment>
+      <StreamButton
+        sectionName="targetImage"
+        setButtonRender={setButtonRender}
+        {...props}
+      />
+      {displayVal}
+    </Fragment>
+  );
+};
+
 export type StreamInputState = {};
-export class StreamSelect extends InputSlot<
+export class StreamSelectOld extends InputSlot<
   StreamInputProps,
   StreamInputState
 > {

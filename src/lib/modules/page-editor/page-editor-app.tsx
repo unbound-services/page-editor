@@ -40,6 +40,9 @@ export default class PageEditorApp {
     // if there isn't a streamdriver then create it
     this._streamDriver = this.createStreamDriver();
 
+    // create the streamdrivers component
+    const StreamDriverComponent = this._streamDriver.getComponent();
+
     const app = (
       <div class="page-editor" data-testid="page-editor">
         <StreamContext.Provider value={this.streamDriver}>
@@ -50,7 +53,7 @@ export default class PageEditorApp {
             pageMeta={pageMeta}
             onSave={onSave}
           />
-          <StreamDrawer />
+          <StreamDriverComponent />
         </StreamContext.Provider>
       </div>
     );

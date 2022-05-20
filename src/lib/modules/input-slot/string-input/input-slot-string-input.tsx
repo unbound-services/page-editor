@@ -2,13 +2,13 @@ import InputSlot from "../input-slot";
 import React from "react";
 
 export interface StringInputProps {
-  value: any;
+  value?: any;
   sectionName: string;
-  label: string;
-  tagName: string;
-  hidden: boolean;
-  inputClass: string;
-  children: any;
+  label?: string;
+  tagName?: string;
+  hidden?: boolean;
+  inputClass?: string;
+  children?: any;
 }
 
 export type StringInputState = {};
@@ -29,8 +29,6 @@ class StringInput extends InputSlot<StringInputProps, StringInputState> {
     const onChange = (e) => {
       this.context.setState({ ...state, [sectionName]: e.currentTarget.value });
     };
-    console.log("children", children);
-    console.log("input class", inputClass);
 
     if (editing) {
       if (!label) {

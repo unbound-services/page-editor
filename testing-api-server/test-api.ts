@@ -15,6 +15,25 @@ app.get("/api/images/", (request, response) => {
   });
 });
 
+app.get("/api/tables/", (request, response) => {
+  console.log("welp", request);
+
+  return response.json({
+    tables: [
+      {
+        id: 1,
+        img: { src: "images/tables/table-1.jpg" },
+        name: "simple table",
+      },
+      { id: 2, img: { src: "images/tables/table-2.jpg" }, name: "Fancy Table" },
+      {
+        id: 3,
+        img: { src: "images/tables/table-3.jpg", name: "Fanciest Table" },
+      },
+    ],
+  });
+});
+
 app.use("/images/", express.static(path.join(__dirname, "images")));
 
 // read static dist stuff ===========

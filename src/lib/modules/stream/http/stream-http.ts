@@ -5,14 +5,15 @@ import { StreamBase, StreamGetCallback } from "../stream-base";
 
 export class HTTPStream<
   FieldType extends HTTPStreamFields,
-  CallbackValueType
+  CallbackValueType,
+  APIReturnType = any
 > extends StreamBase<FieldType, CallbackValueType> {
   protected url: string;
   protected _callback: (data: any) => CallbackValueType[];
 
   constructor(
     url: string,
-    callback: (data: any) => CallbackValueType[] = null
+    callback: (data: APIReturnType) => CallbackValueType[] = null
   ) {
     super();
     this.url = url;

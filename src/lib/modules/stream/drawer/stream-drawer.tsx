@@ -1,11 +1,9 @@
 import React, { useState } from "preact/compat";
 import Drawer from "../../common/drawer/common-drawer";
 
-export const StreamDrawer = () => {
-  const [drawerOpen, setDrawerOpen] = useState(false);
-
+export const StreamDrawer = ({ isOpen = false, setDrawerOpen }) => {
   return (
-    <Drawer isOpen={drawerOpen} onClose={() => setDrawerOpen(false)}>
+    <Drawer isOpen={isOpen} onClose={() => setDrawerOpen(false)}>
       Select something
     </Drawer>
   );

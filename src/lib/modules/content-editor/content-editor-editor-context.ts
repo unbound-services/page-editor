@@ -1,14 +1,15 @@
 import React from "react";
 
 // editor context is used to pass editor data all the way down
-const EditorContext = React.createContext<{
+export type EditorContextType = {
   setState: (newState) => void;
   editorState: any;
   componentList: any;
   plugins: any;
   editing: boolean;
   previewing: boolean;
-}>(null);
+};
+const EditorContext = React.createContext<EditorContextType>(null);
 
 // we do this through functions so that each level of rendering has its own "scope"
 export const stateDeeper = (name, state, setState) => (newStateObj) => {

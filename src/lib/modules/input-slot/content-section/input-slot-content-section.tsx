@@ -1,5 +1,5 @@
 import { InputSlot } from "../input-slot";
-import React, { useState } from "react";
+import React, { createPortal, useRef, useState } from "react";
 import EditorContext, {
   incState,
 } from "../../content-editor/content-editor-editor-context";
@@ -115,9 +115,10 @@ export class ContentSection extends InputSlot<
           console.log("COMP", item.comp);
           optionButtons.push(
             <button
+              className={"content-section-controls__delete-button"}
               key={`${item.comp}-delete-button`}
               onClick={removeComponent(key)}>
-              Delete {componentDisplayName}
+              X
             </button>
           );
         }
@@ -199,23 +200,27 @@ export class ContentSection extends InputSlot<
 export const getComponentFromData =
   (currentContext) => (data, key, optionButtons) => {
     const compData = currentContext.componentList[data.comp];
-
+    const [buttonPortal, setButtonPortal] = useState();
+    const [buttonRender, setButtonRender] = useState(() => () => null);
     if (!compData) return null;
     const Comp = currentContext.componentList[data.comp].comp;
     let currentProps = data.props;
 
+    // const portal = createPortal()
     return (
       <EditorContext.Provider key={key} value={incState(currentContext, key)}>
         <ComponentSlotWrapper
           optionButtons={optionButtons}
           componentName={compData.displayName}
           editing={currentContext.editing}
-          previewing={currentContext.previewing}>
+          previewing={currentContext.previewing}
+          buttonRender={buttonRender}>
           <Comp
             {...currentProps}
             editing={currentContext.editing}
             componentName={compData.displayName}
-            previewing={currentContext.previewing}>
+            previewing={currentContext.previewing}
+            setButtonRender={(val) => setButtonRender(() => val)}>
             {data.children}
           </Comp>
         </ComponentSlotWrapper>
@@ -229,9 +234,18 @@ const ComponentSlotWrapper = (props) => {
   // onMouseOut={(e)=>{console.log('event', e.target); setShowingButtons(false)}}
 
   // dont do anything with this when they're just previewing
-  const { editing, previewing } = props;
+  const { editing, previewing, buttonRender } = props;
   if (!editing) {
     return props.children;
+  }
+
+  // render the buttons
+  let extra = null;
+
+  if (buttonRender && typeof buttonRender === "function") {
+    extra = buttonRender();
+    if (extra)
+      extra = <div className="content-section-controls__buttons">{extra}</div>;
   }
 
   const buttonSection = (
@@ -240,13 +254,12 @@ const ComponentSlotWrapper = (props) => {
         {props.componentName}
       </strong>
       {props.optionButtons}
+      {extra}
     </div>
   );
 
   return (
-    <div
-      className="content-section-controls__wrapper"
-      style={{ overflow: "hidden" }}>
+    <div className="content-section-controls__wrapper">
       {buttonSection}
       {props.children}
     </div>

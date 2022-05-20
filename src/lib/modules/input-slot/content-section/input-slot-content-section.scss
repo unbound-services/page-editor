@@ -6,14 +6,17 @@
     &__wrapper{
         position:relative;
         border:2px #3a3a3a00 solid;
-        padding-top:30px;
-        margin-bottom:10px;
+        // padding-top:30px;
         transition: border-color 0.25s;
+        overflow:visible;
+        min-height:30px;
+
         &:hover{
             border:2px #3a3a3aff solid;
             & > .content-section-controls__inner{
                 // background:red;
                 opacity:100%;
+                z-index: 100;
             }
         }
     }
@@ -27,22 +30,41 @@
         left:0;
         padding:4px 8px;
         background:#7e7e7e;
-        z-index: 100;
+        z-index: 90;
         transition: opacity 0.25s;
         opacity:15%;
 
         button {
             margin-right: 10px;
             display:inline-block;
-            background:#dddddd;
             border-radius:4px;
             border:none;
             text-transform:uppercase;
             font-size:0.9em;
             font-weight:bold;
-
         }
     }
+
+    &__delete-button{
+        background:#dd0000;
+        color:white;
+        font-weight:bold;
+        cursor: pointer;
+    }
+
+
+
+    &__buttons{
+        position:absolute;
+        height:auto;
+        top:0;
+        left:300px;
+        padding:4px 8px;
+        background:#7e7e7e;
+        z-index: 100;
+    }
+
+
 
 
 
