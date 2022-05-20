@@ -28,7 +28,8 @@ export default class PageEditorApp {
     pageData = { children: [] },
     pageMeta = { name: "", slug: "", status: "draft" },
     newComponentList = false,
-    plugins = {}
+    plugins = {},
+    renderFlags = {individualComponents: false}
   ) {
     if (newComponentList) {
       this.components = newComponentList;
@@ -52,6 +53,7 @@ export default class PageEditorApp {
             pageData={pageData}
             pageMeta={pageMeta}
             onSave={onSave}
+            renderFlags={renderFlags}
           />
           <StreamDriverComponent />
         </StreamContext.Provider>

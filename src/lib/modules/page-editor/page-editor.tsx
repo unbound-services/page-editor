@@ -27,6 +27,7 @@ export type PageEditorPropType = {
   onSave: PageEditorOnsaveFunction | boolean;
   pageData: any;
   pageMeta: any;
+  renderFlags: {individualComponents?: boolean;}
 };
 
 export class PageEditor extends React.Component<
@@ -97,6 +98,28 @@ export class PageEditor extends React.Component<
 
       console.log("demoState", demoState);
 
+      let componentsMarkup = [];
+      if (this.props.renderFlags.individualComponents) {
+        componentsMarkup = demoState.children.map((data) => {
+          const compData = this.props.componentList[data.comp];
+          if (!compData) return "";
+          const Comp = this.props.componentList[data.comp].comp;
+          let currentProps = data.props;
+
+          return {
+            [data.comp]: renderToString(
+              <Comp
+                {...currentProps}
+                editing={false}
+                componentName={compData.displayName}
+                previewing={true}
+                setButtonRender={(val) => {}}>
+                {data.children}
+              </Comp>
+          )};
+        });
+      }
+
       const pageMarkup = renderToString(
         <EditorContext.Provider
           value={{
@@ -117,7 +140,7 @@ export class PageEditor extends React.Component<
 
       console.log("Page State in saveData function: ", pageState);
 
-      const data = { pageState, pageMarkup, metaState };
+      const data = { pageState, pageMarkup, metaState, componentsMarkup };
 
       // if there's an onsave then call it
       if (this.props.onSave) {
