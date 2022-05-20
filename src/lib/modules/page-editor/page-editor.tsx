@@ -107,7 +107,8 @@ export class PageEditor extends React.Component<
           let currentProps = data.props;
 
           return {
-            [data.comp]: renderToString(
+            comp: data.comp,
+            markup: renderToString(
               <Comp
                 {...currentProps}
                 editing={false}
