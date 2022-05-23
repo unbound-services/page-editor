@@ -42,7 +42,8 @@ export default class PageEditorApp {
       individualComponents: false,
       noRearrange: false,
       noAdd: false,
-    }
+    },
+    contextualPageData
   ) {
     if (newComponentList) {
       this.components = newComponentList;
@@ -71,6 +72,7 @@ export default class PageEditorApp {
             exportState={(setState) => {
               this._externalSetState = setState;
             }}
+            contextualPageData={contextualPageData}
           />
         </div>
       );
