@@ -17,7 +17,10 @@ import { StreamDrawerDriver } from "./modules/stream/drawer/stream-drawer-driver
 import { StreamGroup } from "./modules/stream/group/stream-group";
 import { FakeStream } from "./modules/stream/fake/stream-fake";
 import { StreamContextType } from "./modules/stream/stream-context";
-import { useEditorContext } from "./modules/input-slot/input-slot-hooks";
+import {
+  injectEditorContext,
+  useEditorContext,
+} from "./modules/input-slot/input-slot-hooks";
 import * as preact from "preact";
 import {
   EditorContext,
@@ -48,8 +51,11 @@ export {
   HTTPStream,
   StreamDriver,
   useEditorContext,
+  injectEditorContext,
   StreamContextType,
   StreamDrawerDriver,
   FakeStream,
   PageEditorApp,
 };
+
+export default PageEditorApp;
