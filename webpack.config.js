@@ -44,8 +44,7 @@ const getConfig = (env, argv) => {
     resolve: {
       extensions: [".css", ".ts", ".tsx", ".js", ".jsx", ".scss", ".sass"],
       alias: {
-        preact: path.resolve("./node_modules/preact"),
-        react: path.resolve("./node_modules/preact/compat"),
+        react: "preact/compat",
         "react-dom/test-utils": "preact/test-utils",
         "react-dom": "preact/compat", // Must be below test-utils
         "react/jsx-runtime": "preact/jsx-runtime",
