@@ -1,4 +1,3 @@
-import { ProductPageHeroImage } from "../../components";
 import Columns from "../components/columns/columns";
 import Heading from "../components/heading/heading";
 import Paragraph from "../components/paragraph/paragraph";
@@ -26,7 +25,6 @@ const componentList = {
   // "firstDemo": { displayName: "First Demo", comp: someComponent },
   // "secondDemo": { displayName: "SecondDemo", comp: demoComponent },
   "column-with-text": { displayName: "Columns With Text", comp: Columns },
-  pageheader: { displayName: "Page Header", comp: ProductPageHeroImage },
   heading: { displayName: "Heading", comp: Heading },
   paragraph: { displayName: "Paragraph", comp: Paragraph },
   spacer: { displayName: "Spacer", comp: Spacer },

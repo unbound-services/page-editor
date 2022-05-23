@@ -1,10 +1,12 @@
 import "./sass/app.scss";
-import { HTTPStream } from "../pkg_build";
-import { PageEditorApp } from "../pkg_build";
-import { StreamGroup, ProductPageHeroImage } from "../pkg_build";
+import {
+  HTTPStream,
+  PageEditorApp,
+  StreamGroup,
+  HTTPStreamFields,
+  FakeStream,
+} from "./lib/index";
 
-import type { HTTPStreamFields } from "../pkg_build/index";
-import { FakeStream } from "./lib/modules/stream/fake/stream-fake";
 import { render } from "preact";
 
 let editor = new PageEditorApp();
@@ -24,20 +26,8 @@ console.log("uh");
 // }
 
 // NewEditor.addComponents(TestComponent, "test-component", "Test Component");
-const heroImageComponents = {
-  "product-page-hero-image": {
-    displayName: "Product Hero Image",
-    comp: ProductPageHeroImage,
-  },
-};
 
-editor.initializeApp(
-  document.body,
-  onSave,
-  undefined,
-  undefined,
-  heroImageComponents
-);
+editor.initializeApp(document.body, onSave, undefined, undefined, null, {});
 
 type TableModel = {
   id: string;

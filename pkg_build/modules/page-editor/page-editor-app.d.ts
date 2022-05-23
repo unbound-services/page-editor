@@ -21,10 +21,6 @@ export default class PageEditorApp {
             displayName: string;
             comp: (props: any) => import("preact").JSX.Element;
         };
-        pageheader: {
-            displayName: string;
-            comp: (props: any) => import("preact").JSX.Element;
-        };
         heading: {
             displayName: string;
             comp: (props: any) => import("preact").JSX.Element;

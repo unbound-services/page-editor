@@ -5,12 +5,12 @@ const webpack = require("webpack");
 const getConfig = (env, argv) => {
   // different settings for dev
   let defFile = "index.d.ts";
-  let outputPath = "pkg_build";
+  let outputPath = "./pkg_build";
   let externals = {
     preact: "preact",
   };
   if (argv.mode === "development") {
-    outputPath = "dist";
+    outputPath = "./dist";
   }
 
   const config = {
@@ -32,6 +32,11 @@ const getConfig = (env, argv) => {
           test: /\.tsx?$/,
           loader: "ts-loader",
           exclude: /node_modules/,
+          options: {
+            compilerOptions: {
+              outDir: outputPath,
+            },
+          },
         },
         {
           test: /\.(js|jsx)$/,

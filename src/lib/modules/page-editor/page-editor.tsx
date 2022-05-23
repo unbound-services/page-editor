@@ -8,8 +8,6 @@ import EditorContext, {
   stateDeeper,
 } from "../content-editor/content-editor-editor-context";
 import { ContentSection } from "../input-slot/content-section/input-slot-content-section";
-import { StreamContextType } from "../stream/stream-context";
-import { StreamDrawer } from "../stream/drawer/stream-drawer";
 import { StreamDriver } from "../stream/stream-driver";
 
 // page editor prop types

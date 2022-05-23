@@ -1,6 +1,6 @@
 {
     "compilerOptions": {
-      "outDir": "./pkg_build/",
+      // "outDir": "./pkg_build/",
       "skipLibCheck": true,
       "noImplicitAny": false,
       "module": "ESNext",
@@ -21,7 +21,7 @@
         "paths": {
             "*": ["./node_modules/typings/*"],
             "react": ["./node_modules/preact/compat/"],
-            "react-dom": ["./node_modules/preact/compat/"]
+            "react-dom": ["./node_modules/preact/compat/"],
           }
 
     },

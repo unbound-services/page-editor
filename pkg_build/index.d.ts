@@ -17,7 +17,6 @@ import { StreamDrawerDriver } from "./modules/stream/drawer/stream-drawer-driver
 import { StreamGroup } from "./modules/stream/group/stream-group";
 import { FakeStream } from "./modules/stream/fake/stream-fake";
 import { StreamContextType } from "./modules/stream/stream-context";
-import { ProductPageHeroImage } from "./components";
 import { useEditorContext } from "./modules/input-slot/input-slot-hooks";
 import { EditorContext, EditorContextType } from "./modules/content-editor/content-editor-editor-context";
-export { PageEditor, componentList, HTTPStreamFields, ContentSection, EditorValue, StreamGroup, NumberSelect, RichText, SelectInput, SlotSection, EditorContext, ProductPageHeroImage, EditorContextType, StringInput, InputSlot, StreamBase, HTTPStream, StreamDriver, useEditorContext, StreamContextType, StreamDrawerDriver, FakeStream, PageEditorApp, };
+export { PageEditor, componentList, HTTPStreamFields, ContentSection, EditorValue, StreamGroup, NumberSelect, RichText, SelectInput, SlotSection, EditorContext, EditorContextType, StringInput, InputSlot, StreamBase, HTTPStream, StreamDriver, useEditorContext, StreamContextType, StreamDrawerDriver, FakeStream, PageEditorApp, };
