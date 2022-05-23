@@ -1,4 +1,3 @@
-import React from "react";
 import { StreamGetCallback } from "./stream-base";
 
 export interface StreamContextType {
@@ -9,5 +8,3 @@ export interface StreamContextType {
     fields?: any
   ) => void;
 }
-
-export const StreamContext = React.createContext<StreamContextType>(null);

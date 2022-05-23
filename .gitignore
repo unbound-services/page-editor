@@ -13,8 +13,7 @@
 /dist/*
 /pkg
 /pkg/*
-/pkg_build
-/pkg_build/*
+
 
 # misc
 .DS_Store

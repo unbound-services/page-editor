@@ -1,9 +1,10 @@
 import { InputSlot } from "../input-slot";
-import React, { createPortal, useRef, useState } from "react";
+import * as React from "preact";
 import EditorContext, {
   incState,
 } from "../../content-editor/content-editor-editor-context";
 import "./input-slot-content-section.scss";
+import { useState } from "preact/hooks";
 
 export interface ContentSectionProps {
   sectionName?: string;

@@ -1,10 +1,10 @@
-import React from "react";
-import EditorContext from "../content-editor/content-editor-editor-context";
+import { JSX, Component } from "preact";
+import { EditorContext } from "../content-editor/content-editor-editor-context";
 
 export class InputSlot<
-  InputSlotPropType,
-  InputSlotStateType
-> extends React.Component<InputSlotPropType, InputSlotStateType> {
+  InputSlotPropType = any,
+  InputSlotStateType = any
+> extends Component<InputSlotPropType, InputSlotStateType> {
   publicRender() {}
 
   editorRender(): JSX.Element {

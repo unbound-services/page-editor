@@ -1,7 +1,8 @@
+import { StreamBase, StreamGetCallback } from "../stream-base";
+
 export interface HTTPStreamFields {
   [key: string]: any;
 }
-import { StreamBase, StreamGetCallback } from "../stream-base";
 
 export class HTTPStream<
   FieldType extends HTTPStreamFields,

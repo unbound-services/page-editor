@@ -1,17 +1,19 @@
-import PageEditorApp from "./lib/modules/page-editor/page-editor-app";
 import "./sass/app.scss";
-import { StringInput } from "./lib/index";
-import {
-  HTTPStream,
-  HTTPStreamFields,
-} from "./lib/modules/stream/http/stream-http";
-import { StreamGroup } from "./lib/modules/stream/group/stream-group";
+import { HTTPStream } from "../pkg_build";
+import { PageEditorApp } from "../pkg_build";
+import { StreamGroup, ProductPageHeroImage } from "../pkg_build";
 
-let NewEditor = new PageEditorApp();
+import type { HTTPStreamFields } from "../pkg_build/index";
+import { FakeStream } from "./lib/modules/stream/fake/stream-fake";
+import { render } from "preact";
+
+let editor = new PageEditorApp();
 
 const onSave = (data) => {
   console.log("data in onSave", data);
 };
+
+console.log("uh");
 
 // const TestComponent = ({text="test!"}) => {
 //     return <StringInput sectionName="text" />
@@ -22,8 +24,20 @@ const onSave = (data) => {
 // }
 
 // NewEditor.addComponents(TestComponent, "test-component", "Test Component");
+const heroImageComponents = {
+  "product-page-hero-image": {
+    displayName: "Product Hero Image",
+    comp: ProductPageHeroImage,
+  },
+};
 
-NewEditor.initializeApp(document.body, onSave);
+editor.initializeApp(
+  document.body,
+  onSave,
+  undefined,
+  undefined,
+  heroImageComponents
+);
 
 type TableModel = {
   id: string;
@@ -83,7 +97,11 @@ const tableImageStream = new HTTPStream<
 // create a stream group to agregate different streams
 // ======================================================
 const imageStreamGroup = new StreamGroup<any, ImageStreamFormat>();
-NewEditor.streamDriver.addStream("test-stream", imageStreamGroup);
+editor.streamDriver.addStream("test-stream", imageStreamGroup);
+editor.streamDriver.addStream(
+  "fake-stream",
+  new FakeStream(() => [{ src: "asdf" }])
+);
 
 // add a stream with missmatched types
 imageStreamGroup.adaptStream("Table Stream", tableStream, (tables) => {

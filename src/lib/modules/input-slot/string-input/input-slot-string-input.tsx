@@ -1,5 +1,4 @@
 import InputSlot from "../input-slot";
-import React from "react";
 
 export interface StringInputProps {
   value?: any;

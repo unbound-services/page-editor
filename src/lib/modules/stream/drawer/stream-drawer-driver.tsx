@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "preact/compat";
+import { useState } from "preact/hooks";
 import { Drawer } from "../../common/drawer/common-drawer";
 import { StreamGetCallback } from "../stream-base";
 import { StreamDriver } from "../stream-driver";
@@ -35,6 +35,7 @@ export class StreamDrawerDriver extends StreamDriver {
   // it is important that this only be rendered once per component
   protected createStreamComponent(): void {
     this.component = () => {
+      console.log("in the component");
       const [currentStream, setCurrentStream] = useState([]);
       const [currentStreamName, setCurrentStreamName] = useState(false);
       this.setCurrentStream = setCurrentStream;

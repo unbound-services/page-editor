@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import * as React from "preact";
 import NumberSelectInput from "../../input-slot/number-select-input/input-slot-number-select-input";
 import SlotSection from "../../input-slot/slot-section/input-slot-slot-section";
 import { ContentSection } from "../../input-slot/content-section/input-slot-content-section";

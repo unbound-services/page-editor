@@ -11,23 +11,45 @@ import StringInput from "./modules/input-slot/string-input/input-slot-string-inp
 import InputSlot from "./modules/input-slot/input-slot";
 import { StreamBase } from "./modules/stream/stream-base";
 import { HTTPStream } from "./modules/stream/http/stream-http";
+import type { HTTPStreamFields } from "./modules/stream/http/stream-http";
 import { StreamDriver } from "./modules/stream/stream-driver";
 import { StreamDrawerDriver } from "./modules/stream/drawer/stream-drawer-driver";
+import { StreamGroup } from "./modules/stream/group/stream-group";
+import { FakeStream } from "./modules/stream/fake/stream-fake";
+import { StreamContextType } from "./modules/stream/stream-context";
+import { ProductPageHeroImage } from "./components";
+import { useEditorContext } from "./modules/input-slot/input-slot-hooks";
+import * as preact from "preact";
+import {
+  EditorContext,
+  EditorContextType,
+} from "./modules/content-editor/content-editor-editor-context";
 
+// preact 1
+window["preact1"] = preact;
+console.log("preact1", preact);
 export {
   PageEditor,
   componentList,
+  HTTPStreamFields,
   ContentSection,
   EditorValue,
+  StreamGroup,
   NumberSelect,
   RichText,
   SelectInput,
   SlotSection,
+  EditorContext,
+  ProductPageHeroImage,
+  EditorContextType,
   StringInput,
   InputSlot,
   StreamBase,
   HTTPStream,
   StreamDriver,
+  useEditorContext,
+  StreamContextType,
   StreamDrawerDriver,
+  FakeStream,
+  PageEditorApp,
 };
-export default PageEditorApp;

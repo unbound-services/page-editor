@@ -1,10 +1,8 @@
 import InputSlot from "../../input-slot/input-slot";
-import React, { Fragment } from "react";
-import { useContext } from "react";
-import { StreamContext } from "../stream-context";
-import { useState } from "react";
+
 import { useEditorContext } from "../../input-slot/input-slot-hooks";
-import { useEffect } from "react";
+import { useEffect, useState } from "preact/hooks";
+import { Fragment } from "preact";
 
 // todo: inheritence
 export interface StreamInputProps {
@@ -17,8 +15,9 @@ export interface StreamInputProps {
   children: any;
 }
 
-const StreamComp = ({ onChange, value }) => {
-  const stream = useContext(StreamContext);
+console.log("useEditorContext", useEditorContext);
+const StreamComp = useEditorContext(({ onChange, value, editorContext }) => {
+  const stream = editorContext.streams;
   const [currentVal, setCurrentVal] = useState(null);
 
   const onClick = () => {
@@ -32,27 +31,28 @@ const StreamComp = ({ onChange, value }) => {
       <button onClick={onClick}>Select From Stream</button>
     </div>
   );
-};
+});
 
-export const StreamButton = ({ sectionName, setButtonRender }) => {
-  const editorContext = useEditorContext(sectionName);
-  const stream = useContext(StreamContext);
+export const StreamButton = useEditorContext(
+  ({ sectionName, setButtonRender, editorContext }) => {
+    const streams = editorContext.streams;
 
-  const onClick = () => {
-    stream.getStream("test-stream", (val) => {
-      editorContext.setState(val[0].src);
-    });
-  };
+    const onClick = () => {
+      streams.getStream("test-stream", (val) => {
+        editorContext.setState(val[0].src);
+      });
+    };
 
-  useEffect(() => {
-    setButtonRender(() => {
-      return <button onClick={onClick}>Select From Stream</button>;
-    });
-    console.log("called set button render");
-  }, []);
+    useEffect(() => {
+      setButtonRender(() => {
+        return <button onClick={onClick}>Select From Stream</button>;
+      });
+      console.log("called set button render");
+    }, []);
 
-  return null;
-};
+    return null;
+  }
+);
 
 export const StreamSelect = ({ targetImage, setButtonRender, ...props }) => {
   let displayVal = null;

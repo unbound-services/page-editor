@@ -1,6 +1,5 @@
 import InputSlot from "../input-slot";
-import React from "react";
-
+import * as React from "preact";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
 
@@ -41,7 +40,7 @@ class RichTextInput extends InputSlot {
             onChange={onChange}
             value={state[sectionName] ? state[sectionName]["quillState"] : ""}
             theme={useTheme}
-            style="height: 400px"
+            style={{ height: 400 }}
           />
         </React.Fragment>
       );

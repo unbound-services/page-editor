@@ -1,4 +1,4 @@
-import React from "react";
+import * as React from "preact";
 import renderToString from "preact-render-to-string";
 
 import Drawer from "../common/drawer/common-drawer";
@@ -8,6 +8,9 @@ import EditorContext, {
   stateDeeper,
 } from "../content-editor/content-editor-editor-context";
 import { ContentSection } from "../input-slot/content-section/input-slot-content-section";
+import { StreamContextType } from "../stream/stream-context";
+import { StreamDrawer } from "../stream/drawer/stream-drawer";
+import { StreamDriver } from "../stream/stream-driver";
 
 // page editor prop types
 export type PageEditorStateType = {
@@ -23,11 +26,12 @@ export type PageEditorOnsaveFunction = (data: any) => void;
 
 export type PageEditorPropType = {
   componentList: any;
+  streams: StreamDriver;
   plugins: any;
   onSave: PageEditorOnsaveFunction | boolean;
   pageData: any;
   pageMeta: any;
-  renderFlags: {individualComponents?: boolean;}
+  renderFlags: { individualComponents?: boolean };
 };
 
 export class PageEditor extends React.Component<
@@ -72,21 +76,22 @@ export class PageEditor extends React.Component<
     console.log("state", this.state);
     const demoState = this.state.editorState;
     const { preview } = this.state;
+    const streams = this.props.streams;
 
     const baseSetState = (obj) => {
       this.setState({ ...obj, changes: true });
     };
 
     const togglePageDrawer = () => {
-      this.setState( {pageEditorDrawerOpen: !this.state.pageEditorDrawerOpen});
-  }
+      this.setState({ pageEditorDrawerOpen: !this.state.pageEditorDrawerOpen });
+    };
 
     const updatePageMetaState = (key, value) => {
       this.setState({
         pageMetaState: {
-            ...this.state.pageMetaState,
-            [key]: value
-        }
+          ...this.state.pageMetaState,
+          [key]: value,
+        },
       });
     };
 
@@ -117,7 +122,8 @@ export class PageEditor extends React.Component<
                 setButtonRender={(val) => {}}>
                 {data.children}
               </Comp>
-          )};
+            ),
+          };
         });
       }
 
@@ -130,6 +136,7 @@ export class PageEditor extends React.Component<
             plugins: this.props.plugins,
             editing: false,
             previewing: true,
+            streams,
           }}>
           <ContentSection isRoot />
         </EditorContext.Provider>
@@ -149,9 +156,15 @@ export class PageEditor extends React.Component<
       }
     };
 
+    // get the streamdriver component
+    const StreamDriverComponent = streams.getComponent();
+    console.log("streamDriverComponent", StreamDriverComponent);
+
     return (
       <div>
-        <Drawer open={this.state.pageEditorDrawerOpen} onClose={togglePageDrawer}>
+        <Drawer
+          open={this.state.pageEditorDrawerOpen}
+          onClose={togglePageDrawer}>
           <PageMeta
             pageMeta={this.state.pageMetaState}
             updatePageMetaState={updatePageMetaState}
@@ -173,11 +186,9 @@ export class PageEditor extends React.Component<
             data-testid="save-page-button">
             Save Changes {this.state.changes ? "*" : ""}{" "}
           </button>
-          <button
-            className='page-editor__button'
-            onClick={togglePageDrawer}>
-              More Page Options
-            </button>
+          <button className="page-editor__button" onClick={togglePageDrawer}>
+            More Page Options
+          </button>
         </div>
 
         <EditorContext.Provider
@@ -188,8 +199,10 @@ export class PageEditor extends React.Component<
             plugins: this.props.plugins,
             editing: !preview,
             previewing: preview,
+            streams: streams,
           }}>
           <ContentSection isRoot />
+          <StreamDriverComponent />
         </EditorContext.Provider>
       </div>
     );

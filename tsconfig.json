@@ -1,20 +1,23 @@
 {
     "compilerOptions": {
       "outDir": "./pkg_build/",
-      "declarationDir": "./pkg_build/",
+      "skipLibCheck": true,
       "noImplicitAny": false,
-      "module": "es6",
-    //   "lib": ["es2015", "es2016", "es2017", "dom"],
-
-      "target": "es5",
-      "jsx": "react",
-      "sourceMap":true,
+      "module": "ESNext",
+      // "lib": ["es2015", "es2016", "es2017", "dom"],
+      // "lib": [  "es6"],
+      "target": "es6",
+      "jsx": "react-jsx",
+      "jsxImportSource": "preact",
+      "inlineSourceMap": true,
+      // "sourceMap":true,
       "allowJs": true,
       "declaration": true,
       "moduleResolution": "node",
       "allowSyntheticDefaultImports":true,
+      "esModuleInterop": true,
 
-        // "jsxImportSource": "preact",
+        "baseUrl":"./",
         "paths": {
             "*": ["./node_modules/typings/*"],
             "react": ["./node_modules/preact/compat/"],
@@ -22,6 +25,7 @@
           }
 
     },
-    "include": ["./src/**/*",
-        "./testing-api-server/**/*"]
+    "files": [
+      "./src/lib/index.ts"
+  ],
   }

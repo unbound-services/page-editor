@@ -1,4 +1,4 @@
-import React from "react";
+import { Fragment } from "preact";
 import "./common-drawer.scss";
 
 export const Drawer = (props) => {
@@ -19,12 +19,12 @@ export const Drawer = (props) => {
   }
 
   return (
-    <React.Fragment>
+    <Fragment>
       {screen}
       <div className={`${drawerInnerClass} common-drawer-inner ${drawerClass}`}>
         {contents}
       </div>
-    </React.Fragment>
+    </Fragment>
   );
 };
 

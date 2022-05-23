@@ -1,11 +1,9 @@
-import { render } from "react-dom";
-import React from "react";
+import { render } from "preact";
 import { PageEditor } from "./page-editor";
 import componentList from "./page-editor-components";
 import { StreamBase } from "../stream/stream-base";
 import { StreamDriver } from "../stream/stream-driver";
-import { StreamContext } from "../stream/stream-context";
-import { StreamDrawer } from "../stream/drawer/stream-drawer";
+
 import { StreamDrawerDriver } from "../stream/drawer/stream-drawer-driver";
 
 export default class PageEditorApp {
@@ -27,9 +25,9 @@ export default class PageEditorApp {
     onSave: (data: object) => boolean | void,
     pageData = { children: [] },
     pageMeta = { name: "", slug: "", status: "draft" },
-    newComponentList = false,
+    newComponentList: any = false,
     plugins = {},
-    renderFlags = {individualComponents: false}
+    renderFlags = { individualComponents: false }
   ) {
     if (newComponentList) {
       this.components = newComponentList;
@@ -41,22 +39,17 @@ export default class PageEditorApp {
     // if there isn't a streamdriver then create it
     this._streamDriver = this.createStreamDriver();
 
-    // create the streamdrivers component
-    const StreamDriverComponent = this._streamDriver.getComponent();
-
     const app = (
       <div class="page-editor" data-testid="page-editor">
-        <StreamContext.Provider value={this.streamDriver}>
-          <PageEditor
-            componentList={this.components}
-            plugins={this.plugins}
-            pageData={pageData}
-            pageMeta={pageMeta}
-            onSave={onSave}
-            renderFlags={renderFlags}
-          />
-          <StreamDriverComponent />
-        </StreamContext.Provider>
+        <PageEditor
+          componentList={this.components}
+          plugins={this.plugins}
+          pageData={pageData}
+          pageMeta={pageMeta}
+          onSave={onSave}
+          renderFlags={renderFlags}
+          streams={this._streamDriver}
+        />
       </div>
     );
     render(app, domObject);

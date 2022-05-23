@@ -1,5 +1,6 @@
-import React from "react";
-
+import { createContext } from "preact/compat";
+import { StreamContextType } from "../stream/stream-context";
+import { StreamDriver } from "../stream/stream-driver";
 // editor context is used to pass editor data all the way down
 export type EditorContextType = {
   setState: (newState) => void;
@@ -8,8 +9,9 @@ export type EditorContextType = {
   plugins: any;
   editing: boolean;
   previewing: boolean;
+  streams: StreamContextType;
 };
-const EditorContext = React.createContext<EditorContextType>(null);
+export const EditorContext = createContext<EditorContextType>(null);
 
 // we do this through functions so that each level of rendering has its own "scope"
 export const stateDeeper = (name, state, setState) => (newStateObj) => {
