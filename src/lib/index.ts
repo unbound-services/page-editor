@@ -19,7 +19,7 @@ import { FakeStream } from "./modules/stream/fake/stream-fake";
 import { StreamContextType } from "./modules/stream/stream-context";
 import { ProductPageHeroImage } from "./components";
 import { useEditorContext } from "./modules/input-slot/input-slot-hooks";
-import * as preact from "preact";
+import preact from "preact";
 import {
   EditorContext,
   EditorContextType,

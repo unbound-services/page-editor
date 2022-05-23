@@ -1,4 +1,4 @@
-import { Fragment } from "preact/jsx-runtime";
+import { Fragment } from "preact";
 import { InputSlot } from "../input-slot";
 
 export class EditorValue extends InputSlot {
