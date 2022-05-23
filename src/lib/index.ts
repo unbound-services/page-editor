@@ -27,7 +27,7 @@ import {
 
 // preact 1
 window["preact1"] = preact;
-console.log("preact1", preact);
+console.log("preact1 new", preact);
 export {
   PageEditor,
   componentList,
