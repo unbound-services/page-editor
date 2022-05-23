@@ -12,6 +12,7 @@ export type EditorContextType = {
   previewing: boolean;
   streams: StreamContextType;
   renderFlags: PageEditorRenderFlags;
+  contextualPageData?: any;
 };
 export const EditorContext = createContext<EditorContextType>(null);
 

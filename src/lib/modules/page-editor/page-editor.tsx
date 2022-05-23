@@ -32,6 +32,7 @@ export type PageEditorPropType = {
   pageMeta: any;
   renderFlags: PageEditorRenderFlags;
   exportState: (setState: Function) => void;
+  contextualPageData: any;
 };
 
 export class PageEditor extends React.Component<
@@ -205,6 +206,7 @@ export class PageEditor extends React.Component<
             previewing: preview,
             renderFlags,
             streams: streams,
+            contextualPageData: this.props.contextualPageData,
           }}>
           <ContentSection isRoot />
           <StreamDriverComponent />
