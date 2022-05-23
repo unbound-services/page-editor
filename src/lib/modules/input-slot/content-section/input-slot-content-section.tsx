@@ -46,7 +46,13 @@ export class ContentSection extends InputSlot<
     const sortedComponentList = sortComponentList(context.componentList);
 
     // grab the editor state from context
-    const { editorState = { children: [] }, editing, previewing } = context;
+    const {
+      editorState = { children: [] },
+      editing,
+      previewing,
+      renderFlags,
+    } = context;
+
     let componentData = editorState.children;
     let currentChildren = editorState.children ? editorState.children : [];
     let childs = null;
@@ -101,27 +107,40 @@ export class ContentSection extends InputSlot<
             ? context.componentList[item.comp].displayName
             : item.comp;
           optionButtons = [];
-          if (key > 0)
+
+          // ===========================
+          // up and down buttons =======
+          // ===========================
+          if (!renderFlags.noRearrange) {
+            if (key > 0)
+              optionButtons.push(
+                <button key={`${item.comp}-up-button`} onClick={moveUp(key)}>
+                  Move Up
+                </button>
+              );
+            if (key < currentChildren.length - 1)
+              optionButtons.push(
+                <button
+                  key={`${item.comp}-down-button`}
+                  onClick={moveDown(key)}>
+                  Move Down
+                </button>
+              );
+          }
+
+          // =========================
+          // delete button
+          // ==========================
+          if (!renderFlags.noAdd) {
             optionButtons.push(
-              <button key={`${item.comp}-up-button`} onClick={moveUp(key)}>
-                Move Up
+              <button
+                className={"content-section-controls__delete-button"}
+                key={`${item.comp}-delete-button`}
+                onClick={removeComponent(key)}>
+                X
               </button>
             );
-          if (key < currentChildren.length - 1)
-            optionButtons.push(
-              <button key={`${item.comp}-down-button`} onClick={moveDown(key)}>
-                Move Down
-              </button>
-            );
-          console.log("COMP", item.comp);
-          optionButtons.push(
-            <button
-              className={"content-section-controls__delete-button"}
-              key={`${item.comp}-delete-button`}
-              onClick={removeComponent(key)}>
-              X
-            </button>
-          );
+          }
         }
 
         return (
@@ -154,7 +173,7 @@ export class ContentSection extends InputSlot<
 
     // component for adding a new component
     let addButton = null;
-    if (context.editing) {
+    if (context.editing && !renderFlags.noAdd) {
       addButton = (
         <div className="add-component">
           <button

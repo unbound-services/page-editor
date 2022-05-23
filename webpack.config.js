@@ -4,20 +4,25 @@ const webpack = require("webpack");
 
 const getConfig = (env, argv) => {
   // different settings for dev
+  // at this point they should probably just be different configs
+  // but this was useful for getting them building correctly
   let defFile = "index.d.ts";
   let outputPath = "./pkg_build";
+  let jsFileExtension = "mjs";
   let externals = {
     preact: "preact",
   };
   if (argv.mode === "development") {
     outputPath = "./dist";
+    jsFileExtension = "js";
+    externals = {}; // compile preact into the dev bundle
   }
 
   const config = {
-    entry: "./src/app.ts",
+    entry: "./src/app.tsx",
     output: {
       path: path.resolve(__dirname, outputPath),
-      filename: "index.mjs",
+      filename: "index." + jsFileExtension,
       library: {
         type: "module",
       },

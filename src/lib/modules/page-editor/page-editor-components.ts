@@ -1,3 +1,4 @@
+import { JSX } from "preact/compat";
 import Columns from "../components/columns/columns";
 import Heading from "../components/heading/heading";
 import Paragraph from "../components/paragraph/paragraph";
@@ -21,14 +22,22 @@ import { StreamSelect } from "../stream/select/stream-select";
 //         </div>
 // }
 
-const componentList = {
+export type PageEditorComponentType = (props: any) => JSX.Element;
+
+export type ComponentListType = {
+  [componentKey: string]: {
+    displayName: string;
+    comp: PageEditorComponentType;
+  };
+};
+
+const componentList: ComponentListType = {
   // "firstDemo": { displayName: "First Demo", comp: someComponent },
   // "secondDemo": { displayName: "SecondDemo", comp: demoComponent },
   "column-with-text": { displayName: "Columns With Text", comp: Columns },
   heading: { displayName: "Heading", comp: Heading },
   paragraph: { displayName: "Paragraph", comp: Paragraph },
   spacer: { displayName: "Spacer", comp: Spacer },
-  streamSelect: { displayName: "Stream Select", comp: StreamSelect },
 };
 
 export default componentList;

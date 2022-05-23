@@ -1,4 +1,5 @@
 import { createContext } from "preact/compat";
+import { PageEditorRenderFlags } from "../page-editor/page-editor-app";
 import { StreamContextType } from "../stream/stream-context";
 import { StreamDriver } from "../stream/stream-driver";
 // editor context is used to pass editor data all the way down
@@ -10,6 +11,7 @@ export type EditorContextType = {
   editing: boolean;
   previewing: boolean;
   streams: StreamContextType;
+  renderFlags: PageEditorRenderFlags;
 };
 export const EditorContext = createContext<EditorContextType>(null);
 

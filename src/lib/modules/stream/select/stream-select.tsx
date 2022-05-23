@@ -1,6 +1,9 @@
 import InputSlot from "../../input-slot/input-slot";
 
-import { useEditorContext } from "../../input-slot/input-slot-hooks";
+import {
+  injectEditorContext,
+  useEditorContext,
+} from "../../input-slot/input-slot-hooks";
 import { useEffect, useState } from "preact/hooks";
 import { Fragment } from "preact";
 
@@ -15,8 +18,7 @@ export interface StreamInputProps {
   children: any;
 }
 
-console.log("useEditorContext", useEditorContext);
-const StreamComp = useEditorContext(({ onChange, value, editorContext }) => {
+const StreamComp = injectEditorContext(({ onChange, value, editorContext }) => {
   const stream = editorContext.streams;
   const [currentVal, setCurrentVal] = useState(null);
 
@@ -33,38 +35,43 @@ const StreamComp = useEditorContext(({ onChange, value, editorContext }) => {
   );
 });
 
-export const StreamButton = useEditorContext(
-  ({ sectionName, setButtonRender, editorContext }) => {
-    const streams = editorContext.streams;
+export const StreamSelectButton = ({
+  streamName,
+  sectionName,
+  setButtonRender,
+}) => {
+  const editorContext = useEditorContext(sectionName);
+  const streams = editorContext.streams;
 
-    const onClick = () => {
-      streams.getStream("test-stream", (val) => {
-        editorContext.setState(val[0].src);
-      });
-    };
+  const onClick = () => {
+    streams.getStream(streamName, (val) => {
+      editorContext.setState(val[0]);
+    });
+  };
 
-    useEffect(() => {
-      setButtonRender(() => {
-        return <button onClick={onClick}>Select From Stream</button>;
-      });
-      console.log("called set button render");
-    }, []);
+  // useEffect(() => {
+  //   setButtonRender(() => {
+  //     return <button onClick={onClick}>Select From Stream</button>;
+  //   });
+  //   console.log("called set button render");
+  // }, []);
 
-    return null;
-  }
-);
+  return <button onClick={onClick}>Select From Stream</button>;
+};
 
+// stream select is a demo component
 export const StreamSelect = ({ targetImage, setButtonRender, ...props }) => {
   let displayVal = null;
   if (targetImage) {
-    displayVal = <img src={targetImage} />;
+    displayVal = <img src={targetImage.src} />;
   } else {
     displayVal = <span style={{ padding: 20 }}>Image Placeholder</span>;
   }
   return (
     <Fragment>
-      <StreamButton
+      <StreamSelectButton
         sectionName="targetImage"
+        streamName="test-stream"
         setButtonRender={setButtonRender}
         {...props}
       />

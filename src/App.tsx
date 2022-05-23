@@ -5,6 +5,7 @@ import {
   StreamGroup,
   HTTPStreamFields,
   FakeStream,
+  StringInput,
 } from "./lib/index";
 
 import { render } from "preact";
@@ -15,19 +16,32 @@ const onSave = (data) => {
   console.log("data in onSave", data);
 };
 
-console.log("uh");
+const TestComponent = ({ text = "test!" }) => {
+  return <StringInput sectionName="text" />;
+};
 
-// const TestComponent = ({text="test!"}) => {
-//     return <StringInput sectionName="text" />
-// }
-
-// const testList = {
-//     "test-component": {displayName: "Test Component" , comp: TestComponent}
-// }
+const testList = {
+  "test-component": { displayName: "Test Component", comp: TestComponent },
+};
 
 // NewEditor.addComponents(TestComponent, "test-component", "Test Component");
 
-editor.initializeApp(document.body, onSave, undefined, undefined, null, {});
+editor.initializeApp(
+  document.body,
+  onSave,
+  undefined,
+  undefined,
+  null,
+  {},
+  { noAdd: false, noRearrange: false }
+);
+
+editor.addComponents(TestComponent, "test-componenta", "Test Component");
+editor.insertComponent("test-componenta");
+
+// =================================
+//            STREAMS
+// =================================
 
 type TableModel = {
   id: string;

@@ -1,14 +1,24 @@
 import { render } from "preact";
 import { PageEditor } from "./page-editor";
-import componentList from "./page-editor-components";
+import componentList, {
+  PageEditorComponentType,
+} from "./page-editor-components";
 import { StreamBase } from "../stream/stream-base";
 import { StreamDriver } from "../stream/stream-driver";
 
 import { StreamDrawerDriver } from "../stream/drawer/stream-drawer-driver";
+import { useState } from "preact/hooks";
+
+export type PageEditorRenderFlags = {
+  individualComponents?: boolean;
+  noRearrange?: boolean;
+  noAdd?: boolean;
+};
 
 export default class PageEditorApp {
   protected _streamDriver: StreamDriver;
-
+  protected _setForceRefreshVal: Function;
+  protected _externalSetState: Function;
   public get streamDriver() {
     return this._streamDriver;
   }
@@ -27,7 +37,11 @@ export default class PageEditorApp {
     pageMeta = { name: "", slug: "", status: "draft" },
     newComponentList: any = false,
     plugins = {},
-    renderFlags = { individualComponents: false }
+    renderFlags: PageEditorRenderFlags = {
+      individualComponents: false,
+      noRearrange: false,
+      noAdd: false,
+    }
   ) {
     if (newComponentList) {
       this.components = newComponentList;
@@ -39,19 +53,29 @@ export default class PageEditorApp {
     // if there isn't a streamdriver then create it
     this._streamDriver = this.createStreamDriver();
 
-    const app = (
-      <div class="page-editor" data-testid="page-editor">
-        <PageEditor
-          componentList={this.components}
-          plugins={this.plugins}
-          pageData={pageData}
-          pageMeta={pageMeta}
-          onSave={onSave}
-          renderFlags={renderFlags}
-          streams={this._streamDriver}
-        />
-      </div>
-    );
+    const AppComp = (props) => {
+      const [refreshCount, setRefreshCount] = useState(1);
+      this._setForceRefreshVal = setRefreshCount; //for forcing refreshes
+
+      return (
+        <div class="page-editor" data-testid="page-editor">
+          <PageEditor
+            componentList={this.components}
+            plugins={this.plugins}
+            pageData={pageData} //these will only matter during initialization
+            pageMeta={pageMeta} //these will only matter during initialization
+            onSave={onSave}
+            renderFlags={renderFlags}
+            streams={this._streamDriver}
+            exportState={(setState) => {
+              this._externalSetState = setState;
+            }}
+          />
+        </div>
+      );
+    };
+
+    const app = <AppComp />;
     render(app, domObject);
   }
 
@@ -60,9 +84,9 @@ export default class PageEditorApp {
   }
 
   addComponents(
-    components,
-    compSlug: boolean | any = false,
-    compDisplayName = false
+    components: PageEditorComponentType | PageEditorComponentType[],
+    compSlug: string = null,
+    compDisplayName: string = null
   ) {
     if (components[0] && "comp" in components) {
       this.components = components;
@@ -80,11 +104,40 @@ export default class PageEditorApp {
         displayName: compDisplayName,
         comp: components,
       };
+      //refresh the component list
+      this.refreshComponentListInEditor();
     }
+  }
+
+  insertComponent(componentSlug: string, props = {}) {
+    if (!this._externalSetState) return null;
+
+    this._externalSetState((state, other) => {
+      console.log("newEditorState", state, other);
+      let neweditorState = {
+        ...state,
+        editorState: {
+          ...state.editorState,
+          children: [...state.editorState.children],
+        },
+      };
+      neweditorState.editorState.children.push({
+        comp: componentSlug,
+        props: { ...props },
+      });
+
+      return neweditorState;
+    });
   }
 
   getDefaultComponents() {
     return componentList;
+  }
+
+  refreshComponentListInEditor() {
+    if (this._setForceRefreshVal) {
+      this._setForceRefreshVal((val) => val + 1);
+    }
   }
 }
 

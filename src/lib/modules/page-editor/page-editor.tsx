@@ -9,6 +9,7 @@ import EditorContext, {
 } from "../content-editor/content-editor-editor-context";
 import { ContentSection } from "../input-slot/content-section/input-slot-content-section";
 import { StreamDriver } from "../stream/stream-driver";
+import { PageEditorRenderFlags } from "./page-editor-app";
 
 // page editor prop types
 export type PageEditorStateType = {
@@ -29,7 +30,8 @@ export type PageEditorPropType = {
   onSave: PageEditorOnsaveFunction | boolean;
   pageData: any;
   pageMeta: any;
-  renderFlags: { individualComponents?: boolean };
+  renderFlags: PageEditorRenderFlags;
+  exportState: (setState: Function) => void;
 };
 
 export class PageEditor extends React.Component<
@@ -74,7 +76,9 @@ export class PageEditor extends React.Component<
     console.log("state", this.state);
     const demoState = this.state.editorState;
     const { preview } = this.state;
-    const streams = this.props.streams;
+    const { streams, renderFlags, exportState } = this.props;
+
+    exportState(this.setState.bind(this));
 
     const baseSetState = (obj) => {
       this.setState({ ...obj, changes: true });
@@ -99,10 +103,8 @@ export class PageEditor extends React.Component<
         return;
       }
 
-      console.log("demoState", demoState);
-
       let componentsMarkup = [];
-      if (this.props.renderFlags.individualComponents) {
+      if (renderFlags.individualComponents) {
         componentsMarkup = demoState.children.map((data) => {
           const compData = this.props.componentList[data.comp];
           if (!compData) return "";
@@ -134,6 +136,7 @@ export class PageEditor extends React.Component<
             plugins: this.props.plugins,
             editing: false,
             previewing: true,
+            renderFlags,
             streams,
           }}>
           <ContentSection isRoot />
@@ -156,7 +159,7 @@ export class PageEditor extends React.Component<
 
     // get the streamdriver component
     const StreamDriverComponent = streams.getComponent();
-    console.log("streamDriverComponent", StreamDriverComponent);
+    console.log("state", this.state);
 
     return (
       <div>
@@ -197,6 +200,7 @@ export class PageEditor extends React.Component<
             plugins: this.props.plugins,
             editing: !preview,
             previewing: preview,
+            renderFlags,
             streams: streams,
           }}>
           <ContentSection isRoot />

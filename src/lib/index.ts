@@ -23,6 +23,7 @@ import {
   EditorContext,
   EditorContextType,
 } from "./modules/content-editor/content-editor-editor-context";
+import { StreamSelectButton } from "./modules/stream/select/stream-select";
 
 // preact 1
 window["preact1"] = preact;
@@ -36,6 +37,7 @@ export {
   StreamGroup,
   NumberSelect,
   RichText,
+  StreamSelectButton,
   SelectInput,
   SlotSection,
   EditorContext,

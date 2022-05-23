@@ -12,7 +12,7 @@
         min-height:30px;
 
         &:hover{
-            border:2px #3a3a3aff solid;
+            // border:2px #3a3a3aaa solid;
             & > .content-section-controls__inner{
                 // background:red;
                 opacity:100%;
@@ -22,17 +22,16 @@
     }
 
 
-
     &__inner{
         position:absolute;
         height:auto;
         top:0;
-        left:0;
+        right:0;
         padding:4px 8px;
         background:#7e7e7e;
         z-index: 90;
         transition: opacity 0.25s;
-        opacity:15%;
+        opacity:0%;
 
         button {
             margin-right: 10px;
@@ -63,10 +62,6 @@
         background:#7e7e7e;
         z-index: 100;
     }
-
-
-
-
 
     &__component-type{
         color: white;
