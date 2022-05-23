@@ -5,8 +5,6 @@ const app = express();
 
 // send back kitten images
 app.get("/api/images/", (request, response) => {
-  console.log("welp", request);
-
   return response.json({
     images: [
       { id: 1, src: "images/kitten1.jpg", name: "Kitten 1, Ralph" },
@@ -17,8 +15,6 @@ app.get("/api/images/", (request, response) => {
 });
 
 app.get("/api/tables/", (request, response) => {
-  console.log("welp", request);
-
   return response.json({
     tables: [
       {
@@ -45,4 +41,4 @@ app.get("/", function (req, res) {
   res.sendFile(path.join(__dirname, "../index.html"));
 });
 
-const server = app.listen(8000, console.log);
+const server = app.listen(8001, console.log);

@@ -159,7 +159,10 @@ export class PageEditor extends React.Component<
 
     // get the streamdriver component
     const StreamDriverComponent = streams.getComponent();
-    console.log("state", this.state);
+    let optionBarClasses = "";
+    if (renderFlags.inlineOptionBar) {
+      optionBarClasses += "page-editor__menu--inline";
+    }
 
     return (
       <div>
@@ -171,7 +174,7 @@ export class PageEditor extends React.Component<
             updatePageMetaState={updatePageMetaState}
           />
         </Drawer>
-        <div className="page-editor__menu">
+        <div className={"page-editor__menu " + optionBarClasses}>
           <button
             className="page-editor__button"
             onClick={(e) => {

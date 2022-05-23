@@ -33,7 +33,7 @@ editor.initializeApp(
   undefined,
   null,
   {},
-  { noAdd: false, noRearrange: false }
+  { noAdd: false, noRearrange: false, inlineOptionBar: true }
 );
 
 editor.addComponents(TestComponent, "test-componenta", "Test Component");

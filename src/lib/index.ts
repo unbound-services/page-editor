@@ -1,3 +1,4 @@
+import "../sass/app.scss";
 import { PageEditorApp } from "./modules/page-editor/page-editor-app";
 import { PageEditor } from "./modules/page-editor/page-editor";
 import componentList from "./modules/page-editor/page-editor-components";
@@ -29,8 +30,8 @@ import {
 import { StreamSelectButton } from "./modules/stream/select/stream-select";
 
 // preact 1
-window["preact1"] = preact;
-console.log("preact1 new", preact);
+// window["preact1"] = preact;
+// console.log("preact1 new", preact);
 export {
   PageEditor,
   componentList,

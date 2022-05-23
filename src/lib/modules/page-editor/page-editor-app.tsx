@@ -13,6 +13,7 @@ export type PageEditorRenderFlags = {
   individualComponents?: boolean;
   noRearrange?: boolean;
   noAdd?: boolean;
+  inlineOptionBar?: boolean;
 };
 
 export default class PageEditorApp {
