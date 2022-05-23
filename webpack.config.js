@@ -6,6 +6,9 @@ const getConfig = (env, argv) => {
   // different settings for dev
   let defFile = "index.d.ts";
   let outputPath = "pkg_build";
+  let externals = {
+    preact: "preact",
+  };
   if (argv.mode === "development") {
     outputPath = "dist";
   }
@@ -58,6 +61,7 @@ const getConfig = (env, argv) => {
         Buffer: ["buffer", "Buffer"],
       }),
     ],
+    externals,
 
     target: "web",
   };
