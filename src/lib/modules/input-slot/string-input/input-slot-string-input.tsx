@@ -1,4 +1,4 @@
-import InputSlot from "../input-slot";
+import { InputSlot } from "../input-slot";
 
 export interface StringInputProps {
   value?: any;
@@ -11,7 +11,7 @@ export interface StringInputProps {
 }
 
 export type StringInputState = {};
-class StringInput extends InputSlot<StringInputProps, StringInputState> {
+export class StringInput extends InputSlot<StringInputProps, StringInputState> {
   editorRender() {
     const {
       value = "yay",
@@ -19,7 +19,7 @@ class StringInput extends InputSlot<StringInputProps, StringInputState> {
       label,
       tagName = "div",
       hidden = false,
-      inputClass = "",
+      inputClass = {},
       children = null,
       ...otherProps
     } = this.props;

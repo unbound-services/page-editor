@@ -8,7 +8,7 @@ import NumberSelect from "./modules/input-slot/number-select-input/input-slot-nu
 import RichText from "./modules/input-slot/rich-text-input/input-slot-rich-text-input";
 import SelectInput from "./modules/input-slot/select-input/input-slot-select-input";
 import SlotSection from "./modules/input-slot/slot-section/input-slot-slot-section";
-import StringInput from "./modules/input-slot/string-input/input-slot-string-input";
+import { StringInput } from "./modules/input-slot/string-input/input-slot-string-input";
 import InputSlot from "./modules/input-slot/input-slot";
 import { StreamBase } from "./modules/stream/stream-base";
 import { HTTPStream } from "./modules/stream/http/stream-http";
@@ -17,16 +17,14 @@ import { StreamDriver } from "./modules/stream/stream-driver";
 import { StreamDrawerDriver } from "./modules/stream/drawer/stream-drawer-driver";
 import { StreamGroup } from "./modules/stream/group/stream-group";
 import { FakeStream } from "./modules/stream/fake/stream-fake";
-import { StreamContextType } from "./modules/stream/stream-context";
+import type { StreamContextType } from "./modules/stream/stream-context";
 import {
   injectEditorContext,
   useEditorContext,
 } from "./modules/input-slot/input-slot-hooks";
 import * as preact from "preact";
-import {
-  EditorContext,
-  EditorContextType,
-} from "./modules/content-editor/content-editor-editor-context";
+import { EditorContext } from "./modules/content-editor/content-editor-editor-context";
+import type { EditorContextType } from "./modules/content-editor/content-editor-editor-context";
 import { StreamSelectButton } from "./modules/stream/select/stream-select";
 
 // preact 1

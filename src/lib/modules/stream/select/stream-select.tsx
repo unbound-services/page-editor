@@ -92,7 +92,7 @@ export class StreamSelectOld extends InputSlot<
       label,
       tagName = "div",
       hidden = false,
-      inputClass = "",
+      inputClass = {},
       children = null,
       ...otherProps
     } = this.props;

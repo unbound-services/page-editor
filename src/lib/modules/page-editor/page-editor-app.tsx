@@ -16,6 +16,13 @@ export type PageEditorRenderFlags = {
   inlineOptionBar?: boolean;
 };
 
+export const defaultRendererFlags: Readonly<PageEditorRenderFlags> = {
+  individualComponents: false,
+  noRearrange: false,
+  noAdd: false,
+  inlineOptionBar: false,
+};
+
 export default class PageEditorApp {
   protected _streamDriver: StreamDriver;
   protected _setForceRefreshVal: Function;
@@ -33,7 +40,7 @@ export default class PageEditorApp {
 
   initializeApp(
     domObject,
-    onSave: (data: object) => boolean | void,
+    onSave: (data: object) => boolean | void = null,
     pageData = { children: [] },
     pageMeta = { name: "", slug: "", status: "draft" },
     newComponentList: any = false,
@@ -43,7 +50,7 @@ export default class PageEditorApp {
       noRearrange: false,
       noAdd: false,
     },
-    contextualPageData
+    contextualPageData = null
   ) {
     if (newComponentList) {
       this.components = newComponentList;
@@ -91,7 +98,10 @@ export default class PageEditorApp {
     compSlug: string = null,
     compDisplayName: string = null
   ) {
-    if (components[0] && "comp" in components) {
+    if (
+      Array.isArray(components) &&
+      "comp" in (components as PageEditorComponentType[])
+    ) {
       this.components = components;
       return;
     }
@@ -116,7 +126,6 @@ export default class PageEditorApp {
     if (!this._externalSetState) return null;
 
     this._externalSetState((state, other) => {
-      console.log("newEditorState", state, other);
       let neweditorState = {
         ...state,
         editorState: {

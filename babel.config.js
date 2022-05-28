@@ -1,6 +1,7 @@
 module.exports = {
   presets: [
     "@babel/preset-env", //this was here before preact
+    // "@babel/preset-typescript",
     "@babel/preset-react", //this was here before preact
   ],
   //this is the new preact bit

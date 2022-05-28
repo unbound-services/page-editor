@@ -1,7 +1,10 @@
-const express = require("express");
-const path = require("path");
+import express, { application } from "express";
+// const express = require("express");
+import path from "path";
 
-const app = express();
+const app: application = express();
+
+let dir = __dirname;
 
 // send back kitten images
 app.get("/api/images/", (request, response) => {
@@ -31,14 +34,14 @@ app.get("/api/tables/", (request, response) => {
   });
 });
 
-app.use("/images/", express.static(path.join(__dirname, "images")));
+app.use("/images/", express.static(path.join(dir, "images")));
 
 // read static dist stuff ===========
 // this lets us skip
-app.use("/dist", express.static(path.join(__dirname, "../dist")));
+app.use("/dist", express.static(path.join(dir, "../dist")));
 
 app.get("/", function (req, res) {
-  res.sendFile(path.join(__dirname, "../index.html"));
+  res.sendFile(path.join(dir, "../index.html"));
 });
 
 const server = app.listen(8001, console.log);

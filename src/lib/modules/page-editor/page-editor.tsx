@@ -9,7 +9,7 @@ import EditorContext, {
 } from "../content-editor/content-editor-editor-context";
 import { ContentSection } from "../input-slot/content-section/input-slot-content-section";
 import { StreamDriver } from "../stream/stream-driver";
-import { PageEditorRenderFlags } from "./page-editor-app";
+import { defaultRendererFlags, PageEditorRenderFlags } from "./page-editor-app";
 
 // page editor prop types
 export type PageEditorStateType = {
@@ -24,15 +24,15 @@ export type PageEditorStateType = {
 export type PageEditorOnsaveFunction = (data: any) => void;
 
 export type PageEditorPropType = {
-  componentList: any;
-  streams: StreamDriver;
-  plugins: any;
-  onSave: PageEditorOnsaveFunction | boolean;
-  pageData: any;
-  pageMeta: any;
-  renderFlags: PageEditorRenderFlags;
-  exportState: (setState: Function) => void;
-  contextualPageData: any;
+  componentList?: any;
+  streams?: StreamDriver;
+  plugins?: any;
+  onSave?: PageEditorOnsaveFunction;
+  pageData?: any;
+  pageMeta?: any;
+  renderFlags?: PageEditorRenderFlags;
+  exportState?: (setState: Function) => void;
+  contextualPageData?: any;
 };
 
 export class PageEditor extends React.Component<
@@ -77,9 +77,21 @@ export class PageEditor extends React.Component<
     console.log("state", this.state);
     const demoState = this.state.editorState;
     const { preview } = this.state;
-    const { streams, renderFlags, exportState } = this.props;
+    const {
+      streams,
+      renderFlags: renderFlagProps = {},
+      exportState,
+    } = this.props;
 
-    exportState(this.setState.bind(this));
+    let renderFlags = defaultRendererFlags;
+    if (renderFlagProps) {
+      renderFlags = { ...renderFlags, ...renderFlagProps };
+    }
+
+    // export state will not always be passed in
+    if (exportState) {
+      exportState(this.setState.bind(this));
+    }
 
     const baseSetState = (obj) => {
       this.setState({ ...obj, changes: true });
@@ -159,7 +171,10 @@ export class PageEditor extends React.Component<
     };
 
     // get the streamdriver component
-    const StreamDriverComponent = streams.getComponent();
+    let StreamDriverComponent = null;
+    if (streams) {
+      StreamDriverComponent = streams.getComponent();
+    }
     let optionBarClasses = "";
     if (renderFlags.inlineOptionBar) {
       optionBarClasses += "page-editor__menu--inline";
