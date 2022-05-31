@@ -1,0 +1,10 @@
+// technique courtesy of mrmoje at https://stackoverflow.com/questions/9093424/placeholder-in-contenteditable-focus-event-issue
+
+.unbContentEditable{
+
+  }
+
+  .unbContentEditable:empty:not(:focus):before{
+    content:attr(data-ph);
+    opacity:50%;
+  }

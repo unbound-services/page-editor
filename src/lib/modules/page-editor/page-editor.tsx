@@ -74,7 +74,6 @@ export class PageEditor extends React.Component<
   }
 
   render() {
-    console.log("state", this.state);
     const demoState = this.state.editorState;
     const { preview } = this.state;
     const {
@@ -159,8 +158,6 @@ export class PageEditor extends React.Component<
       // submit the form
       const pageState = this.state.editorState;
       const metaState = this.state.pageMetaState;
-
-      console.log("Page State in saveData function: ", pageState);
 
       const data = { pageState, pageMarkup, metaState, componentsMarkup };
 

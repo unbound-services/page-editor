@@ -19,6 +19,7 @@
   },
   "dependencies": {
     "dts-bundle-generator": "^6.9.0",
+    "jsdom-global": "^3.0.2",
     "react-quill": "^1.3.5",
     "types-webpack-bundler": "^1.0.2",
     "web-vitals": "^1.0.1"
@@ -27,11 +28,12 @@
     "watch": "webpack watch --mode development --config webpack.config.js",
     "build": "webpack --mode production --config webpack.config.js",
     "package": "rimraf /F /Q pkg_build && babel src/lib --out-dir pkg_build --copy-files && yarn pack",
-    "bundle": "rimraf /F /Q pkg_build && webpack --mode production --config webpack.config.js --entry /src/lib/index.ts -o pkg_build",
+    "bundle": "rimraf /F /Q pkg_build && webpack --mode production --config webpack.config.js --entry /src/index.ts -o pkg_build",
     "test-api": "ts-node testing-api-server/test-api.ts",
     "test": "node --experimental-vm-modules  node_modules/jest/bin/jest.js --config jest.config.js",
     "test-bundle": "webpack --config ./webpack.config.test.js",
-    "deprecated-types": "tsc --project types.tsconfig.json --emitDeclarationOnly"
+    "deprecated-types": "tsc --project types.tsconfig.json --emitDeclarationOnly",
+    "build-server-side": "webpack --mode production --config server-side-webpack.config.js --entry ./src/server-side.tsx -o pkg_build"
   },
   "eslintConfig": {
     "extends": [
@@ -73,12 +75,14 @@
     "declaration-bundler-webpack-plugin": "^1.0.3",
     "express": "^4.18.1",
     "identity-obj-proxy": "^3.0.0",
+    "ignore-loader": "^0.1.2",
+    "ignore-styles": "^5.0.1",
     "jest": "^28.1.0",
     "jest-environment-jsdom": "^28.1.0",
     "jest-preset-preact": "^4.0.5",
     "jsdom": "^19.0.0",
     "preact": "^10.7.2",
-    "preact-render-to-string": "^5.1.19",
+    "preact-render-to-string": "^5.2.0",
     "rimraf": "^3.0.2",
     "sass": "^1.43.2",
     "sass-loader": "^12.3.0",

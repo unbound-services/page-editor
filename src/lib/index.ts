@@ -1,4 +1,3 @@
-import "../sass/app.scss";
 import { PageEditorApp } from "./modules/page-editor/page-editor-app";
 import { PageEditor } from "./modules/page-editor/page-editor";
 import componentList from "./modules/page-editor/page-editor-components";
@@ -26,7 +25,7 @@ import * as preact from "preact";
 import { EditorContext } from "./modules/content-editor/content-editor-editor-context";
 import type { EditorContextType } from "./modules/content-editor/content-editor-editor-context";
 import { StreamSelectButton } from "./modules/stream/select/stream-select";
-
+import { ContentEditableInputSlot } from "./modules/input-slot/content-editable/input-slot-content-editable";
 // preact 1
 // window["preact1"] = preact;
 // console.log("preact1 new", preact);
@@ -47,6 +46,7 @@ export {
   StringInput,
   InputSlot,
   StreamBase,
+  ContentEditableInputSlot,
   HTTPStream,
   StreamDriver,
   useEditorContext,

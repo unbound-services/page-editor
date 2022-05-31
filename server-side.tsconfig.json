@@ -1,0 +1,33 @@
+{
+    "compilerOptions": {
+
+      "skipLibCheck": true,
+      "noImplicitAny": false,
+      "module": "commonjs",
+    
+
+      "target": "es6",
+      "jsx": "react-jsx",
+      "jsxImportSource": "preact",
+      "inlineSourceMap": true,
+
+      "allowJs": true,
+
+      "moduleResolution": "node",
+      "allowSyntheticDefaultImports":true,
+      "esModuleInterop": true,
+      // "types":["@types/jest", "@types/preact"],
+      "typeRoots": ["./src/types", "node_modules/@types"],
+      "baseUrl":"./",
+      "paths": {
+        "*": ["./node_modules/typings/*"],
+        "react": ["./node_modules/preact/compat/"],
+        "react-dom": ["./node_modules/preact/compat/"],
+        "react-dom/server": ["./node_modules/preact/compat/"],
+      }
+
+    },
+    "include": ["src/**/*"],
+    "exclude": ["node_modules"],
+
+  }

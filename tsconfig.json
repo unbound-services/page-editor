@@ -1,6 +1,7 @@
 {
     "compilerOptions": {
       // "outDir": "./pkg_build/",
+      
       "skipLibCheck": true,
       "noImplicitAny": false,
       "module": "es6",
@@ -31,5 +32,10 @@
     "files": [
       "./src/lib/index.ts"
   ],
-
+  "ts-node": {
+    // these options are overrides used only by ts-node
+    "compilerOptions": {
+      "module": "commonjs"
+    }
+  },
   }

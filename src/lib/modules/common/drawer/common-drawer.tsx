@@ -1,5 +1,4 @@
 import { Fragment } from "preact";
-import "./common-drawer.scss";
 
 export const Drawer = (props) => {
   const { onClose, children, open = false, innerClass } = props;

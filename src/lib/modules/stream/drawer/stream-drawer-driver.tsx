@@ -35,7 +35,6 @@ export class StreamDrawerDriver extends StreamDriver {
   // it is important that this only be rendered once per component
   protected createStreamComponent(): void {
     this.component = () => {
-      console.log("in the component");
       const [currentStream, setCurrentStream] = useState([]);
       const [currentStreamName, setCurrentStreamName] = useState(false);
       this.setCurrentStream = setCurrentStream;

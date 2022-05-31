@@ -2,6 +2,7 @@ import { Fragment } from "preact";
 import StringInput from "../../input-slot/string-input/input-slot-string-input";
 import SelectInput from "../../input-slot/select-input/input-slot-select-input";
 import { useEffect } from "preact/hooks";
+import { ContentEditableInputSlot } from "../../input-slot/content-editable/input-slot-content-editable";
 
 const heading = (props) => {
   const {
@@ -30,17 +31,15 @@ const heading = (props) => {
     console.log("called set button render");
   }, []);
 
-  if (editing) {
-    return (
-      <div>
-        <div className="preview">
-          <TagName className={customClass}>{text}</TagName>
-        </div>
-      </div>
-    );
-  } else {
-    return <TagName className={customClass}>{text}</TagName>;
-  }
+  return (
+    <header>
+      <ContentEditableInputSlot
+        sectionName="text"
+        tagName={headingType}
+        placeholder="Heading"
+        className={customClass}></ContentEditableInputSlot>
+    </header>
+  );
 };
 
 export default heading;

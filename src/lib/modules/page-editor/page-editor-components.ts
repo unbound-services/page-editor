@@ -4,7 +4,7 @@ import Heading from "../components/heading/heading";
 import Paragraph from "../components/paragraph/paragraph";
 import Spacer from "../components/spacer/spacer";
 import { StreamSelect } from "../stream/select/stream-select";
-
+import { ContentEditableInputSlot } from "../input-slot/content-editable/input-slot-content-editable";
 // our sample component
 // const someComponent = (props) => {
 //     const { title = "", children } = props;
@@ -32,8 +32,6 @@ export type ComponentListType = {
 };
 
 const componentList: ComponentListType = {
-  // "firstDemo": { displayName: "First Demo", comp: someComponent },
-  // "secondDemo": { displayName: "SecondDemo", comp: demoComponent },
   "column-with-text": { displayName: "Columns With Text", comp: Columns },
   heading: { displayName: "Heading", comp: Heading },
   paragraph: { displayName: "Paragraph", comp: Paragraph },

@@ -7,11 +7,11 @@ export type EditorContextType = {
   setState: (newState) => void;
   editorState: any;
   componentList: any;
-  plugins: any;
+  plugins?: any;
   editing: boolean;
   previewing: boolean;
-  streams: StreamContextType;
-  renderFlags: PageEditorRenderFlags;
+  streams?: StreamContextType;
+  renderFlags?: PageEditorRenderFlags;
   contextualPageData?: any;
 };
 export const EditorContext = createContext<EditorContextType>(null);

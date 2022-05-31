@@ -13,7 +13,7 @@ const paragraph = (props) => {
         label="Custom Class"
         hidden
       />
-      <RichTextInput sectionName="text" label="Text" inputClass={customClass} />
+      <RichTextInput sectionName="text" inputClass={customClass} />
     </React.Fragment>
   );
 };

@@ -30,6 +30,7 @@ export default class PageEditorApp {
   public get streamDriver() {
     return this._streamDriver;
   }
+  protected _renderFunction = render;
 
   protected components;
   protected plugins;
@@ -86,7 +87,7 @@ export default class PageEditorApp {
     };
 
     const app = <AppComp />;
-    render(app, domObject);
+    this._renderFunction(app, domObject);
   }
 
   createStreamDriver(): StreamDriver {
