@@ -1,4 +1,5 @@
 import "./sass/app.scss";
+import "./lib/modules/common/drawer/common-drawer.scss";
 import {
   HTTPStream,
   PageEditorApp,
@@ -6,9 +7,12 @@ import {
   HTTPStreamFields,
   FakeStream,
   StringInput,
+  StreamSelectButton,
+  SelectInput,
 } from "./lib/index";
 
 import { render } from "preact";
+import { useState } from "preact/hooks";
 
 let editor = new PageEditorApp();
 
@@ -16,15 +20,31 @@ const onSave = (data) => {
   console.log("data in onSave", data);
 };
 
-const TestComponent = ({ text = "test!" }) => {
-  return <StringInput sectionName="text" />;
-};
+const TestTableComponent = ({
+  table = null,
+  streamName = "table-stream",
+}: {
+  table: TableModel | null;
+  streamName: string;
+}) => {
+  let imageTag: any = null;
+  if (table?.img) {
+    imageTag = <img src={table.img.src} />;
+  }
 
-const testList = {
-  "test-component": { displayName: "Test Component", comp: TestComponent },
-};
+  return (
+    <div>
+      {imageTag}
 
-// NewEditor.addComponents(TestComponent, "test-component", "Test Component");
+      <StreamSelectButton
+        streamName={"table-stream"}
+        sectionName="table"
+        label="Select Table"
+        selectMax={5}
+      />
+    </div>
+  );
+};
 
 editor.initializeApp(
   document.body,
@@ -36,7 +56,7 @@ editor.initializeApp(
   { noAdd: false, noRearrange: false, inlineOptionBar: true }
 );
 
-editor.addComponents(TestComponent, "test-componenta", "Test Component");
+editor.addComponents(TestTableComponent, "test-componenta", "Test Component");
 editor.insertComponent("test-componenta");
 
 // =================================
@@ -49,6 +69,7 @@ type TableModel = {
     src: string;
     name: string;
   };
+  name: string;
 };
 
 // define api outputz
@@ -65,7 +86,7 @@ interface ImageStreamFormat {
 
 // define processing functions/ streams
 const catStream = new HTTPStream<HTTPStreamFields, ImageStreamFormat>(
-  "http://localhost:8000/api/images",
+  "/api/images",
   (data) => {
     const images = data.images as ImageStreamFormat[];
 
@@ -77,9 +98,8 @@ const tableStream = new HTTPStream<
   HTTPStreamFields,
   TableModel,
   TableStreamFormat
->("http://localhost:8000/api/tables", (data) => {
+>("/api/tables", (data) => {
   const tables = data.tables;
-
   return data.tables;
 });
 
@@ -87,7 +107,7 @@ const tableImageStream = new HTTPStream<
   HTTPStreamFields,
   ImageStreamFormat,
   TableStreamFormat
->("http://localhost:8000/api/tables", (data) => {
+>("/api/tables", (data) => {
   const tables = data.tables;
 
   const images = tables.map((table) => {
@@ -107,12 +127,72 @@ editor.streamDriver.addStream(
   new FakeStream(() => [{ src: "asdf" }])
 );
 
+// ====================================================
+//      when we add the table stream
+//      we pass in a component to populate the drawer
+// ====================================================
+
+const TablePreviewComp = ({
+  model,
+  select,
+}: {
+  select: (streamItem) => void;
+  model: TableModel;
+}) => {
+  return (
+    <div>
+      <img src={model.img.src}></img>
+      <strong style={{ color: "white" }}>{model.name}</strong>
+      <button onClick={() => select([model])}>OK</button>
+    </div>
+  );
+};
+editor.streamDriver.addStream("table-stream", tableStream, {
+  individualPreviewComponent: TablePreviewComp,
+  fields: { color: ["red", "green", "blue"] },
+  // streamAdapter: ({ entries, select }) => {
+  //   const [currentTable, setCurrentTable] = useState<TableModel | null>(null);
+  //   const [filterVal, setFilterVal] = useState("");
+
+  //   let currentTablePreview: any = null;
+  //   if (currentTable) {
+  //     currentTablePreview = (
+  //       <TablePreviewComp select={select} model={currentTable} />
+  //     );
+  //   }
+  //   return (
+  //     <div>
+  //       <h2 style={{ color: "white" }}>I'm for Picking a Table Stream</h2>
+  //       {currentTablePreview}
+  //       <input
+  //         type="text"
+  //         value={filterVal}
+  //         onChange={(e) => setFilterVal(e.currentTarget.value)}
+  //       />
+  //       <ul>
+  //         {entries
+  //           .filter((table) => {
+  //             console.log(table, filterVal);
+  //             if (!filterVal) return true;
+  //             if (!table.name) return false;
+  //             return (
+  //               table.name.toLowerCase().indexOf(filterVal.toLowerCase()) > -1
+  //             );
+  //           })
+  //           .map((table) => (
+  //             <li onClick={() => setCurrentTable(table)}>{table.name}</li>
+  //           ))}
+  //       </ul>
+  //     </div>
+  //   );
+  // },
+});
+
 // add a stream with missmatched types
 imageStreamGroup.adaptStream("Table Stream", tableStream, (tables) => {
   const images = tables.map((table) => {
     return { ...table.img, id: `table.${table.id}` };
   });
-
   return images;
 });
 

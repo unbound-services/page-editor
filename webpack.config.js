@@ -19,7 +19,7 @@ const getConfig = (env, argv) => {
   }
 
   const config = {
-    entry: "./src/app.tsx",
+    entry: "./src/App.tsx",
     output: {
       path: path.resolve(__dirname, outputPath),
       filename: "index." + jsFileExtension,

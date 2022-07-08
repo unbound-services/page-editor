@@ -38,15 +38,17 @@ const StreamComp = injectEditorContext(({ onChange, value, editorContext }) => {
 export const StreamSelectButton = ({
   streamName,
   sectionName,
-  setButtonRender,
+  selectMax = 1,
+  label = "Select From Stream",
 }) => {
   const editorContext = useEditorContext(sectionName);
   const streams = editorContext.streams;
+  if (!editorContext.editing) return null;
 
   const onClick = () => {
     streams.getStream(streamName, (val) => {
       editorContext.setState(val[0]);
-    });
+    }, {selectMax} );
   };
 
   // useEffect(() => {
@@ -56,7 +58,7 @@ export const StreamSelectButton = ({
   //   console.log("called set button render");
   // }, []);
 
-  return <button onClick={onClick}>Select From Stream</button>;
+  return <button onClick={onClick}>{label}</button>;
 };
 
 // stream select is a demo component
@@ -72,7 +74,6 @@ export const StreamSelect = ({ targetImage, setButtonRender, ...props }) => {
       <StreamSelectButton
         sectionName="targetImage"
         streamName="test-stream"
-        setButtonRender={setButtonRender}
         {...props}
       />
       {displayVal}

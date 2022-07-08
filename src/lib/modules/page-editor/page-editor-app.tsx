@@ -24,7 +24,7 @@ export const defaultRendererFlags: Readonly<PageEditorRenderFlags> = {
 };
 
 export default class PageEditorApp {
-  protected _streamDriver: StreamDriver;
+  protected _streamDriver: StreamDrawerDriver;
   protected _setForceRefreshVal: Function;
   protected _externalSetState: Function;
   public get streamDriver() {
@@ -90,7 +90,7 @@ export default class PageEditorApp {
     this._renderFunction(app, domObject);
   }
 
-  createStreamDriver(): StreamDriver {
+  createStreamDriver(): StreamDrawerDriver {
     return new StreamDrawerDriver();
   }
 

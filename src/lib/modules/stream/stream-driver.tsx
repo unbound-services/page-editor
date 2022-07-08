@@ -1,10 +1,17 @@
-import { FunctionComponent } from "preact";
+import { FunctionComponent, JSX } from "preact";
+import { Stream } from "stream";
 import { StreamBase, StreamGetCallback } from "./stream-base";
 
-export type StreamList = { [streamName: string]: StreamBase };
+export type StreamList<StreamOptionType = any> = {
+  [streamName: string]: {
+    name: string;
+    stream: StreamBase;
+    streamOptions?: StreamOptionType;
+  };
+};
 
-export class StreamDriver<CallbackType = any> {
-  protected streams: StreamList = {};
+export class StreamDriver<CallbackType = any, StreamOptionType = any> {
+  protected streams: StreamList<StreamOptionType> = {};
   protected component: FunctionComponent;
 
   constructor() {
@@ -12,10 +19,13 @@ export class StreamDriver<CallbackType = any> {
   }
 
   addStream(streamName: string, stream: StreamBase) {
-    this.streams[streamName] = stream;
+    this.streams[streamName] = { name: streamName, stream };
   }
 
   addStreams(streamList: StreamList): void {
+    this.streams = { ...this.streams, ...streamList };
+  }
+  setStreams(streamList: StreamList): void {
     this.streams = streamList;
   }
 
@@ -49,7 +59,7 @@ export class StreamDriver<CallbackType = any> {
     fields?: any
   ): boolean {
     if (this.streams[streamName]) {
-      this.streams[streamName].get(callback, fields);
+      this.streams[streamName].stream.get(callback, fields);
     }
     return false;
   }

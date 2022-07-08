@@ -1,3 +1,4 @@
+import { StreamDrawerDriverFieldType } from "./drawer/stream-drawer-driver";
 import { StreamGetCallback } from "./stream-base";
 
 export interface StreamContextType {
@@ -5,6 +6,6 @@ export interface StreamContextType {
   getStream: (
     streamName: string,
     callback: StreamGetCallback,
-    fields?: any
+    fields?: StreamDrawerDriverFieldType
   ) => void;
 }

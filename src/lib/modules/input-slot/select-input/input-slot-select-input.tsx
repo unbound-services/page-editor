@@ -1,6 +1,16 @@
 import { InputSlot } from "../input-slot";
 
-class SelectInput extends InputSlot {
+interface SelectInputProps {
+  sectionName: string;
+  options: string[];
+  optionLabels?: string[];
+  current?: string;
+  label?: string;
+  hidden?: boolean;
+  tagName?: any;
+  selectList?: boolean;
+}
+class SelectInput extends InputSlot<SelectInputProps> {
   editorRender() {
     const {
       sectionName,

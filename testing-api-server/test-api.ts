@@ -17,18 +17,34 @@ app.get("/api/images/", (request, response) => {
   });
 });
 
-app.get("/api/tables/", (request, response) => {
+app.get("/api/tables/:color?", (request, response) => {
+  let color = "white";
+  if (request.params.color) {
+    color = request.params.color;
+    console.log("color", color);
+  }
   return response.json({
     tables: [
       {
         id: 1,
         img: { src: "images/tables/table-1.jpg" },
         name: "simple table",
+        color,
       },
-      { id: 2, img: { src: "images/tables/table-2.jpg" }, name: "Fancy Table" },
+      {
+        id: 2,
+        img: { src: "images/tables/table-2.jpg" },
+        name: "Fancy Table",
+        color,
+      },
       {
         id: 3,
-        img: { src: "images/tables/table-3.jpg", name: "Fanciest Table" },
+        img: {
+          src: "images/tables/table-3.jpg",
+
+          color,
+        },
+        name: "Fanciest Table",
       },
     ],
   });
