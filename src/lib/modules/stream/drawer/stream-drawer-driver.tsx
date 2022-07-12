@@ -37,7 +37,7 @@ export class StreamDrawerDriver extends StreamDriver<
   ): boolean {
     if (this.streams[streamName]) {
       // only pass along a subset of fields
-      const { selectMax = 1, ...remainingFields } = fields;
+      const { selectMax = 1, ...remainingFields } = fields ? fields : {};
       // open the drawer
       this._setCurrentStreamName(streamName);
       this.streams[streamName].stream.get((data) => {
