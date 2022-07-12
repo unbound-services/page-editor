@@ -8,10 +8,11 @@ export interface StreamInputProps {
     inputClass: string;
     children: any;
 }
-export declare const StreamSelectButton: ({ streamName, sectionName, setButtonRender, }: {
+export declare const StreamSelectButton: ({ streamName, sectionName, selectMax, label, }: {
     streamName: any;
     sectionName: any;
-    setButtonRender: any;
+    selectMax?: number;
+    label?: string;
 }) => import("preact").JSX.Element;
 export declare const StreamSelect: ({ targetImage, setButtonRender, ...props }: {
     [x: string]: any;

@@ -1,6 +1,6 @@
 import { render } from "preact";
 import { PageEditorComponentType } from "./page-editor-components";
-import { StreamDriver } from "../stream/stream-driver";
+import { StreamDrawerDriver } from "../stream/drawer/stream-drawer-driver";
 export declare type PageEditorRenderFlags = {
     individualComponents?: boolean;
     noRearrange?: boolean;
@@ -9,10 +9,10 @@ export declare type PageEditorRenderFlags = {
 };
 export declare const defaultRendererFlags: Readonly<PageEditorRenderFlags>;
 export default class PageEditorApp {
-    protected _streamDriver: StreamDriver;
+    protected _streamDriver: StreamDrawerDriver;
     protected _setForceRefreshVal: Function;
     protected _externalSetState: Function;
-    get streamDriver(): StreamDriver<any>;
+    get streamDriver(): StreamDrawerDriver;
     protected _renderFunction: typeof render;
     protected components: any;
     protected plugins: any;
@@ -24,7 +24,7 @@ export default class PageEditorApp {
         slug: string;
         status: string;
     }, newComponentList?: any, plugins?: {}, renderFlags?: PageEditorRenderFlags, contextualPageData?: any): void;
-    createStreamDriver(): StreamDriver;
+    createStreamDriver(): StreamDrawerDriver;
     addComponents(components: PageEditorComponentType | PageEditorComponentType[], compSlug?: string, compDisplayName?: string): void;
     insertComponent(componentSlug: string, props?: {}): any;
     getDefaultComponents(): import("./page-editor-components").ComponentListType;

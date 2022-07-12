@@ -2,7 +2,7 @@ import { InputSlot } from "../input-slot";
 
 interface SelectInputProps {
   sectionName: string;
-  options: string[];
+  options: string[] | { [key: string]: string[] };
   optionLabels?: string[];
   current?: string;
   label?: string;
