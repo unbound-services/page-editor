@@ -23,17 +23,42 @@ export class HTTPStream<
 
   public get(
     callback: StreamGetCallback<CallbackValueType>,
-    fields?: HTTPStreamFields
+    fields?: HTTPStreamFields,
+    method?: string
   ): void {
-    fetch(this.getAPIUrl(fields), { method: "get" })
-      .then((response) => response.json())
-      .then((data) => {
-        let processedData: CallbackValueType[] = data;
-        if (this._callback) {
-          processedData = this._callback(data);
-        }
-        callback(processedData);
-      });
+    const apiMethod = method || "GET";
+    switch (apiMethod.toUpperCase()) {
+      case "GET": {
+        fetch(this.getAPIUrl(fields), { method: "get" })
+          .then((response) => response.json())
+          .then((data) => {
+            let processedData: CallbackValueType[] = data;
+            if (this._callback) {
+              processedData = this._callback(data);
+            }
+            callback(processedData);
+          });
+        break;
+      }
+      case "POST": {
+        fetch(this.url, {
+          headers: {
+            "Content-Type": "application/json",
+          },
+          method: "post",
+          body: JSON.stringify(fields)
+        })
+          .then((response) => response.json())
+          .then((data) => {
+            let processedData: CallbackValueType[] = data;
+            if (this._callback) {
+              processedData = this._callback(data);
+            }
+            callback(processedData);
+          });
+        break;
+      }
+    }
   }
 
   getAPIUrl(fields: HTTPStreamFields): string {

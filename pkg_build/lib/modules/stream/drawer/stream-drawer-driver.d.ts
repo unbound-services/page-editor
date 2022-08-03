@@ -25,7 +25,7 @@ export declare class StreamDrawerDriver extends StreamDriver<any, StreamDrawerSt
     protected setCurrentStream: any;
     protected currentCallback: any;
     protected _setCurrentStreamName: any;
-    getStream(streamName: string, callback: StreamGetCallback<any>, fields?: StreamDrawerDriverFieldType): boolean;
+    getStream(streamName: string, callback: StreamGetCallback<any>, fields?: StreamDrawerDriverFieldType, method?: string): boolean;
     addStream<StreamValueType = any>(streamName: string, stream: StreamBase<any, StreamValueType>, streamOptions?: StreamDrawerStreamOptions<StreamValueType>): void;
     addStreams(streamList: StreamList): void;
     setStreams(streamList: StreamList): void;
