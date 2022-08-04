@@ -47,7 +47,6 @@ export class StreamDrawerDriver extends StreamDriver<
         // then do the callback
 
         this.currentCallback = callback;
-        console.log("setting current stream", data);
         this.setCurrentStream(data);
 
         // console.log("this.currentStream", this.currentStream.current);
@@ -83,8 +82,6 @@ export class StreamDrawerDriver extends StreamDriver<
       this._setCurrentStreamName = setCurrentStreamName;
 
       let drawerContents = null;
-      console.log("what stream we got daddio", this.streams[currentStreamName]);
-      console.log("current stream", currentStream);
       if (this.streams[currentStreamName]?.streamOptions?.streamAdapter) {
         const StreamAdapterComp =
           this.streams[currentStreamName].streamOptions.streamAdapter;
@@ -117,7 +114,6 @@ export class StreamDrawerDriver extends StreamDriver<
         ));
         //Adding this if condition avoids the error but there is probably still a state issue
       } else if (this.streams[currentStreamName]) {
-        console.log("or else", currentStream);
         drawerContents = currentStream.map((streamItem) => (
           <div>
             <img
