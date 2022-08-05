@@ -18,6 +18,7 @@ export class StreamBase<FieldType = any, ValueType = any> {
   // }
   public get(
     callback: StreamGetCallback<ValueType>,
-    fields?: FieldType
+    fields?: FieldType,
+    method?: string
   ): void {}
 }

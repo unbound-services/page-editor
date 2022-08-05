@@ -33,7 +33,8 @@ export class StreamDrawerDriver extends StreamDriver<
   getStream(
     streamName: string,
     callback: StreamGetCallback<any>,
-    fields?: StreamDrawerDriverFieldType
+    fields?: StreamDrawerDriverFieldType,
+    method?: string
   ): boolean {
     if (this.streams[streamName]) {
       // only pass along a subset of fields
@@ -52,7 +53,7 @@ export class StreamDrawerDriver extends StreamDriver<
         // const index = window.prompt("stream index? 0-" + (data.length - 1));
         // console.log("data", data[index]);
         // callback([data[index]]);
-      }, remainingFields);
+      }, remainingFields, method);
     }
     return false;
   }
@@ -81,7 +82,6 @@ export class StreamDrawerDriver extends StreamDriver<
       this._setCurrentStreamName = setCurrentStreamName;
 
       let drawerContents = null;
-      console.log(this.streams[currentStreamName]);
       if (this.streams[currentStreamName]?.streamOptions?.streamAdapter) {
         const StreamAdapterComp =
           this.streams[currentStreamName].streamOptions.streamAdapter;
@@ -112,7 +112,8 @@ export class StreamDrawerDriver extends StreamDriver<
             />
           </div>
         ));
-      } else {
+        //Adding this if condition avoids the error but there is probably still a state issue
+      } else if (this.streams[currentStreamName]) {
         drawerContents = currentStream.map((streamItem) => (
           <div>
             <img

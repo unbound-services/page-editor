@@ -6,6 +6,6 @@ export declare class HTTPStream<FieldType extends HTTPStreamFields, CallbackValu
     protected url: string;
     protected _callback: (data: any) => CallbackValueType[];
     constructor(url: string, callback?: (data: APIReturnType) => CallbackValueType[]);
-    get(callback: StreamGetCallback<CallbackValueType>, fields?: HTTPStreamFields): void;
+    get(callback: StreamGetCallback<CallbackValueType>, fields?: HTTPStreamFields, method?: string): void;
     getAPIUrl(fields: HTTPStreamFields): string;
 }

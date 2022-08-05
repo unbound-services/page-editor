@@ -29,6 +29,7 @@
     "build": "webpack --mode production --config webpack.config.js",
     "package": "rimraf /F /Q pkg_build && babel src/lib --out-dir pkg_build --copy-files && yarn pack",
     "bundle": "rimraf /F /Q pkg_build && webpack --mode production --config webpack.config.js --entry /src/index.ts -o pkg_build",
+    "dev-bundle": "rimraf /F /Q pkg_build && webpack --mode development --config webpack-devbundle.config.js --entry /src/index.ts -o pkg_build",
     "test-api": "ts-node testing-api-server/test-api.ts",
     "test": "node --experimental-vm-modules  node_modules/jest/bin/jest.js --config jest.config.js",
     "test-bundle": "webpack --config ./webpack.config.test.js",
