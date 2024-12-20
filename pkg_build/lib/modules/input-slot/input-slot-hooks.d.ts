@@ -1,5 +1,5 @@
 import { EditorContextType } from "../content-editor/content-editor-editor-context";
-export declare type StreamInputState = {};
+export type StreamInputState = {};
 /**
  *
  * @param sectionName the name for the section of state that this component is in charge of

@@ -1,6 +1,6 @@
 import { PageEditorRenderFlags } from "../page-editor/page-editor-app";
 import { StreamContextType } from "../stream/stream-context";
-export declare type EditorContextType = {
+export type EditorContextType = {
     setState: (newState: any) => void;
     editorState: any;
     componentList: any;

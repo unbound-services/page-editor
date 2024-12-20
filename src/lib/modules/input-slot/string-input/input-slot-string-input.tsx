@@ -32,6 +32,7 @@ export class StringInput extends InputSlot<StringInputProps, StringInputState> {
     if (editing) {
       if (!label) {
         return (
+          // @ts-ignore
           <TagName {...inputClass} {...otherProps}>
             <input type="text" onChange={onChange} value={state[sectionName]} />
           </TagName>
@@ -39,6 +40,7 @@ export class StringInput extends InputSlot<StringInputProps, StringInputState> {
       }
 
       return (
+          // @ts-ignore
         <TagName {...inputClass} {...otherProps}>
           <label>
             <span>{label}</span>
@@ -51,6 +53,7 @@ export class StringInput extends InputSlot<StringInputProps, StringInputState> {
         return null;
       }
       return (
+          // @ts-ignore
         <TagName {...inputClass} {...otherProps}>
           {state[sectionName]}
           {children}

@@ -28,7 +28,7 @@ export const PageMeta = ({ pageMeta, updatePageMetaState }) => {
             onChange={(e) => onChange(e, "status")}
             value={pageMeta.status}>
             <option value="draft">Draft</option>
-            <option value="publish">Publish</option>
+            <option value="published">Published</option>
           </select>
         </label>
       </div>

@@ -5,7 +5,7 @@ import {
   useEditorContext,
 } from "../../input-slot/input-slot-hooks";
 import { useEffect, useState } from "preact/hooks";
-import { Fragment } from "preact";
+import { Fragment, JSX, createElement } from "preact";
 
 // todo: inheritence
 export interface StreamInputProps {
@@ -113,6 +113,7 @@ export class StreamSelectOld extends InputSlot<
 
     if (editing) {
       return (
+        // @ts-ignore
         <TagName {...inputClass} {...otherProps}>
           {displayVal}
           <StreamComp onChange={onChange} value={state[sectionName]} />
@@ -124,6 +125,7 @@ export class StreamSelectOld extends InputSlot<
       }
 
       return (
+        // @ts-ignore
         <TagName {...otherProps}>
           {displayVal}
           {children}

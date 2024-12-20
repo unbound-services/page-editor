@@ -1,9 +1,9 @@
 import { StreamBase, StreamGetCallback } from "../stream-base";
-export declare type StreamSelectCallback<CallbackValueType> = (data: any, streams: {
+export type StreamSelectCallback<CallbackValueType> = (data: any, streams: {
     name: string;
     stream: StreamBase<CallbackValueType>;
 }[]) => string;
-export declare type StreamFixture<CallbackValueType> = {
+export type StreamFixture<CallbackValueType> = {
     stream: StreamBase<any, any>;
     callback?: (data: any) => CallbackValueType[];
     name: string;

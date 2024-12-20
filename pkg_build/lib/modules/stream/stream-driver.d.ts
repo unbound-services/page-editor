@@ -1,6 +1,6 @@
 import { FunctionComponent } from "preact";
 import { StreamBase, StreamGetCallback } from "./stream-base";
-export declare type StreamList<StreamOptionType = any> = {
+export type StreamList<StreamOptionType = any> = {
     [streamName: string]: {
         name: string;
         stream: StreamBase;

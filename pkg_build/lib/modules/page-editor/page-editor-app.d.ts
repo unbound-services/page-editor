@@ -1,7 +1,7 @@
 import { render } from "preact";
 import { PageEditorComponentType } from "./page-editor-components";
 import { StreamDrawerDriver } from "../stream/drawer/stream-drawer-driver";
-export declare type PageEditorRenderFlags = {
+export type PageEditorRenderFlags = {
     individualComponents?: boolean;
     noRearrange?: boolean;
     noAdd?: boolean;

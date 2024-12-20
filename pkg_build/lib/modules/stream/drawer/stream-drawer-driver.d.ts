@@ -1,11 +1,11 @@
 import { FunctionComponent } from "preact/compat";
 import { StreamBase, StreamGetCallback } from "../stream-base";
 import { StreamDriver, StreamList } from "../stream-driver";
-export declare type StreamAdapterComponent<StreamType = any> = FunctionComponent<{
+export type StreamAdapterComponent<StreamType = any> = FunctionComponent<{
     entries: StreamType[];
     select: (streamItem: StreamType[]) => void;
 }>;
-export declare type IndividualStreamPreview<StreamType = any> = FunctionComponent<{
+export type IndividualStreamPreview<StreamType = any> = FunctionComponent<{
     model: StreamType;
     select: (streamItem: StreamType[]) => void;
 }>;

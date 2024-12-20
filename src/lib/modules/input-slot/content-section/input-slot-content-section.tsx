@@ -208,6 +208,7 @@ export class ContentSection extends InputSlot<
     }
 
     return (
+          // @ts-ignore
       <TagName {...otherProps}>
         {childs}
         {addButton}

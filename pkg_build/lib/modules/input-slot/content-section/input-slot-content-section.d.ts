@@ -6,7 +6,7 @@ export interface ContentSectionProps {
     tagName?: string;
     isRoot?: boolean;
 }
-export declare type ContentSectionState = {
+export type ContentSectionState = {
     component: any;
 };
 export declare class ContentSection extends InputSlot<ContentSectionProps, ContentSectionState> {

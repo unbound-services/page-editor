@@ -1,7 +1,7 @@
 import * as React from "preact";
 import { StreamDriver } from "../stream/stream-driver";
 import { PageEditorRenderFlags } from "./page-editor-app";
-export declare type PageEditorStateType = {
+export type PageEditorStateType = {
     editorState: any;
     pageMetaState: any;
     preview: any;
@@ -9,8 +9,8 @@ export declare type PageEditorStateType = {
     advancedOpen: boolean;
     pageEditorDrawerOpen: boolean;
 };
-export declare type PageEditorOnsaveFunction = (data: any) => void;
-export declare type PageEditorPropType = {
+export type PageEditorOnsaveFunction = (data: any) => void;
+export type PageEditorPropType = {
     componentList?: any;
     streams?: StreamDriver;
     plugins?: any;

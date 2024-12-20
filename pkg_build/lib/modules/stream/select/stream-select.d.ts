@@ -1,4 +1,5 @@
 import InputSlot from "../../input-slot/input-slot";
+import { JSX } from "preact";
 export interface StreamInputProps {
     value: any;
     sectionName: string;
@@ -13,13 +14,13 @@ export declare const StreamSelectButton: ({ streamName, sectionName, selectMax, 
     sectionName: any;
     selectMax?: number;
     label?: string;
-}) => import("preact").JSX.Element;
+}) => JSX.Element;
 export declare const StreamSelect: ({ targetImage, setButtonRender, ...props }: {
     [x: string]: any;
     targetImage: any;
     setButtonRender: any;
-}) => import("preact").JSX.Element;
-export declare type StreamInputState = {};
+}) => JSX.Element;
+export type StreamInputState = {};
 export declare class StreamSelectOld extends InputSlot<StreamInputProps, StreamInputState> {
-    editorRender(): import("preact").JSX.Element;
+    editorRender(): JSX.Element;
 }

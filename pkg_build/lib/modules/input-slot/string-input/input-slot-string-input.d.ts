@@ -8,7 +8,7 @@ export interface StringInputProps {
     inputClass?: string;
     children?: any;
 }
-export declare type StringInputState = {};
+export type StringInputState = {};
 export declare class StringInput extends InputSlot<StringInputProps, StringInputState> {
     editorRender(): import("preact").JSX.Element;
 }
