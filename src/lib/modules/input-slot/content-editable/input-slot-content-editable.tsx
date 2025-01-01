@@ -59,6 +59,7 @@ export const ContentEditableInputSlot = ({
       key={"hey"}
       className={finalClassName}
       dangerouslySetInnerHTML={{ __html: html }}
+      onClick={(e) => {e.focus()}}
       {...props}
       {...editingProps}></TagName>
   );
