@@ -12,12 +12,20 @@
         min-height:30px;
 
         &:hover{
-            // border:2px #3a3a3aaa solid;
+            border:2px #3a3a3aaa solid;
             & > .content-section-controls__inner{
                 // background:red;
                 opacity:100%;
                 z-index: 100;
             }
+        }
+
+        & &:first-of-type .content-section-controls__inner {
+            top: 30px;
+        }
+
+        & & &:first-of-type .content-section-controls__inner {
+            top: 60px;
         }
     }
 
