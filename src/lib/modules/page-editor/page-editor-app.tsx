@@ -49,7 +49,7 @@ export default class PageEditorApp {
 
   initializeApp(
     domObject,
-    onSave: (data: object) => boolean | void = null,
+    onSave: (data: object, callback: () => void) => boolean | void = null,
     pageData = { children: [] },
     pageMeta = { name: "", slug: "", status: "draft" },
     newComponentList: any = false,

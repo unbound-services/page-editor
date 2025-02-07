@@ -21,7 +21,7 @@ export type PageEditorStateType = {
   pageEditorDrawerOpen: boolean;
 };
 
-export type PageEditorOnsaveFunction = (data: any) => void;
+export type PageEditorOnsaveFunction = (data: any, callback: () => void) => void;
 
 export type PageEditorPropType = {
   componentList?: any;
@@ -96,6 +96,10 @@ export class PageEditor extends React.Component<
       this.setState({ ...obj, changes: true });
     };
 
+    const setSaved = (obj) => {
+      this.setState({ ...obj, changes: false });
+    };
+
     const togglePageDrawer = () => {
       this.setState({ pageEditorDrawerOpen: !this.state.pageEditorDrawerOpen });
     };
@@ -163,7 +167,7 @@ export class PageEditor extends React.Component<
 
       // if there's an onsave then call it
       if (this.props.onSave) {
-        (this.props.onSave as PageEditorOnsaveFunction)(data);
+        (this.props.onSave as PageEditorOnsaveFunction)(data, () => setSaved(this.state));
       }
     };
 

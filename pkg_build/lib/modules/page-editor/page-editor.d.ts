@@ -9,7 +9,7 @@ export type PageEditorStateType = {
     advancedOpen: boolean;
     pageEditorDrawerOpen: boolean;
 };
-export type PageEditorOnsaveFunction = (data: any) => void;
+export type PageEditorOnsaveFunction = (data: any, callback: () => void) => void;
 export type PageEditorPropType = {
     componentList?: any;
     streams?: StreamDriver;

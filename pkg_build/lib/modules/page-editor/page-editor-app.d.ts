@@ -17,7 +17,7 @@ export default class PageEditorApp {
     protected components: any;
     protected plugins: any;
     constructor();
-    initializeApp(domObject: any, onSave?: (data: object) => boolean | void, pageData?: {
+    initializeApp(domObject: any, onSave?: (data: object, callback: () => void) => boolean | void, pageData?: {
         children: any[];
     }, pageMeta?: {
         name: string;
