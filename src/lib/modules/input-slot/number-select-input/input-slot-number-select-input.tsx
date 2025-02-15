@@ -1,13 +1,14 @@
 import { InputSlot } from "../input-slot";
 
-class NumberSelectInput extends InputSlot {
-  editorRender() {
+class 
+NumberSelectInput extends InputSlot {
+  render() {
     const {
       sectionName,
       tagName = "div",
       label = null,
-      min = 0,
-      max = 100,
+      min,
+      max,
       step = 1,
       hidden = true,
       current,
@@ -16,14 +17,25 @@ class NumberSelectInput extends InputSlot {
     const TagName = tagName;
     const { editorState: state, editing } = this.context;
     const onChange = (e) => {
-      this.context.setState({ ...state, [sectionName]: e.currentTarget.value });
+      let value = e.currentTarget.value;
+      if (value === "") {
+        value = 0;
+      }
+      if(min !==undefined && value < min){
+        value = min;
+      }
+      if(max !==undefined && value > max){
+        value = max;
+      }
+      this.context.setState({ ...state, [sectionName]: value });
     };
 
     if (editing) {
       if (!label) {
         return (
-          <TagName>
+          <TagName key="num-input-wrapper">
             <input
+              key="num-input"
               value={current}
               type="number"
               onChange={onChange}
@@ -36,7 +48,7 @@ class NumberSelectInput extends InputSlot {
       }
 
       return (
-        <TagName>
+        <TagName key="num-input-wrapper" {...otherProps}>
           <label>
             <span>{label}</span>
             <input

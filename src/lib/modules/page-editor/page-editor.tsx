@@ -1,5 +1,5 @@
-import * as React from "preact";
-import renderToString from "preact-render-to-string";
+import * as React from "react"
+import { renderToString } from 'react-dom/server';
 
 import Drawer from "../common/drawer/common-drawer";
 import { PageMeta } from "../page-meta/page-meta";
@@ -9,7 +9,8 @@ import EditorContext, {
 } from "../content-editor/content-editor-editor-context";
 import { ContentSection } from "../input-slot/content-section/input-slot-content-section";
 import { StreamDriver } from "../stream/stream-driver";
-import { defaultRendererFlags, PageEditorRenderFlags } from "./page-editor-app";
+import { defaultRendererFlags, PageEditorAppOptions, PageEditorRenderFlags } from "./page-editor-app";
+import { useState } from "react";
 
 // page editor prop types
 export type PageEditorStateType = {
@@ -33,35 +34,28 @@ export type PageEditorPropType = {
   renderFlags?: PageEditorRenderFlags;
   exportState?: (setState: Function) => void;
   contextualPageData?: any;
+  editorOptions?: PageEditorAppOptions;
 };
 
-export class PageEditor extends React.Component<
-  PageEditorPropType,
-  PageEditorStateType
-> {
-  constructor(props) {
-    super(props);
+export const PageEditor = (props: PageEditorPropType) => {
 
-    const initialState: PageEditorStateType = {
-      editorState: props.pageData,
+    
+    const [state, setState] = useState({
+      editorState: props.pageData ? props.pageData : window["pageData"] ? window["pageData"] : { children: [] },
       pageMetaState: props.pageMeta,
       preview: false,
       changes: false,
       advancedOpen: false,
-      pageEditorDrawerOpen: false,
-    };
+      pageEditorDrawerOpen: false
+    });
 
-    let windowPageData = window["pageData"];
-    if (windowPageData) initialState.editorState = windowPageData;
+    
 
-    // only assign to the state object once, and then treat it read only
-    this.state = initialState;
-  }
 
-  componentDidMount() {
+  React.useEffect(() => {
     // attach that to the window
     window.addEventListener("beforeunload", (e) => {
-      if (this.state.changes) {
+      if (state.changes) {
         var confirmationMessage =
           "It looks like you have been editing something. " +
           "If you leave before saving, your changes will be lost.";
@@ -71,16 +65,17 @@ export class PageEditor extends React.Component<
         return confirmationMessage; //Gecko + Webkit, Safari, Chrome etc.
       }
     });
-  }
+  },[]);
 
-  render() {
-    const demoState = this.state.editorState;
-    const { preview } = this.state;
+
+    const demoState = state.editorState;
+    const { preview } = state;
     const {
       streams,
       renderFlags: renderFlagProps = {},
       exportState,
-    } = this.props;
+      editorOptions
+    } = props;
 
     let renderFlags = defaultRendererFlags;
     if (renderFlagProps) {
@@ -89,28 +84,28 @@ export class PageEditor extends React.Component<
 
     // export state will not always be passed in
     if (exportState) {
-      exportState(this.setState.bind(this));
+      exportState(setState.bind(this));
     }
 
     const baseSetState = (obj) => {
-      this.setState({ ...obj, changes: true });
+      setState({ ...state, ...obj, changes: true });
     };
 
     const togglePageDrawer = () => {
-      this.setState({ pageEditorDrawerOpen: !this.state.pageEditorDrawerOpen });
+      setState({ ...state, pageEditorDrawerOpen: !state.pageEditorDrawerOpen });
     };
 
     const updatePageMetaState = (key, value) => {
-      this.setState({
+      setState({...state,
         pageMetaState: {
-          ...this.state.pageMetaState,
+          ...state.pageMetaState,
           [key]: value,
         },
       });
     };
 
     const saveData = () => {
-      if (!this.props.onSave) {
+      if (!props.onSave) {
         console.log("No onSave function connected to app");
         return;
       }
@@ -118,9 +113,9 @@ export class PageEditor extends React.Component<
       let componentsMarkup = [];
       if (renderFlags.individualComponents) {
         componentsMarkup = demoState.children.map((data) => {
-          const compData = this.props.componentList[data.comp];
+          const compData = props.componentList[data.comp];
           if (!compData) return "";
-          const Comp = this.props.componentList[data.comp].comp;
+          const Comp = props.componentList[data.comp].comp;
           let currentProps = data.props;
 
           return {
@@ -134,18 +129,20 @@ export class PageEditor extends React.Component<
                 setButtonRender={(val) => {}}>
                 {data.children}
               </Comp>
-            ),
+            ).replaceAll(/[class|style]\=\"\""/, ""),
           };
         });
       }
 
+
       const pageMarkup = renderToString(
         <EditorContext.Provider
           value={{
-            setState: stateDeeper("editorState", this.state, baseSetState),
+            setState: stateDeeper("editorState", state, baseSetState),
             editorState: demoState,
-            componentList: this.props.componentList,
-            plugins: this.props.plugins,
+            componentList: props.componentList,
+            editorOptions:editorOptions,
+            plugins: props.plugins,
             editing: false,
             previewing: true,
             renderFlags,
@@ -156,14 +153,14 @@ export class PageEditor extends React.Component<
       );
 
       // submit the form
-      const pageState = this.state.editorState;
-      const metaState = this.state.pageMetaState;
+      const pageState = state.editorState;
+      const metaState = state.pageMetaState;
 
       const data = { pageState, pageMarkup, metaState, componentsMarkup };
 
       // if there's an onsave then call it
-      if (this.props.onSave) {
-        (this.props.onSave as PageEditorOnsaveFunction)(data);
+      if (props.onSave) {
+        (props.onSave as PageEditorOnsaveFunction)(data);
       }
     };
 
@@ -180,10 +177,10 @@ export class PageEditor extends React.Component<
     return (
       <div>
         <Drawer
-          open={this.state.pageEditorDrawerOpen}
+          open={state.pageEditorDrawerOpen}
           onClose={togglePageDrawer}>
           <PageMeta
-            pageMeta={this.state.pageMetaState}
+            pageMeta={state.pageMetaState}
             updatePageMetaState={updatePageMetaState}
           />
         </Drawer>
@@ -193,7 +190,7 @@ export class PageEditor extends React.Component<
             onClick={(e) => {
               e.preventDefault();
               e.stopPropagation();
-              this.setState({ preview: !preview });
+              setState({...state,  preview: !preview });
             }}>
             {!preview ? "Preview" : "Edit"}
           </button>
@@ -201,29 +198,30 @@ export class PageEditor extends React.Component<
             className="page-editor__button"
             onClick={saveData}
             data-testid="save-page-button">
-            Save Changes {this.state.changes ? "*" : ""}{" "}
+            Save {state.changes ? "*" : ""}{" "}
           </button>
           <button className="page-editor__button" onClick={togglePageDrawer}>
-            More Page Options
+            Options
           </button>
         </div>
 
         <EditorContext.Provider
           value={{
-            setState: stateDeeper("editorState", this.state, baseSetState),
+            setState: stateDeeper("editorState", state, baseSetState),
             editorState: demoState,
-            componentList: this.props.componentList,
-            plugins: this.props.plugins,
+            componentList: props.componentList,
+            plugins: props.plugins,
             editing: !preview,
             previewing: preview,
             renderFlags,
             streams: streams,
-            contextualPageData: this.props.contextualPageData,
+            contextualPageData: props.contextualPageData,
+            editorOptions: editorOptions,
           }}>
-          <ContentSection isRoot />
-          <StreamDriverComponent />
+          <ContentSection isRoot key="root-content-section" />
+          <div><StreamDriverComponent /></div>
         </EditorContext.Provider>
       </div>
     );
   }
-}
+

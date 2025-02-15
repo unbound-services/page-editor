@@ -6,6 +6,8 @@ import path from "path";
 export default defineConfig(({ mode }) => {
   const isDev = mode === "development";
 
+  let outDir = isDev ? "dist" : "pkg_build";
+
   return {
     // Set the root to the src folder
     root: path.resolve(__dirname, "src"),
@@ -13,12 +15,12 @@ export default defineConfig(({ mode }) => {
     plugins: [
       react(),
       dts({
-        outDir: "../dist/types",
+        outDir: `../${outDir}/types`,
         insertTypesEntry: true,
       }),
     ],
     build: {
-      outDir: "../dist",
+      outDir: `../${outDir}`,
       lib: isDev ? undefined : {
         entry: path.resolve(__dirname, "src/index.tsx"),
         name: "MyLibrary",
@@ -41,10 +43,15 @@ export default defineConfig(({ mode }) => {
       alias: {
         "@sass": path.resolve(__dirname, "src/sass")
       },
+      
+
     },
     server: {
       port: 3000,
       open: true,
+      allowedHosts: true,
+      
     },
+    publicDir: "../public",
   };
 });

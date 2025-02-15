@@ -1,4 +1,4 @@
-import * as React from "preact";
+import * as React from "react"
 import RichTextInput from "../../input-slot/rich-text-input/input-slot-rich-text-input";
 import StringInput from "../../input-slot/string-input/input-slot-string-input";
 

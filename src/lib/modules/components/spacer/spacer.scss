@@ -1,0 +1,99 @@
+.spacer-handle {
+    display: flex;
+
+    justify-content: center;
+    align-items: flex-end;
+    height: 40px;
+    width: 50%;
+    position: absolute;
+    bottom: 0;
+    min-width: 100px;
+    min-height: 50px;
+    background-color: #f5f5f5;
+    border: 1px solid #e0e0e0;
+    left: 50%;
+    transform: translateX(-50%);
+    font-weight: bold;
+    letter-spacing: 1px;
+    color: #aaaaaa;
+    box-sizing: border-box;
+    padding-bottom: 10px;
+
+    border-radius: 4px;
+    box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.1);
+    border-top: 0;
+    margin: 0 auto;
+    cursor: pointer;
+    // transition: all 0.1s;
+    z-index: 5;
+
+    &:after {
+        content: "px SPACER";
+
+    }
+
+    &:hover {
+        background-color: #f0f0f0;
+    }
+
+    &.active {
+        background-color: #e0e0e0;
+    }
+
+    &.selected {
+        background-color: #d0d0d0;
+    }
+
+    &.disabled {
+        background-color: #f5f5f5;
+        cursor: not-allowed;
+    }
+
+    &.dragging {
+        background-color: #f0f0f0;
+    }
+
+    &.dragging-over {
+        background-color: #e0e0e0;
+    }
+
+    &.dragging-over-top {
+        border-top: 2px solid #2196f3;
+    }
+
+    &.dragging-over-right {
+        border-right: 2px solid #2196f3;
+    }
+
+    &.dragging-over-bottom {
+        border-bottom: 2px solid #2196f3;
+    }
+
+    &.dragging-over-left {
+        border-left: 2px solid #2196f3;
+    }
+
+    &.dragging-over-top-right {
+        border-top: 2px solid #2196f3;
+        border-right: 2px solid #2196f3;
+    }
+
+    &.dragging-over-bottom-right {
+        border-bottom: 2px solid #2196f3;
+        border-right: 2px solid #2196f3;
+    }
+
+    &.dragging-over-bottom-left {
+        border-bottom: 2px solid #2196f3;
+        border-left: 2px solid #2196f3;
+    }
+
+    &.dragging-over-top-left {
+        border-top: 2px solid #2196f3;
+        border-left: 2px solid #2196f3;
+    }
+
+    &.dragging-over-top-bottom {
+        border-top: 2px solid #219
+    }
+}

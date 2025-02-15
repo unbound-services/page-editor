@@ -12,7 +12,7 @@ export interface StringInputProps {
 
 export type StringInputState = {};
 export class StringInput extends InputSlot<StringInputProps, StringInputState> {
-  editorRender() {
+  render() {
     const {
       value = "yay",
       sectionName,
@@ -28,6 +28,8 @@ export class StringInput extends InputSlot<StringInputProps, StringInputState> {
     const onChange = (e) => {
       this.context.setState({ ...state, [sectionName]: e.currentTarget.value });
     };
+
+    console.log('stringinput reporting');
 
     if (editing) {
       if (!label) {

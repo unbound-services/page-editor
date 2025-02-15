@@ -1,6 +1,5 @@
-import { h } from "preact";
+
 import PageEditorApp, { PageEditor, StringInput } from "./lib/index";
-import { JSDOM } from "jsdom";
 
 // import { PageEditorApp } from "./lib/index";
 import { render, screen, within, fireEvent } from "@testing-library/preact";

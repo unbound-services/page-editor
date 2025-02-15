@@ -1,4 +1,4 @@
-import { FunctionComponent, JSX } from "preact";
+import { FunctionComponent, JSX } from "react"
 import { Stream } from "stream";
 import { StreamBase, StreamGetCallback } from "./stream-base";
 

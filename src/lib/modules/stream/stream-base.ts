@@ -1,4 +1,4 @@
-import { FunctionComponent } from "preact/compat";
+import { FunctionComponent } from "react"
 
 export type StreamGetCallback<ValueType = any> = (
   streamPayload: ValueType[]

@@ -1,10 +1,10 @@
 import InputSlot from "../input-slot";
-import * as React from "preact";
+import * as React from "react"
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
 
 class RichTextInput extends InputSlot {
-  editorRender() {
+  render() {
     const {
       sectionName,
       label = "",

@@ -1,26 +1,27 @@
-import { JSX, Component } from "preact";
+import { JSX, Component } from "react"
 import { EditorContext } from "../content-editor/content-editor-editor-context";
 
 export class InputSlot<
   InputSlotPropType = any,
   InputSlotStateType = any
 > extends Component<InputSlotPropType, InputSlotStateType> {
-  publicRender() {}
 
-  editorRender(): JSX.Element {
-    return <div></div>;
+  // declare the context
+  static contextType = EditorContext;
+  declare context: React.ContextType<typeof EditorContext>;
+  
+  
+  constructor(props) {
+    super(props);
   }
 
-  // onchange for the whole object
-  onChange(obj) {
-    this.context.onChange(obj);
+  render(): JSX.Element {
+    return null;
   }
 
-  render() {
-    return this.editorRender();
-  }
+
 }
 
-InputSlot.contextType = EditorContext;
+
 
 export default InputSlot;

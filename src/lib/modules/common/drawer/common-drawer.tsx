@@ -1,4 +1,4 @@
-import { Fragment } from "preact";
+import { Fragment } from "react"
 
 export const Drawer = (props) => {
   const { onClose, children, open = false, innerClass } = props;

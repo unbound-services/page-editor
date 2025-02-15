@@ -1,0 +1,13 @@
+@container(width >1024px) {
+    .section__column {
+        width: 32%;
+        position: relative;
+        min-height: 100px;
+    }
+
+    .column-section {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-between;
+    }
+}

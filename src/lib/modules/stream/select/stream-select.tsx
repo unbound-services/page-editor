@@ -4,8 +4,8 @@ import {
   injectEditorContext,
   useEditorContext,
 } from "../../input-slot/input-slot-hooks";
-import { useEffect, useState } from "preact/hooks";
-import { Fragment, JSX, createElement } from "preact";
+import { useEffect, useState } from "react"
+import { Fragment, JSX, createElement } from "react"
 
 // todo: inheritence
 export interface StreamInputProps {
@@ -86,7 +86,7 @@ export class StreamSelectOld extends InputSlot<
   StreamInputProps,
   StreamInputState
 > {
-  editorRender() {
+  render() {
     const {
       value = "yay",
       sectionName,

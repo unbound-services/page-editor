@@ -9,16 +9,46 @@ import {
   StringInput,
   StreamSelectButton,
   SelectInput,
+  ContentSection,
 } from "./lib/index";
 
-import { render } from "preact";
-import { useState } from "preact/hooks";
+import { render } from "react-dom"
+import { useState } from "react"
+import { CE as INPUT } from "./lib/modules/input-slot/content-editable/input-slot-content-editable";
+import { MyDumbComponent } from "./TestComponent";
+import { DemoComponent } from "./DemoComponent";
 
-let editor = new PageEditorApp();
+let editor = new PageEditorApp({ pageOptions:{
+  href: "https://unbound.services/"
+}});
 
 const onSave = (data) => {
   console.log("data in onSave", data);
 };
+
+
+
+
+
+
+/** page editor components can be passed as props */
+const MyComponent = ({title="Title"}) => (<MyDumbComponent title={<INPUT.span sectionName="title" />} />);
+
+
+
+
+const MyCEComponent = ({title="Title"}) => {
+  return <div><INPUT.h1 sectionName="title">{title}</INPUT.h1>
+  <INPUT.div>
+    <p>hey there</p>
+    <ul>
+      <li>Item 1</li>
+      <li>Item 2</li>
+    </ul>
+    <MyDumbComponent title={title} />
+  </INPUT.div>
+  </div>
+}
 
 const TestTableComponent = ({
   table = null,
@@ -46,8 +76,10 @@ const TestTableComponent = ({
   );
 };
 
+
+
 editor.initializeApp(
-  document.body,
+  document.getElementById("root"),
   onSave,
   undefined,
   undefined,
@@ -55,9 +87,10 @@ editor.initializeApp(
   {},
   { noAdd: false, noRearrange: false, inlineOptionBar: true }
 );
-
-editor.addComponents(TestTableComponent, "test-componenta", "Test Component");
-editor.insertComponent("test-componenta");
+editor.addComponents(MyComponent, "mycomp", "MyComponent");
+editor.addComponents(DemoComponent, "demo", "DemoComponent");
+// editor.addComponents(TestTableComponent, "test-componenta", "Test Component");
+// editor.insertComponent("test-componenta");
 
 // =================================
 //            STREAMS

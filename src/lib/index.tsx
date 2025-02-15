@@ -21,11 +21,14 @@ import {
   injectEditorContext,
   useEditorContext,
 } from "./modules/input-slot/input-slot-hooks";
-import * as preact from "preact";
+import * as preact from "react"
 import { EditorContext } from "./modules/content-editor/content-editor-editor-context";
 import type { EditorContextType } from "./modules/content-editor/content-editor-editor-context";
 import { StreamSelectButton } from "./modules/stream/select/stream-select";
 import { ContentEditableInputSlot } from "./modules/input-slot/content-editable/input-slot-content-editable";
+import "./modules/common/drawer/common-drawer.scss";
+import "../sass/app.scss";
+
 // preact 1
 // window["preact1"] = preact;
 // console.log("preact1 new", preact);

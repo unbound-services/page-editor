@@ -1,39 +1,46 @@
 import { InputSlot } from "../input-slot";
-import * as React from "preact";
+import * as React from "react"
 import EditorContext, {
   incState,
 } from "../../content-editor/content-editor-editor-context";
 import "./input-slot-content-section.scss";
-import { useState } from "preact/hooks";
+import { useContext, useState } from "react"
+import { createPortal } from "react-dom";
+import editorStyles from "unbound-page-editor/unbound-page-editor.css?inline";
 
 export interface ContentSectionProps {
   sectionName?: string;
   tagName?: string;
   isRoot?: boolean;
+  previewing?: boolean;
+  editing?: boolean;
 }
 
 export type ContentSectionState = {
   component: any;
+  buttons: {[key:string]:any}
 };
 
-export class ContentSection extends InputSlot<
-  ContentSectionProps,
-  ContentSectionState
-> {
-  constructor(props) {
-    super(props);
-    const { context } = this;
-    this.state = { component: null };
-  }
-
-  editorRender() {
-    const { props, state, context } = this;
+export const ContentSection = (props: ContentSectionProps) => {
     const {
-      sectionName,
+      sectionName = "children",
       tagName: TagName = "div",
       isRoot = false,
       ...otherProps
     } = props;
+
+    const [buttonState, setButtonStateRaw] = useState({});
+    const [component, setComponent] = useState(null);
+    const editorContext = useContext(EditorContext);
+    const iframeHead = React.useRef(null);
+    const [iframeBody, setIframeBody] = useState(null);
+    const getButtonState = (key)=> {
+      return buttonState[key];
+    }
+
+    const setButtonState = (key, value) => {
+      setButtonStateRaw({...buttonState, [key]: value});
+    }
 
     const sortComponentList = (componentsToSort) => {
       return Object.keys(componentsToSort).sort((a, b) =>
@@ -43,119 +50,79 @@ export class ContentSection extends InputSlot<
       );
     };
 
-    const sortedComponentList = sortComponentList(context.componentList);
+    const sortedComponentList = sortComponentList(editorContext.componentList);
 
     // grab the editor state from context
     const {
-      editorState = { children: [] },
+      editorState = { [sectionName]: [] },
       editing,
       previewing,
       renderFlags,
-    } = context;
+      editorOptions
+    } = editorContext;
 
-    let componentData = editorState.children;
-    let currentChildren = editorState.children ? editorState.children : [];
+    let componentData = editorState[sectionName];
+    let currentChildren = editorState[sectionName] ? editorState[sectionName] : [];
     let childs = null;
     const removeComponent = (key) => (e) => {
-      let neweditorState = { ...editorState, children: [...currentChildren] };
+      let neweditorState = { ...editorState, [sectionName]: [...currentChildren] };
       e.preventDefault();
       e.stopPropagation();
 
       // probably should find a better way to do this
 
-      neweditorState.children.splice(key, 1);
-      context.setState(neweditorState);
+      neweditorState[sectionName].splice(key, 1);
+      editorContext.setState(neweditorState,sectionName);
     };
 
     const moveUp = (key) => (e) => {
-      let neweditorState = { ...editorState, children: [...currentChildren] };
+      let neweditorState = { ...editorState, [sectionName]: [...currentChildren] };
       e.preventDefault();
       e.stopPropagation();
 
       const comp = currentChildren[key];
       if (key == 0) return;
-      neweditorState.children[key] = neweditorState.children[key - 1];
-      neweditorState.children[key - 1] = comp;
+      neweditorState[sectionName][key] = neweditorState[sectionName][key - 1];
+      neweditorState[sectionName][key - 1] = comp;
 
       // probably should find a better way to do this
-      context.setState(neweditorState);
+      editorContext.setState(neweditorState,sectionName);
     };
 
     const moveDown = (key) => (e) => {
-      let neweditorState = { ...editorState, children: [...currentChildren] };
+      let neweditorState = { ...editorState, [sectionName]: [...currentChildren] };
       e.preventDefault();
       e.stopPropagation();
 
       const comp = currentChildren[key];
       if (key == currentChildren.length - 1) return;
-      neweditorState.children[key] = neweditorState.children[key + 1];
-      neweditorState.children[key + 1] = comp;
+      neweditorState[sectionName][key] = neweditorState[sectionName][key + 1];
+      neweditorState[sectionName][key + 1] = comp;
 
       // probably should find a better way to do this
-      context.setState(neweditorState);
+      editorContext.setState(neweditorState,sectionName);
     };
 
     if (componentData) {
-      const getComp = getComponentFromData(context);
-      childs = componentData.map((item, key) => {
-        let optionButtons = null;
-
-        // manage option buttons for deleting and moving components
-        if (editing && context.componentList[item.comp]) {
-          const componentDisplayName = context.componentList[item.comp]
-            .displayName
-            ? context.componentList[item.comp].displayName
-            : item.comp;
-          optionButtons = [];
-
-          // ===========================
-          // up and down buttons =======
-          // ===========================
-          if (!renderFlags.noRearrange) {
-            if (key > 0)
-              optionButtons.push(
-                <button key={`${item.comp}-up-button`} onClick={moveUp(key)}>
-                  Move Up
-                </button>
-              );
-            if (key < currentChildren.length - 1)
-              optionButtons.push(
-                <button
-                  key={`${item.comp}-down-button`}
-                  onClick={moveDown(key)}>
-                  Move Down
-                </button>
-              );
-          }
-
-          // =========================
-          // delete button
-          // ==========================
-          if (!renderFlags.noAdd) {
-            optionButtons.push(
-              <button
-                className={"content-section-controls__delete-button"}
-                key={`${item.comp}-delete-button`}
-                onClick={removeComponent(key)}>
-                X
-              </button>
-            );
-          }
-        }
-
-        return (
-          <React.Fragment key={key}>
-            {getComp(item, key, optionButtons)}
-          </React.Fragment>
-        );
-      });
+      const getComp = getComponentFromData(editorContext);
+      childs = RenderComponents( {componentData:componentData, 
+      renderFlags:renderFlags,
+      editing:editing,
+       context:editorContext, 
+       moveUp:moveUp, 
+       moveDown:moveDown, 
+       currentChildren:currentChildren, 
+       removeComponent:removeComponent, getComp:getComp,
+      buttonRenderState:(key)=>[getButtonState(key), (val)=>setButtonState(key,val)],
+      sectionName},
+      );
     }
 
-    const componentList = context.componentList;
+    const componentList = editorContext.componentList;
 
     // method for adding a new component to the content section state
     const addComponent = (e, component = null) => {
-      let neweditorState = { ...editorState, children: [...currentChildren] };
+      let neweditorState = { ...editorState, [sectionName]: [...currentChildren] };
       if (e) {
         e.preventDefault();
         e.stopPropagation();
@@ -164,16 +131,16 @@ export class ContentSection extends InputSlot<
       // probably should find a better way to do this
       let whichComponent = component;
       if (!whichComponent)
-        whichComponent = state.component
-          ? state.component
+        whichComponent = component
+          ? component
           : sortedComponentList[0];
-      neweditorState.children.push({ comp: whichComponent, props: {} });
-      context.setState(neweditorState);
+      neweditorState[sectionName].push({ comp: whichComponent, props: {} });
+      editorContext.setState(neweditorState,sectionName);
     };
 
     // component for adding a new component
     let addButton = null;
-    if (context.editing && !renderFlags.noAdd) {
+    if (editorContext.editing && !renderFlags.noAdd) {
       addButton = (
         <div className="add-component">
           <button
@@ -181,13 +148,13 @@ export class ContentSection extends InputSlot<
             onClick={addComponent}
             data-testid="add-component-button">
             {" "}
-            + Add Component
+            +
           </button>
           <select
             className="add-component__component-list"
             onChange={(e) => {
               const newComponent = e.currentTarget.value;
-              this.setState({ component: newComponent });
+              setComponent(newComponent);
 
               addComponent(null, newComponent);
             }}
@@ -207,42 +174,167 @@ export class ContentSection extends InputSlot<
       );
     }
 
-    return (
-          // @ts-ignore
-      <TagName {...otherProps}>
+    React.useEffect(()=>{},[]);
+
+    let final= (<SectionControlWrapper editing={editing}>
+      <TagName {...otherProps as any}>
         {childs}
         {addButton}
       </TagName>
+      </SectionControlWrapper>
     );
+
+    // render into a react portal if we're root
+    if (isRoot && !(editorOptions?.pageOptions?.renderInIframe)) {
+
+      let srcDoc="<!doctype HTML>"
+      let src;
+      if(editorOptions?.pageOptions?.href){
+        src = editorOptions.pageOptions.href;
+        srcDoc = undefined;
+      }
+
+      final = <iframe className="page-editor__viewport-iframe" src={src} srcDoc={srcDoc} style={{width:"100%", height:"100%", border:"2px #dddddd solid"}} onLoad={e=>{
+        const node = e.target as HTMLIFrameElement;
+        
+        // add the raw css
+        if(editorOptions?.pageOptions?.css && editorOptions.pageOptions.css?.length > 0){
+          editorOptions.pageOptions.css.forEach((css)=>{
+            const styleTag = document.createElement('style');
+            styleTag.textContent = css;
+            node.contentDocument.head.appendChild(styleTag);
+          });
+        }
+
+        // add the css files from the options
+        if(editorOptions?.pageOptions?.stylesheets && editorOptions.pageOptions.stylesheets?.length > 0){
+          editorOptions.pageOptions.stylesheets.forEach((stylesheets)=>{
+            const link = document.createElement('link');
+            link.rel = 'stylesheet';
+            link.href = stylesheets;
+            node.contentDocument.head.appendChild(link);
+          });
+        }
+
+        // add the js files from the options
+        if(editorOptions?.pageOptions?.scripts && editorOptions.pageOptions.scripts?.length > 0){
+          editorOptions.pageOptions.scripts.forEach((script)=>{
+            const scriptTag = document.createElement('script');
+            scriptTag.src = script;
+            node.contentDocument.head.appendChild(scriptTag);
+          });
+        }
+
+        // add the raw js from the options
+        if(editorOptions?.pageOptions?.js && editorOptions.pageOptions.js?.length > 0){
+          editorOptions.pageOptions.js.forEach((js)=>{
+            const scriptTag = document.createElement('script');
+            scriptTag.textContent = js;
+            node.contentDocument.head.appendChild(scriptTag);
+          });
+        }
+
+        // bootstrap css
+        const bootstrap = document.createElement('style');
+        bootstrap.textContent = editorStyles;
+        node.contentDocument.head.appendChild(bootstrap);
+
+        // iframeHead.current = node.contentDocument.head;
+        setIframeBody(node.contentWindow.document.body);
+        // createPortal(final, node.contentDocument.getElementById('root'));
+      }}>
+        {/* {iframeHead.current &&  createPortal(<title>Head</title>, iframeHead.current)} */}
+        {iframeBody && createPortal(final, iframeBody)}
+      </iframe>
+    }
+
+    return final;
   }
+
+const RenderComponents = ({componentData, renderFlags,editing,context,moveUp,moveDown,currentChildren,removeComponent, getComp, buttonRenderState,sectionName})=>{
+  
+  return componentData.map((item, key) => {
+    let optionButtons = null;
+    // manage option buttons for deleting and moving components
+    if (editing && context.componentList[item.comp]) {
+      const componentDisplayName = context.componentList[item.comp]
+        .displayName
+        ? context.componentList[item.comp].displayName
+        : item.comp;
+      optionButtons = [];
+
+      // ===========================
+      // up and down buttons =======
+      // ===========================
+      if (!renderFlags.noRearrange) {
+        if (key > 0)
+          optionButtons.push(
+            <button key={`${item.comp}-up-button`} onClick={moveUp(key)}>
+              ⬆️
+            </button>
+          );
+        if (key < currentChildren.length - 1)
+          optionButtons.push(
+            <button
+              key={`${item.comp}-down-button`}
+              onClick={moveDown(key)}>
+              ⬇️
+            </button>
+          );
+      }
+
+      // =========================
+      // delete button
+      // ==========================
+      if (!renderFlags.noAdd) {
+        optionButtons.push(
+          <button
+            className={"content-section-controls__delete-button"}
+            key={`${item.comp}-delete-button`}
+            onClick={removeComponent(key)}>
+            X
+          </button>
+        );
+      }
+    }
+
+
+    // if you don't treat this like a function call it will 
+    // think you're calling your hooks outside a function
+    return getComp(item, key, optionButtons,buttonRenderState(key),sectionName);
+    const Comp = getComp(item, key, optionButtons);
+    return <Comp key={key+"-wrapper"} />;
+  });
+
 }
 
 // get the component from the data that represents it
 export const getComponentFromData =
-  (currentContext) => (data, key, optionButtons) => {
+  (currentContext) => (data, key, optionButtons,buttonRenderState,sectionName) =>{
     const compData = currentContext.componentList[data.comp];
-    const [buttonPortal, setButtonPortal] = useState();
-    const [buttonRender, setButtonRender] = useState(() => () => null);
+    const [buttonRender, setButtonRender] = buttonRenderState;
     if (!compData) return null;
     const Comp = currentContext.componentList[data.comp].comp;
     let currentProps = data.props;
 
-    // const portal = createPortal()
     return (
-      <EditorContext.Provider key={key} value={incState(currentContext, key)}>
+      <EditorContext.Provider value={incState(currentContext, key,sectionName)}>
         <ComponentSlotWrapper
           optionButtons={optionButtons}
           componentName={compData.displayName}
           editing={currentContext.editing}
           previewing={currentContext.previewing}
-          buttonRender={buttonRender}>
+          buttonRender={buttonRender}
+          sectionName={sectionName}>
           <Comp
+            key={key+"-comp"}
             {...currentProps}
             editing={currentContext.editing}
             componentName={compData.displayName}
             previewing={currentContext.previewing}
-            setButtonRender={(val) => setButtonRender(() => val)}>
-            {data.children}
+            sectionName={sectionName}
+            setButtonRender={setButtonRender}> 
+            {data.props[sectionName]}
           </Comp>
         </ComponentSlotWrapper>
       </EditorContext.Provider>
@@ -255,10 +347,11 @@ const ComponentSlotWrapper = (props) => {
   // onMouseOut={(e)=>{console.log('event', e.target); setShowingButtons(false)}}
 
   // dont do anything with this when they're just previewing
-  const { editing, previewing, buttonRender } = props;
+  const { editing, previewing, buttonRender,sectionName } = props;
   if (!editing) {
     return props.children;
   }
+
 
   // render the buttons
   let extra = null;
@@ -266,7 +359,7 @@ const ComponentSlotWrapper = (props) => {
   if (buttonRender && typeof buttonRender === "function") {
     extra = buttonRender();
     if (extra)
-      extra = <div className="content-section-controls__buttons">{extra}</div>;
+      extra = <div className="content-section-controls__extra-buttons-wrapper"><div className="content-section-controls__extra-buttons">{extra}</div></div>;
   }
 
   const buttonSection = (
@@ -274,8 +367,9 @@ const ComponentSlotWrapper = (props) => {
       <strong className="content-section-controls__component-type">
         {props.componentName}
       </strong>
-      {props.optionButtons}
-      {extra}
+      
+        {props.optionButtons}
+        {extra}
     </div>
   );
 
@@ -286,3 +380,16 @@ const ComponentSlotWrapper = (props) => {
     </div>
   );
 };
+
+
+export const SectionControlWrapper = (props)=>{
+  const {editing,children} = props;
+  if (!editing) {
+    return <>{children}</>;
+  }
+  return (
+    <div className="content-section-controls__wrapper">
+      {children}
+    </div>
+  )
+}

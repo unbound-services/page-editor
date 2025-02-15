@@ -1,7 +1,7 @@
-import { Fragment } from "preact";
+import { Fragment } from "react"
 import StringInput from "../../input-slot/string-input/input-slot-string-input";
 import SelectInput from "../../input-slot/select-input/input-slot-select-input";
-import { useEffect } from "preact/hooks";
+import { useEffect } from "react"
 import { ContentEditableInputSlot } from "../../input-slot/content-editable/input-slot-content-editable";
 
 const heading = (props) => {

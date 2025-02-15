@@ -11,7 +11,7 @@ interface SelectInputProps {
   selectList?: boolean;
 }
 class SelectInput extends InputSlot<SelectInputProps> {
-  editorRender() {
+  render() {
     const {
       sectionName,
       options,

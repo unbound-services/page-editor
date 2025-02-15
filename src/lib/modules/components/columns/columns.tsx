@@ -1,16 +1,17 @@
-import * as React from "preact";
+import * as React from "react"
 import NumberSelectInput from "../../input-slot/number-select-input/input-slot-number-select-input";
 import SlotSection from "../../input-slot/slot-section/input-slot-slot-section";
 import { ContentSection } from "../../input-slot/content-section/input-slot-content-section";
+import "./components-columns.scss";
+
+
 const column = (props) => {
-  const { text = "", count } = props;
+  const { text = "", count, setButtonRender} = props;
 
   return (
-    <React.Fragment>
       <div className="section__column">
-        <ContentSection sectionName="column" />
+        <ContentSection  />
       </div>
-    </React.Fragment>
   );
 };
 
@@ -21,11 +22,11 @@ const columnSection = (props) => {
   let columnSectionClass;
 
   if (count == 2) {
-    columnSectionClass = "section__inner-div column-section--double";
+    columnSectionClass = "section__inner-div column-section --double";
   } else if (count == 3) {
-    columnSectionClass = "section__inner-div column-section--triple";
+    columnSectionClass = "section__inner-div column-section --triple";
   } else {
-    columnSectionClass = "section__inner-div column-section--single";
+    columnSectionClass = "section__inner-div column-section --single";
   }
 
   for (var i = 0; i < count; i++) {
@@ -33,10 +34,13 @@ const columnSection = (props) => {
     columns.push(
       <SlotSection
         sectionName={slotName}
-        onRender={(props) => <Column {...props} />}
-      />
+        key={i}
+      ><Column {...props} />
+      </SlotSection>
     );
   }
+
+
 
   return (
     <React.Fragment>

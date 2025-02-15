@@ -1,4 +1,4 @@
-import React, { useState } from "preact/compat";
+import React, { useState } from "react"
 import Drawer from "../../common/drawer/common-drawer";
 
 export const StreamDrawer = ({ isOpen = false, setDrawerOpen }) => {

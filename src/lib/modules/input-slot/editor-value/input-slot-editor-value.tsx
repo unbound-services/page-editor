@@ -1,4 +1,4 @@
-import { Fragment } from "preact";
+import { Fragment } from "react"
 import { InputSlot } from "../input-slot";
 
 export class EditorValue extends InputSlot {

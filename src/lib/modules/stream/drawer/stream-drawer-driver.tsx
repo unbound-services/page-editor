@@ -1,5 +1,5 @@
-import { FunctionComponent } from "preact/compat";
-import { useState } from "preact/hooks";
+import { FunctionComponent } from "react"
+import { useState } from "react"
 import { Drawer } from "../../common/drawer/common-drawer";
 import { StreamBase, StreamGetCallback } from "../stream-base";
 import { StreamDriver, StreamList } from "../stream-driver";

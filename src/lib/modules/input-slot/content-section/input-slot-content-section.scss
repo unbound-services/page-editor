@@ -1,115 +1,268 @@
-@import '../../../../sass/variables';
+@use '@sass/variables' as *;
 
-.content-section-controls{
+$overlayColor: #0084ffa0;
+$buttonHeight: 24px;
+
+.content-section-controls {
 
 
-    &__wrapper{
-        position:relative;
-        border:2px #3a3a3a00 solid;
+    &__wrapper {
+        box-sizing: border-box;
+        position: relative;
+        border: 4px #0084ff50 solid;
+        // border-color: transparent;
+        border-radius: 6px;
         // padding-top:30px;
         transition: border-color 0.25s;
-        overflow:visible;
-        min-height:30px;
+        transition-timing-function: ease-in-out;
+        overflow: visible;
+        min-height: 30px;
+        margin: -5px;
+        padding: 2px;
+        padding-bottom: 10px;
 
-        &:hover{
-            // border:2px #3a3a3aaa solid;
-            & > .content-section-controls__inner{
+        &:hover {
+
+            border-color: $overlayColor;
+
+            &>.content-section-controls__inner {
                 // background:red;
-                opacity:100%;
-                z-index: 100;
+                opacity: 100%;
+                z-index: 9;
+                transform: translateY(calc(-100% + 8px));
+                border-radius: 5px;
+
+                &:before {
+                    width: 100%;
+                    border-radius: 5px;
+                }
+
+                .content-section-controls__extra-buttons-wrapper {
+                    display: inline-block;
+                }
+
+                button {
+                    display: inline-block;
+                }
+            }
+
+            &>.add-component {
+                transform: translateY(-10px);
+            }
+
+
+            &>.content-section-controls__component-type {
+                color: white;
+
             }
         }
     }
 
 
-    &__inner{
-        position:absolute;
-        height:auto;
-        top:0;
-        right:0;
-        padding:4px 8px;
-        background:#7e7e7e;
-        z-index: 90;
-        transition: opacity 0.25s;
-        opacity:0%;
+    &__inner {
+        position: absolute;
+        box-sizing: border-box;
+        height: auto;
+        top: 0;
+        right: 0;
+        padding: 4px 8px;
+        background: white;
+        z-index: 8;
+        transition: opacity 0.25s, width 0.25s, transform 0.25s, border-radius 0.25s;
+        opacity: 50%;
+        border-bottom-left-radius: 5px;
+        ;
+        display: flex;
+
+
+        &:before {
+            content: "";
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 0;
+            height: 100%;
+            background: $overlayColor;
+            transition: width 0.25s;
+            z-index: -1;
+            border-bottom-left-radius: 5px;
+            box-shadow: #00000060 -5px 5px 10px 0px;
+        }
 
         button {
             margin-right: 10px;
-            display:inline-block;
-            border-radius:4px;
-            border:none;
-            text-transform:uppercase;
-            font-size:0.9em;
-            font-weight:bold;
+            display: inline-block;
+            border-radius: 4px;
+            border: none;
+            text-transform: uppercase;
+            font-size: 0.9em;
+            font-weight: bold;
+            height: $buttonHeight;
+            display: none;
         }
     }
 
-    &__delete-button{
-        background:#dd0000;
-        color:white;
-        font-weight:bold;
+    &__delete-button {
+        background: #dd0000;
+        color: white;
+        font-weight: bold;
         cursor: pointer;
     }
 
+    &__extra-buttons {
+        position: absolute;
+        height: auto;
+        top: 0;
+        right: 0;
+        // left: 300px;
+        padding: 8px 8px;
+        background: #7e7e7e;
+        border-radius: 4px;
+        z-index: 20;
 
 
-    &__buttons{
-        position:absolute;
-        height:auto;
-        top:0;
-        left:300px;
-        padding:4px 8px;
-        background:#7e7e7e;
-        z-index: 100;
+
+        transition: opacity 0.25s, transform 0.5s;
+        transition-timing-function: ease-in-out;
+        transform-origin: 100% top;
+
+
+        transform: rotateY(90deg) translateX(10px);
+        transform-style: preserve-3d;
+
+        opacity: 0%;
     }
 
-    &__component-type{
-        color: white;
+
+    &__extra-buttons-wrapper {
+        position: relative;
+        height: auto;
+
+        display: none;
+        width: 32px;
+
         font-weight: bold;
+
+        z-index: 10;
+        overflow: hidden;
+
+
+
+        &::after {
+            content: "...";
+            display: inline-block;
+            font-size: 24px;
+            font-weight: bold;
+            text-align: center;
+            width: 32px;
+            overflow: hidden;
+            height: $buttonHeight;
+            line-height: $buttonHeight;
+            border-radius: 8px;
+            padding: 0;
+            margin: 0;
+
+            box-sizing: border-box;
+            background: #aaaaff;
+        }
+
+
+        &:hover,
+        &:focus {
+            &::after {
+                background: $overlayColor;
+            }
+
+            overflow: visible;
+
+            &>.content-section-controls__extra-buttons {
+                display: block;
+                opacity: 100%;
+                transform: translateX(0px) rotateY(0deg);
+            }
+        }
+
+    }
+
+
+
+
+
+    &__component-type {
+        color: black;
+        font-weight: 400;
         font-size: 12px;
-        padding-right:10px;
-        text-transform:uppercase;
-        letter-spacing:0.5px;
-        font-family:arial;
+        padding: 0;
+        padding-right: 10px;
+        text-transform: uppercase;
+        letter-spacing: 1.5px;
+        font-family: arial;
+        margin: 0;
+        height: $buttonHeight;
+        line-height: $buttonHeight;
+        text-shadow: #00000070 1px 1px 4px;
     }
 }
 
 .add-component {
-    display: inline-block;
-    padding: 20px;
-    margin-top: 20px;
+    display: flex;
     background: $greyBG;
     $buttonWidth: 250px;
-    overflow:hidden;
-    width:20px;
-    height:20px;
-    border-radius:10px;
-    transition: width 0.1s, height 0.1s;
-    position:relative;
+    overflow: hidden;
+    width: 50%;
+    height: 20px;
+    top: calc(100%);
+    left: 50%;
+    transform: translateX(-50%) translateY(-8px);
+    border-radius: 10px;
+    transition: width 0.1s, height 0.1s, padding 0.2s, background-color 0.5s;
+    position: absolute;
+    text-align: center;
+    justify-content: center;
 
-    &:before{
-        content:"+";
-        font-size:2em;
-        font-weight:bold;
-        color:white;
-        display:block;
-        position:absolute;
-        top:0;
-        left:0;
-        width:20px;
-        height:20px;
-        text-align:center;
+    button,
+    select {
+        display: none;
+        height: 30px;
+        padding: 4px 0;
+        margin: 0;
     }
 
-    &:hover{
-        width:300px;
-        height:130px;
+    &:before {
+        content: "+";
+        font-size: 2em;
+        font-weight: bold;
+        color: white;
+        display: inline-block;
+        width: 20px;
+        height: 20px;
+        line-height: 20px;
+        text-align: center;
 
-        &:before{
-            display:none;
+    }
+
+    &:hover {
+        // width: 300px;
+        // height: 130px;
+        width: 90%;
+        height: auto;
+        padding: 4px;
+        transform: translateX(-50%) translateY(-8px);
+        z-index: 10;
+        opacity: 1.0;
+        background: rgba($overlayColor, 1.0);
+
+        &:before {
+            display: none;
+        }
+
+        button,
+        select {
+            display: block;
         }
 
     }
+
     &__button {
         display: block;
         width: $buttonWidth;
@@ -121,8 +274,9 @@
         font-size: 12px;
         font-weight: bold;
         text-transform: uppercase;
-
+        cursor: pointer;
     }
+
     &__component-list {
         display: block;
         width: $buttonWidth;

@@ -1,10 +1,10 @@
-import { useContext } from "preact/hooks";
+import { useContext } from "react"
 import EditorContext, {
   stateDeeper,
 } from "../../content-editor/content-editor-editor-context";
 
 const SlotSection = (props) => {
-  const { onRender, sectionName } = props;
+  const { sectionName, children } = props;
   const currentContext = useContext(EditorContext);
   const { previewing, editing } = currentContext;
   const newContext = { ...currentContext };
@@ -17,9 +17,12 @@ const SlotSection = (props) => {
     currentContext.editorState,
     currentContext.setState
   );
+
+
+  
   return (
     <EditorContext.Provider value={newContext}>
-      {onRender({ ...newContext.editorState, previewing, editing })}
+      {children}
     </EditorContext.Provider>
   );
 };

@@ -1,21 +1,23 @@
 // Must be the first import
-if (process.env.NODE_ENV==='development') {
-  // Must use require here as import statements are only allowed
-  // to exist at top-level.
-  require("preact/debug");
-  console.log("preact/debug");
-}
+// if (process.env.NODE_ENV==='development') {
+//   // Must use require here as import statements are only allowed
+//   // to exist at top-level.
+//   require("preact/debug");
+//   console.log("preact/debug");
+// }
 
-import { render } from "preact";
+
 import { PageEditor } from "./page-editor";
 import componentList, {
   PageEditorComponentType,
 } from "./page-editor-components";
 import { StreamBase } from "../stream/stream-base";
 import { StreamDriver } from "../stream/stream-driver";
+import {createRoot} from 'react-dom/client';
 
 import { StreamDrawerDriver } from "../stream/drawer/stream-drawer-driver";
-import { useState } from "preact/hooks";
+import { useState } from "react"
+import { PageEditorPlugin } from "../plugin/plugin-manager";
 
 export type PageEditorRenderFlags = {
   individualComponents?: boolean;
@@ -31,6 +33,26 @@ export const defaultRendererFlags: Readonly<PageEditorRenderFlags> = {
   inlineOptionBar: false,
 };
 
+export type PageEditorAppOptions = {
+  plugins?: PageEditorPlugin[];
+  components?: PageEditorComponentType[];
+  pageOptions?: {
+    pageHtml?: string,
+    renderInIframe?:boolean,
+    documentRoot?: string | HTMLElement | ((iframeDocument:HTMLIFrameElement) => HTMLElement),
+    href?: string } & Partial<PageEditorAssetType>;
+}
+
+export type PageEditorAssetType = {
+  js: string[];
+  css: string[];
+  stylesheets: string[];
+  scripts: string[];
+}
+
+
+
+
 export default class PageEditorApp {
   protected _streamDriver: StreamDrawerDriver;
   protected _setForceRefreshVal: Function;
@@ -38,13 +60,21 @@ export default class PageEditorApp {
   public get streamDriver() {
     return this._streamDriver;
   }
-  protected _renderFunction = render;
+  protected _renderFunction = null;
+  protected currentRoot = null;
 
   protected components;
   protected plugins;
-  constructor() {
-    this.components = componentList;
-    this.plugins = {};
+
+  protected _editorOptions: PageEditorAppOptions=null;
+
+
+  constructor(options?:PageEditorAppOptions) {
+    this._editorOptions = options;
+    const {components:initialComponentList = componentList, 
+      plugins = null} = options;
+    this.components = initialComponentList;
+    this.plugins = plugins ? [...plugins] : [] ;
   }
 
   initializeApp(
@@ -53,7 +83,6 @@ export default class PageEditorApp {
     pageData = { children: [] },
     pageMeta = { name: "", slug: "", status: "draft" },
     newComponentList: any = false,
-    plugins = {},
     renderFlags: PageEditorRenderFlags = {
       individualComponents: false,
       noRearrange: false,
@@ -64,9 +93,6 @@ export default class PageEditorApp {
     if (newComponentList) {
       this.components = newComponentList;
     }
-    if (Object.keys(plugins).length > 0) {
-      this.plugins = plugins;
-    }
 
     // if there isn't a streamdriver then create it
     this._streamDriver = this.createStreamDriver();
@@ -76,10 +102,12 @@ export default class PageEditorApp {
       this._setForceRefreshVal = setRefreshCount; //for forcing refreshes
 
       return (
-        <div class="page-editor" data-testid="page-editor">
+        <div className="page-editor" data-testid="page-editor">
           <PageEditor
+            key="page-editor"
             componentList={this.components}
             plugins={this.plugins}
+            editorOptions={this._editorOptions}
             pageData={pageData} //these will only matter during initialization
             pageMeta={pageMeta} //these will only matter during initialization
             onSave={onSave}
@@ -95,7 +123,19 @@ export default class PageEditorApp {
     };
 
     const app = <AppComp />;
-    this._renderFunction(app, domObject);
+
+    if(!this.currentRoot) {
+      this.currentRoot = createRoot(domObject);
+      this._renderFunction = (app)=>{
+        console.log("rendering app")
+        this.currentRoot.render(app);
+      }
+    } 
+    
+    this._renderFunction(app);
+    
+    
+    // this._renderFunction(app, domObject);
   }
 
   createStreamDriver(): StreamDrawerDriver {
@@ -163,29 +203,4 @@ export default class PageEditorApp {
 }
 
 export { PageEditorApp };
-// below is an example of the current functions and how to use them
 
-// NewEditor.addComponent("component-slug", "Component Display Name", component)
-
-// const testComponent = (props) => {
-//   return (
-//     <h1><StringInput sectionName="title" /></h1>
-//   )
-// }
-
-// NewEditor.initializeApp(dom object, save function, the page data)
-
-// const onSave = data => {
-//   console.log("Data: ", data)
-// }
-
-// const testPage = {
-//   children: [
-//     {
-//       comp: "test-component",
-//       props: {
-//         title: "test"
-//       }
-//     }
-//   ]
-// }

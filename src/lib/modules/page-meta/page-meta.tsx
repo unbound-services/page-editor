@@ -43,7 +43,7 @@ export const PageMeta = ({ pageMeta, updatePageMetaState }) => {
             value={pageMeta.slug}
           />
           <div
-            style={{ fontSize: "0.8em", fontColor: "#dddddd", paddingTop: 4 }}>
+            style={{ fontSize: "0.8em", color: "#dddddd", paddingTop: 4 }}>
             Set to "/" to make this homepage
           </div>
         </label>

@@ -1,4 +1,4 @@
-import { JSX } from "preact/compat";
+import { ComponentProps, JSX } from "react"
 import Columns from "../components/columns/columns";
 import Heading from "../components/heading/heading";
 import Paragraph from "../components/paragraph/paragraph";
