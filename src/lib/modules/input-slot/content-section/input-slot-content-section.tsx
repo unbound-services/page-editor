@@ -4,9 +4,9 @@ import EditorContext, {
   incState,
 } from "../../content-editor/content-editor-editor-context";
 import "./input-slot-content-section.scss";
-import { useContext, useState } from "react"
+import { useContext, useEffect, useState } from "react"
 import { createPortal } from "react-dom";
-import editorStyles from "unbound-page-editor/unbound-page-editor.css?inline";
+import editorStyles from "./unb-editor.css?inline";
 
 export interface ContentSectionProps {
   sectionName?: string;
@@ -14,6 +14,7 @@ export interface ContentSectionProps {
   isRoot?: boolean;
   previewing?: boolean;
   editing?: boolean;
+  iframeRef?: React.MutableRefObject<HTMLIFrameElement>;
 }
 
 export type ContentSectionState = {
@@ -26,6 +27,7 @@ export const ContentSection = (props: ContentSectionProps) => {
       sectionName = "children",
       tagName: TagName = "div",
       isRoot = false,
+      iframeRef,
       ...otherProps
     } = props;
 
@@ -34,6 +36,7 @@ export const ContentSection = (props: ContentSectionProps) => {
     const editorContext = useContext(EditorContext);
     const iframeHead = React.useRef(null);
     const [iframeBody, setIframeBody] = useState(null);
+    const [iframeHeadStateful, setIframeHead] = useState(null);
     const getButtonState = (key)=> {
       return buttonState[key];
     }
@@ -118,10 +121,10 @@ export const ContentSection = (props: ContentSectionProps) => {
       );
     }
 
-    const componentList = editorContext.componentList;
+    const {componentList, viewportDimensions} = editorContext;
 
     // method for adding a new component to the content section state
-    const addComponent = (e, component = null) => {
+    const addComponent = (e) => {
       let neweditorState = { ...editorState, [sectionName]: [...currentChildren] };
       if (e) {
         e.preventDefault();
@@ -129,7 +132,7 @@ export const ContentSection = (props: ContentSectionProps) => {
       }
 
       // probably should find a better way to do this
-      let whichComponent = component;
+      let whichComponent =  component;
       if (!whichComponent)
         whichComponent = component
           ? component
@@ -154,9 +157,10 @@ export const ContentSection = (props: ContentSectionProps) => {
             className="add-component__component-list"
             onChange={(e) => {
               const newComponent = e.currentTarget.value;
+              console.log('e',e,e.currentTarget.value,e.target.value);
               setComponent(newComponent);
 
-              addComponent(null, newComponent);
+              // addComponent(null, newComponent);
             }}
             data-testid="add-component-listbox">
             {sortedComponentList.map((index) => {
@@ -174,7 +178,57 @@ export const ContentSection = (props: ContentSectionProps) => {
       );
     }
 
-    React.useEffect(()=>{},[]);
+
+    useEffect(()=>{
+      if(iframeHead && iframeHead.current){
+        let node = iframeRef.current;
+
+
+        // add the js files from the options
+        let scripts: (()=>Promise<void>)[] = [];
+        if(editorOptions?.pageOptions?.scripts && editorOptions.pageOptions.scripts?.length > 0){
+          for( let script of editorOptions.pageOptions.scripts){
+            const prom = ()=>new Promise<void>( (resolve)=>{
+              const scriptTag = node.contentDocument.createElement('script');
+              scriptTag.src = script;
+
+              node.contentDocument.head.appendChild(scriptTag);
+              scriptTag.onload=()=>resolve();
+              scriptTag.onerror=()=>resolve();
+            } ); // end of promise
+            scripts.push(prom);
+        }; // end of the map
+      }
+      new Promise(async (resolve)=>{
+        for(let i=0;i<scripts.length;i++){
+          await scripts[i]();
+        }
+        resolve(true);
+      }).then(()=>{
+        
+        // add the raw js from the options0
+        if(editorOptions?.pageOptions?.js && editorOptions.pageOptions.js?.length > 0){
+          editorOptions.pageOptions.js.forEach((js)=>{
+            const scriptTag = node.contentDocument.createElement('script');
+            scriptTag.textContent = js;
+            node.contentDocument.body.appendChild(scriptTag);
+          });
+        }
+
+      }
+    );
+    }
+  }
+    ,[iframeHead.current])
+
+    useEffect(()=>{
+      if(iframeRef && iframeRef.current && viewportDimensions){
+        const {zoom, width, height } = viewportDimensions;
+        iframeRef.current.style.zoom = `${zoom/100.0}`;
+        iframeRef.current.contentDocument.body.style.minWidth = `${width-20/zoom*100.0}px`;
+        iframeRef.current.contentDocument.body.style.minHeight = `${height-20/zoom*100.0}px`;
+      }
+    },[iframeBody, viewportDimensions])
 
     let final= (<SectionControlWrapper editing={editing}>
       <TagName {...otherProps as any}>
@@ -185,7 +239,10 @@ export const ContentSection = (props: ContentSectionProps) => {
     );
 
     // render into a react portal if we're root
-    if (isRoot && !(editorOptions?.pageOptions?.renderInIframe)) {
+    let renderInIframe = editorOptions?.pageOptions?.renderInIframe;
+    if(renderInIframe===undefined) renderInIframe = true;
+
+    if (isRoot && renderInIframe) {
 
       let srcDoc="<!doctype HTML>"
       let src;
@@ -194,9 +251,25 @@ export const ContentSection = (props: ContentSectionProps) => {
         srcDoc = undefined;
       }
 
-      final = <iframe className="page-editor__viewport-iframe" src={src} srcDoc={srcDoc} style={{width:"100%", height:"100%", border:"2px #dddddd solid"}} onLoad={e=>{
-        const node = e.target as HTMLIFrameElement;
+      final = <iframe className="page-editor__viewport-iframe" 
+      src={src} 
+      key="iframe"
+      srcDoc={srcDoc} 
+      style={{width:viewportDimensions.width, 
+        height:viewportDimensions.height, 
+        border:"2px #dddddd solid",}}
+      onLoad={e=>{
+        const node = e.currentTarget as HTMLIFrameElement;
         
+        if(!node.contentDocument) return;
+        if(!node.contentDocument.head) return;
+        if(iframeRef && iframeRef.current!=node) iframeRef.current = node;
+        if(!node.contentDocument.head!=iframeHead.current){
+        iframeHead.current = node.contentDocument.head;
+        // bootstrap css
+        const bootstrap = document.createElement('style');
+        bootstrap.textContent = editorStyles;
+        node.contentDocument.head.appendChild(bootstrap);
         // add the raw css
         if(editorOptions?.pageOptions?.css && editorOptions.pageOptions.css?.length > 0){
           editorOptions.pageOptions.css.forEach((css)=>{
@@ -216,34 +289,37 @@ export const ContentSection = (props: ContentSectionProps) => {
           });
         }
 
-        // add the js files from the options
-        if(editorOptions?.pageOptions?.scripts && editorOptions.pageOptions.scripts?.length > 0){
-          editorOptions.pageOptions.scripts.forEach((script)=>{
-            const scriptTag = document.createElement('script');
-            scriptTag.src = script;
-            node.contentDocument.head.appendChild(scriptTag);
-          });
+
+
+      }
+
+        // now we need to find the root element and render into it
+        let root;
+        if(editorOptions?.pageOptions?.documentRoot){
+          if(typeof editorOptions.pageOptions.documentRoot == "function"){
+            root = editorOptions.pageOptions.documentRoot(node);
+          } else if(typeof editorOptions.pageOptions.documentRoot == "string"){ 
+            root = node.contentDocument.querySelector(editorOptions.pageOptions.documentRoot);
+          } else if(editorOptions.pageOptions.documentRoot instanceof HTMLElement){
+            root = editorOptions.pageOptions.documentRoot;
+          }
+        } else {
+          // default to the body
+          root = node.contentDocument.body;
         }
 
-        // add the raw js from the options
-        if(editorOptions?.pageOptions?.js && editorOptions.pageOptions.js?.length > 0){
-          editorOptions.pageOptions.js.forEach((js)=>{
-            const scriptTag = document.createElement('script');
-            scriptTag.textContent = js;
-            node.contentDocument.head.appendChild(scriptTag);
-          });
+        if(iframeBody!=root){
+
+          if(editorOptions?.pageOptions?.clearContainer){
+            root.innerHTML = "";
+          }
+          
+          // iframeHead.current = node.contentDocument.head;
+          setIframeBody(root);
         }
-
-        // bootstrap css
-        const bootstrap = document.createElement('style');
-        bootstrap.textContent = editorStyles;
-        node.contentDocument.head.appendChild(bootstrap);
-
-        // iframeHead.current = node.contentDocument.head;
-        setIframeBody(node.contentWindow.document.body);
         // createPortal(final, node.contentDocument.getElementById('root'));
       }}>
-        {/* {iframeHead.current &&  createPortal(<title>Head</title>, iframeHead.current)} */}
+        {/* {iframeHead.current } */}
         {iframeBody && createPortal(final, iframeBody)}
       </iframe>
     }

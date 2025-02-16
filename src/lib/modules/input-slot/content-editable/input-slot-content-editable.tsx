@@ -76,7 +76,7 @@ export const ContentEditableInputSlot = ({
     }
     
     
-    const contentRef = useRef<HTMLDivElement>();
+    const contentRef = useRef<HTMLDivElement>(null);
     const editorContext = useEditorContext(sectionName);
 
   let html = editorContext.editorState[sectionName]
@@ -151,7 +151,7 @@ export const ContentEditableInputSlot = ({
     if(!editing){
       return <>{lastHtml.current}</>
     } else {
-      tagName = "div";
+      TagName = "div";
       styles = (editingProps.style ? {...editingProps.style} : {});
       styles.display = "inline-block";
       styles.padding=0;

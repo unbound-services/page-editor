@@ -17,34 +17,37 @@ export default defineConfig(({ mode }) => {
       dts({
         outDir: `../${outDir}/types`,
         insertTypesEntry: true,
+        entryRoot: "lib",
+        entry: "lib/index.tsx",
       }),
     ],
     build: {
       outDir: `../${outDir}`,
       lib: isDev ? undefined : {
         entry: path.resolve(__dirname, "src/index.tsx"),
-        name: "MyLibrary",
+        name: "unbound-page-editor",
         fileName: (format) => `index.${format}.js`,
         formats: ["es", "umd", "cjs"],
       },
       rollupOptions: {
         input: isDev ? path.resolve(__dirname, "src/index.html") : undefined,
-        external: ["react", "react-dom", "react/jsx-runtime"],
+        external: ["react", "react-dom"],
         output: {
           globals: {
             react: "React",
             "react-dom": "ReactDOM",
           },
+          exports:"named"
         },
       },
       sourcemap: true,
+      
     },
     resolve: {
       alias: {
         "@sass": path.resolve(__dirname, "src/sass")
       },
       
-
     },
     server: {
       port: 3000,
@@ -54,4 +57,5 @@ export default defineConfig(({ mode }) => {
     },
     publicDir: "../public",
   };
+  
 });

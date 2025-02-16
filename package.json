@@ -1,55 +1,54 @@
 {
-  "name": "unbound-page-editor",
-  "version": "0.2.2",
+  "name": "unb-editor",
+  "version": "0.3.3",
   "private": false,
   "description": "Drop-In document editor to generate webpages and pdfs",
   "author": {
     "name": "Unbound"
   },
+
+  "exports": {
+
+    "./without-react": {
+      "types": "./pkg_build/types/index.d.ts",
+      "require": "./pkg_build/with-react/index.cjs.js",
+      "import": "./pkg_build/with-react/index.es.js"
+    },
+    "./with-react": {
+      "types": "./pkg_build/types/index.d.ts",
+      "require": "./pkg_build/with-react/index.cjs.js",
+      "import": "./pkg_build/with-react/index.es.js"
+    },
+    "./unb-editor.css": {
+      "import": "./pkg_build/with-react/unb-editor.css",
+      "require": "./pkg_build/with-react/unb-editor.css"
+    },
+    ".": {
+      "types": "./pkg_build/types/index.d.ts",
+      "require": "./pkg_build/with-react/index.cjs.js",
+      "import": "./pkg_build/with-react/index.es.js"
+
+    }
+  },
   "main": "pkg_build/without-react/index.cjs.js",
   "module": "pkg_build/without-react/index.es.js",
   "types": "pkg_build/types/index.d.ts",
-  "exports": {
-
-    "./with-react": {
-      "require": "./pkg_build/with-react/index.cjs.js",
-      "import": "./pkg_build/with-react/index.es.js",
-      "default": "./pkg_build/with-react/index.umd.js",
-      "types": "./pkg_build/types/index.d.ts"
-    },
-    "./unbound-page-editor.css": {
-      "import": "./pkg_build/with-react/unbound-page-editor.css",
-      "require": "./pkg_build/with-react/unbound-page-editor.css"
-    },
-    ".": {
-      "require": "./pkg_build/without-react/index.cjs.js",
-      "import": "./pkg_build/without-react/index.es.js",
-      "default": "./pkg_build/without-react/index.umd.js",
-      "types": "./pkg_build/types/index.d.ts"
-    }
-  },
   "files": [
-    "pkg_build",
+    "pkg_build/",
     "README.md"
   ],
   "repository": {
     "type": "git",
-    "url": "https://github.com/unbound-services/page-editor-playground"
+    "url": "https://github.com/unbound-services/page-editor "
   },
+    
   "dependencies": {
-    "@rollup/plugin-commonjs": "^28.0.2",
-    "diff": "^7.0.0",
-    "dts-bundle-generator": "^9.5.1",
-    "ipsumlorem": "^1.0.2",
-    "jsdom-global": "^3.0.2",
-    "react-quill": "^2.0.0",
-    "types-webpack-bundler": "^1.0.2",
-    "web-vitals": "^4.2.4"
+
   },
   "scripts": {
     "watch": "vite",
     "watch-webpack": "webpack watch --config webpack.config.js",
-    "build": "vite build --config vite.build.config.js --mode production && vite build --config vite.build.config.js --mode with-react",
+    "build": "vite build --config vite.build.config.js --mode production --emptyOutDir && vite build --config vite.build.config.js --mode with-react --emptyOutDir",
     "preview": "vite preview",
     "build-webpack": "webpack --mode production --config webpack.config.js",
     "package": "rimraf /F /Q pkg_build && babel src/lib --out-dir pkg_build --copy-files && yarn pack",
@@ -114,8 +113,6 @@
     "preact": "^10.25.3",
     "preact-render-to-string": "^6.5.12",
     "prettier": "^3.4.2",
-    "react": "^18.0.0",
-    "react-dom": "^18.0.0",
     "rimraf": "^6.0.1",
     "sass": "^1.83.1",
     "sass-loader": "^16.0.4",
@@ -130,7 +127,16 @@
     "webpack": "^5.97.1",
     "webpack-cli": "^6.0.1",
     "webpack-node-externals": "^3.0.0",
-    "ws": "^8.18.0"
+    "ws": "^8.18.0",
+    "@rollup/plugin-commonjs": "^28.0.2",
+    "diff": "^7.0.0",
+    "dts-bundle-generator": "^9.5.1",
+    "ipsumlorem": "^1.0.2",
+    "jsdom-global": "^3.0.2",
+    "react": "^18.0.0",
+    "react-dom": "^18.0.0",
+    "types-webpack-bundler": "^1.0.2",
+    "web-vitals": "^4.2.4"
   },
   "overrides": {
     "jest-environment-jsdom": {

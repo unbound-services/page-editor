@@ -2,7 +2,7 @@ import "./sass/app.scss";
 import "./lib/modules/common/drawer/common-drawer.scss";
 import {
   HTTPStream,
-  PageEditorApp,
+  UNBEditor,
   StreamGroup,
   HTTPStreamFields,
   FakeStream,
@@ -18,8 +18,68 @@ import { CE as INPUT } from "./lib/modules/input-slot/content-editable/input-slo
 import { MyDumbComponent } from "./TestComponent";
 import { DemoComponent } from "./DemoComponent";
 
-let editor = new PageEditorApp({ pageOptions:{
-  href: "https://unbound.services/"
+let editor = new UNBEditor({ pageOptions:{
+  href: "template.html",
+  documentRoot: "main",
+  clearContainer: true,
+  scripts:[    "vendor/jquery/jquery.min.js",
+    "vendor/bootstrap/js/bootstrap.min.js",
+    "assets/js/isotope.min.js",
+    "assets/js/owl-carousel.js",
+    "assets/js/lightbox.js",
+    "assets/js/tabs.js",
+    "assets/js/video.js",
+    "assets/js/slick-slider.js",
+    "assets/js/custom.js"],
+  js: [`
+        $('.nav li:first').addClass('active');
+
+        var showSection = function showSection(section, isAnimate) {
+            var
+                direction = section.replace(/#/, ''),
+                reqSection = $('.section').filter('[data-section="' + direction + '"]'),
+                reqSectionPos = reqSection.offset().top - 0;
+
+            if (isAnimate) {
+                $('body, html').animate({
+                    scrollTop: reqSectionPos
+                },
+                    800);
+            } else {
+                $('body, html').scrollTop(reqSectionPos);
+            }
+
+        };
+
+        var checkSection = function checkSection() {
+            $('.section').each(function () {
+                var
+                    $this = $(this),
+                    topEdge = $this.offset().top - 80,
+                    bottomEdge = topEdge + $this.height(),
+                    wScroll = $(window).scrollTop();
+                if (topEdge < wScroll && bottomEdge > wScroll) {
+                    var
+                        currentId = $this.data('section'),
+                        reqLink = $('a').filter('[href*=\\#' + currentId + ']');
+                    reqLink.closest('li').addClass('active').
+                        siblings().removeClass('active');
+                }
+            });
+        };
+
+        $('.main-menu, .scroll-to-section').on('click', 'a', function (e) {
+            if ($(e.target).hasClass('external')) {
+                return;
+            }
+            e.preventDefault();
+            $('#menu').removeClass('active');
+            showSection($(this).attr('href'), true);
+        });
+
+        $(window).scroll(function () {
+            checkSection();
+        });`],
 }});
 
 const onSave = (data) => {
@@ -77,14 +137,20 @@ const TestTableComponent = ({
 };
 
 
+// create the component
+const ExampleComponent = () => (<div>
+  <h1>Hello World!</h1>
+  <button>CTA!</button>
+  </div>)
 
-editor.initializeApp(
+
+
+editor.start(
   document.getElementById("root"),
   onSave,
   undefined,
   undefined,
   null,
-  {},
   { noAdd: false, noRearrange: false, inlineOptionBar: true }
 );
 editor.addComponents(MyComponent, "mycomp", "MyComponent");

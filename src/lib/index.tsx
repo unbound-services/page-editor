@@ -1,4 +1,4 @@
-import { PageEditorApp } from "./modules/page-editor/page-editor-app";
+import { PageEditorApp as UNBEditor} from "./modules/page-editor/page-editor-app";
 import { PageEditor } from "./modules/page-editor/page-editor";
 import componentList from "./modules/page-editor/page-editor-components";
 import { ContentSection } from "./modules/input-slot/content-section/input-slot-content-section";
@@ -25,7 +25,7 @@ import * as preact from "react"
 import { EditorContext } from "./modules/content-editor/content-editor-editor-context";
 import type { EditorContextType } from "./modules/content-editor/content-editor-editor-context";
 import { StreamSelectButton } from "./modules/stream/select/stream-select";
-import { ContentEditableInputSlot } from "./modules/input-slot/content-editable/input-slot-content-editable";
+import { CE, ContentEditableInputSlot } from "./modules/input-slot/content-editable/input-slot-content-editable";
 import "./modules/common/drawer/common-drawer.scss";
 import "../sass/app.scss";
 
@@ -37,6 +37,7 @@ export {
   componentList,
   HTTPStreamFields,
   ContentSection,
+  CE,
   EditorValue,
   StreamGroup,
   NumberSelect,
@@ -56,7 +57,7 @@ export {
   StreamContextType,
   StreamDrawerDriver,
   FakeStream,
-  PageEditorApp,
+  UNBEditor,
 };
 
-export default PageEditorApp;
+export default UNBEditor;

@@ -6,7 +6,7 @@
 
 .page-editor {
 	display: inline-block;
-	width: calc(100% - 40px);
+	width: 100%;
 	min-height: 100%;
 	margin: 0;
 	padding: 0;
@@ -24,15 +24,59 @@
 		max-width: 100%;
 		border: none;
 		background: white;
+		box-sizing: content-box;
 		box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.3);
 		resize: "both";
+		transform-origin: left top;
+	}
+
+	&__dimensions {
+		display: inline-block;
+		border: 0.5px solid #bbbbbb;
+		border-top-color: #888888;
+		border-left-color: #888888;
+		box-shadow: inset 2px 2px 4px 0px rgba(0, 0, 0, 0.1), inset -4px -4px 6px 0px rgba(255, 255, 255, 0.2);
+		height: 36px;
+		border-radius: 4px;
+		padding: 4px 8px;
+		margin-left: 8px;
+
+		strong {
+			color: black;
+			font-weight: normal;
+			color: #444444;
+			font-size: 0.8rem;
+			margin-right: 8px;
+		}
+
+		input {
+			width: 70px;
+			padding: 2px;
+			box-sizing: border-box;
+			border-radius: 3px;
+			line-height: 1.0rem;
+			font-size: 1.0rem;
+			margin: 0 2px;
+			margin-left: 8px;
+
+			&:first-child {
+				margin-left: 0;
+			}
+
+			border: none;
+			background: #dddddd;
+
+			&:focus {
+				background: white;
+			}
+		}
 	}
 
 	&__menu {
 		position: fixed;
-		width: calc(100% - 40px);
+		width: 100%;
 		box-sizing: border-box;
-		padding: 8px 20px;
+		padding: 4px;
 		background: $greyBG;
 		color: white;
 		bottom: 0;
@@ -49,22 +93,30 @@
 	}
 
 	&__button {
-		padding: 12px;
-		margin-right: 20px;
-		border-radius: 12px;
-		background: $lightGreyBG;
-		color: black;
-		border: none;
+		padding: 5px 8px;
+		margin-right: 3px;
+		height: 36px;
+		background-color: #aaaaaa;
+		color: #222222;
+		border: #888888 0.5px solid;
+		border-top-color: #bbbbbb;
+		border-left-color: #bbbbbb;
+		border-radius: 2px;
 		text-transform: uppercase;
 		letter-spacing: 1px;
 		cursor: pointer;
 		font-weight: bold;
-		font-size: 12px;
+		font-size: 0.9rem;
 		display: inline-block;
-		transition: background-color 0.2s;
+		transition: background-color 0.25s, box-shadow 0.25s;
+		box-shadow: #00000020 2px 2px 4px 2px, #55555550 -2px -2px 7px 2px inset, #ffffff90 2px 2px 6px 2px inset;
 
 		&:hover {
-			background: #02f0C0;
+			color: black;
+			background-color: #3a99ff;
+			text-shadow: #55ffffff 0px 0px 5px;
+			border-color: #3ae5ff;
+			box-shadow: #99ddffa0 0px 0px 3px 1px, #55555550 -2px -2px 7px 2px inset, #22ffffd9 2px 2px 8px 0px inset;
 		}
 	}
 

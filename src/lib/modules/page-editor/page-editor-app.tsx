@@ -30,7 +30,7 @@ export const defaultRendererFlags: Readonly<PageEditorRenderFlags> = {
   individualComponents: false,
   noRearrange: false,
   noAdd: false,
-  inlineOptionBar: false,
+  inlineOptionBar: true,
 };
 
 export type PageEditorAppOptions = {
@@ -39,6 +39,7 @@ export type PageEditorAppOptions = {
   pageOptions?: {
     pageHtml?: string,
     renderInIframe?:boolean,
+    clearContainer?:boolean,
     documentRoot?: string | HTMLElement | ((iframeDocument:HTMLIFrameElement) => HTMLElement),
     href?: string } & Partial<PageEditorAssetType>;
 }
@@ -77,7 +78,7 @@ export default class PageEditorApp {
     this.plugins = plugins ? [...plugins] : [] ;
   }
 
-  initializeApp(
+  start(
     domObject,
     onSave: (data: object) => boolean | void = null,
     pageData = { children: [] },
@@ -87,6 +88,7 @@ export default class PageEditorApp {
       individualComponents: false,
       noRearrange: false,
       noAdd: false,
+      inlineOptionBar: false,
     },
     contextualPageData = null
   ) {
@@ -100,7 +102,7 @@ export default class PageEditorApp {
     const AppComp = (props) => {
       const [refreshCount, setRefreshCount] = useState(1);
       this._setForceRefreshVal = setRefreshCount; //for forcing refreshes
-
+      console.log('renderflags',renderFlags)
       return (
         <div className="page-editor" data-testid="page-editor">
           <PageEditor

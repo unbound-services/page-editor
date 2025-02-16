@@ -46,12 +46,13 @@ export const PageEditor = (props: PageEditorPropType) => {
       preview: false,
       changes: false,
       advancedOpen: false,
-      pageEditorDrawerOpen: false
+      pageEditorDrawerOpen: false,
+      viewportDimensions: { width: 1200, height: 800,zoom:100 },
     });
 
     
-
-
+  const updateViewportDimension=  (key,val)=>setState({...state, viewportDimensions:{...state.viewportDimensions,[key]: parseInt(val)}});
+  const iframeRef = React.useRef(null);
   React.useEffect(() => {
     // attach that to the window
     window.addEventListener("beforeunload", (e) => {
@@ -69,7 +70,7 @@ export const PageEditor = (props: PageEditorPropType) => {
 
 
     const demoState = state.editorState;
-    const { preview } = state;
+    const { preview,viewportDimensions } = state;
     const {
       streams,
       renderFlags: renderFlagProps = {},
@@ -79,6 +80,7 @@ export const PageEditor = (props: PageEditorPropType) => {
 
     let renderFlags = defaultRendererFlags;
     if (renderFlagProps) {
+      console.log('inrenderflagprops',renderFlagProps,renderFlags)
       renderFlags = { ...renderFlags, ...renderFlagProps };
     }
 
@@ -141,12 +143,13 @@ export const PageEditor = (props: PageEditorPropType) => {
             setState: stateDeeper("editorState", state, baseSetState),
             editorState: demoState,
             componentList: props.componentList,
-            editorOptions:editorOptions,
+            editorOptions: {...editorOptions, pageOptions:{...editorOptions.pageOptions, renderInIframe:false}},
             plugins: props.plugins,
             editing: false,
             previewing: true,
             renderFlags,
             streams,
+            viewportDimensions: viewportDimensions,
           }}>
           <ContentSection isRoot />
         </EditorContext.Provider>
@@ -200,11 +203,20 @@ export const PageEditor = (props: PageEditorPropType) => {
             data-testid="save-page-button">
             Save {state.changes ? "*" : ""}{" "}
           </button>
+          <button className="page-editor__button" onClick={()=>{iframeRef?.current?.contentWindow?.location.reload()}}>
+            Refresh
+          </button>
           <button className="page-editor__button" onClick={togglePageDrawer}>
             Options
           </button>
+          <div className="page-editor__dimensions">
+            <input type='number' step={100} onChange={e=>updateViewportDimension('width',parseInt(e.target.value))} value={viewportDimensions.width} /><strong>px</strong>
+            X
+            <input type='number' step={100} onChange={e=>updateViewportDimension('height',parseInt(e.target.value))} value={viewportDimensions.height} /><strong>px</strong>
+            <input type='number' step={20} min={20} max={200} onChange={e=>updateViewportDimension('zoom',parseInt(e.target.value))} value={viewportDimensions.zoom} /><strong>%</strong>
+          </div>
         </div>
-
+        
         <EditorContext.Provider
           value={{
             setState: stateDeeper("editorState", state, baseSetState),
@@ -217,8 +229,9 @@ export const PageEditor = (props: PageEditorPropType) => {
             streams: streams,
             contextualPageData: props.contextualPageData,
             editorOptions: editorOptions,
-          }}>
-          <ContentSection isRoot key="root-content-section" />
+            viewportDimensions: viewportDimensions,
+          }} key="root-provider">
+          <ContentSection isRoot key="root-content-section" iframeRef={iframeRef} />
           <div><StreamDriverComponent /></div>
         </EditorContext.Provider>
       </div>
