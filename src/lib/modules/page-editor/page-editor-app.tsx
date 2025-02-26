@@ -5,14 +5,13 @@
 //   require("preact/debug");
 //   console.log("preact/debug");
 // }
-
+import * as React from "react";
 
 import { PageEditor } from "./page-editor";
-import componentList, {
+import {componentList,
   PageEditorComponentType,
 } from "./page-editor-components";
-import { StreamBase } from "../stream/stream-base";
-import { StreamDriver } from "../stream/stream-driver";
+
 import {createRoot} from 'react-dom/client';
 
 import { StreamDrawerDriver } from "../stream/drawer/stream-drawer-driver";
@@ -70,7 +69,7 @@ export default class PageEditorApp {
   protected _editorOptions: PageEditorAppOptions=null;
 
 
-  constructor(options?:PageEditorAppOptions) {
+  constructor(options:PageEditorAppOptions={}) {
     this._editorOptions = options;
     const {components:initialComponentList = componentList, 
       plugins = null} = options;
@@ -102,7 +101,7 @@ export default class PageEditorApp {
     const AppComp = (props) => {
       const [refreshCount, setRefreshCount] = useState(1);
       this._setForceRefreshVal = setRefreshCount; //for forcing refreshes
-      console.log('renderflags',renderFlags)
+
       return (
         <div className="page-editor" data-testid="page-editor">
           <PageEditor
@@ -129,7 +128,7 @@ export default class PageEditorApp {
     if(!this.currentRoot) {
       this.currentRoot = createRoot(domObject);
       this._renderFunction = (app)=>{
-        console.log("rendering app")
+
         this.currentRoot.render(app);
       }
     } 

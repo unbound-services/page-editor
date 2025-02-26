@@ -1,6 +1,7 @@
 import { PageEditorApp as UNBEditor} from "./modules/page-editor/page-editor-app";
 import { PageEditor } from "./modules/page-editor/page-editor";
-import componentList from "./modules/page-editor/page-editor-components";
+import {componentList } from "./modules/page-editor/page-editor-components";
+import type { ComponentListType } from "./modules/page-editor/page-editor-components";
 import { ContentSection } from "./modules/input-slot/content-section/input-slot-content-section";
 import EditorValue from "./modules/input-slot/editor-value/input-slot-editor-value";
 import NumberSelect from "./modules/input-slot/number-select-input/input-slot-number-select-input";
@@ -8,7 +9,6 @@ import NumberSelect from "./modules/input-slot/number-select-input/input-slot-nu
 import SelectInput from "./modules/input-slot/select-input/input-slot-select-input";
 import SlotSection from "./modules/input-slot/slot-section/input-slot-slot-section";
 import { StringInput } from "./modules/input-slot/string-input/input-slot-string-input";
-import InputSlot from "./modules/input-slot/input-slot";
 import { StreamBase } from "./modules/stream/stream-base";
 import { HTTPStream } from "./modules/stream/http/stream-http";
 import type { HTTPStreamFields } from "./modules/stream/http/stream-http";
@@ -21,21 +21,21 @@ import {
   injectEditorContext,
   useEditorContext,
 } from "./modules/input-slot/input-slot-hooks";
-import * as preact from "react"
 import { EditorContext } from "./modules/content-editor/content-editor-editor-context";
 import type { EditorContextType } from "./modules/content-editor/content-editor-editor-context";
 import { StreamSelectButton } from "./modules/stream/select/stream-select";
 import { CE, ContentEditableInputSlot } from "./modules/input-slot/content-editable/input-slot-content-editable";
 import "./modules/common/drawer/common-drawer.scss";
 import "../sass/app.scss";
+import { HideIf, HideIfEditing, HideIfRendering } from "./modules/page-editor/page-editor-visibility";
+import { Repeater } from "./modules/components/repeater/components-repeater";
 
-// preact 1
-// window["preact1"] = preact;
-// console.log("preact1 new", preact);
+
 export {
   PageEditor,
   componentList,
   HTTPStreamFields,
+  ComponentListType,
   ContentSection,
   CE,
   EditorValue,
@@ -47,7 +47,6 @@ export {
   EditorContext,
   EditorContextType,
   StringInput,
-  InputSlot,
   StreamBase,
   ContentEditableInputSlot,
   HTTPStream,
@@ -58,6 +57,10 @@ export {
   StreamDrawerDriver,
   FakeStream,
   UNBEditor,
+  HideIfEditing,
+  HideIfRendering,
+  HideIf,
+  Repeater
 };
 
 export default UNBEditor;

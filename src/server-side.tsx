@@ -1,8 +1,7 @@
 // import "ignore-styles";
 import "./global-jsdom";
-import render from "preact-render-to-string";
-import { ContentSection, EditorContext, StringInput } from "./lib";
-import fs from "fs";
+import React from "react";
+import {  StringInput } from "./lib";
 const TestComponent = ({ text = "test!" }) => {
   return <StringInput sectionName="text" />;
 };

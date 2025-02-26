@@ -10,14 +10,23 @@ import {
   StreamSelectButton,
   SelectInput,
   ContentSection,
+  useEditorContext,
+  EditorValue,
 } from "./lib/index";
 
-import { render } from "react-dom"
-import { useState } from "react"
-import { CE as INPUT } from "./lib/modules/input-slot/content-editable/input-slot-content-editable";
+import React,{ useEffect, useState } from "react"
+import { CE, CE as INPUT } from "./lib/modules/input-slot/content-editable/input-slot-content-editable";
 import { MyDumbComponent } from "./TestComponent";
 import { DemoComponent } from "./DemoComponent";
-
+import {  MDBlockQuote, MDH1, MDH2, MDH3, MDH4, MDH5, MDH6,
+  MDItalic, MDParagraph, MDBold,
+  MDCodeBlock, MDHorizontalRule, MDImage, MDLink, 
+  MDInlineCode,MDOrderedList,MDStrikethrough,MDUnorderedList
+  // MDList, MDListItem, MDTable, MDTableRow, MDTableCell, MDTableHeaderCell, MDTableHeaderRow, MDUnorderedList
+ } from "./lib/modules/md/md";
+import Paragraph from "./lib/modules/components/paragraph/paragraph";
+import {Repeater} from "./lib/modules/components/repeater/components-repeater";
+import {HideIfEditing, HideIfRendering} from "./lib/modules/page-editor/page-editor-visibility";
 let editor = new UNBEditor({ pageOptions:{
   href: "template.html",
   documentRoot: "main",
@@ -81,18 +90,37 @@ let editor = new UNBEditor({ pageOptions:{
             checkSection();
         });`],
 }});
-
+// let editor = new UNBEditor();
 const onSave = (data) => {
   console.log("data in onSave", data);
 };
 
 
+const MigrationComponent = (props:React.PropsWithChildren<{slotName:string}>) => {
 
+  const editorState = useEditorContext();
+  const {slotName} = props;
+  useEffect(() => {
+  //     if(!editorState.editorState?.content){
+  //         return;
+  //     }
+
+  //     const content = editorState.editorState.content;
+  //     editorState.setState({
+  //         ...editorState.editorState,
+  //     content:undefined,
+  // [slotName]: content})
+  }, []);
+
+  return (<><Paragraph {...props} /></>)
+}
 
 
 
 /** page editor components can be passed as props */
-const MyComponent = ({title="Title"}) => (<MyDumbComponent title={<INPUT.span sectionName="title" />} />);
+const MyComponent = ({title="Title"}) => (
+  <MyDumbComponent title={<INPUT.span sectionName="title" />} />
+);
 
 
 
@@ -139,11 +167,90 @@ const TestTableComponent = ({
 
 // create the component
 const ExampleComponent = () => (<div>
-  <h1>Hello World!</h1>
-  <button>CTA!</button>
+  <INPUT.h1 sectionName="title">Hello World!</INPUT.h1>
+  <EditorValue sectionName="description" transform={(val:string)=>val ? val.substring(0,20)+"..." : ""} />
+  
+
+  <button>Read More</button>
   </div>)
 
+const DifferentComponent = ({title="title"}) => (<div style={{fontSize:"0.8em",padding:20,background:"white",boxShadow:"black 4px 4px 4px",display:"inline-block",margin:5}}><INPUT.strong sectionName="title">Hello World!</INPUT.strong >
+  
+  <CE.p sectionName="description" placeholder="description"></CE.p>
+  <button>Read More about <EditorValue sectionName="title" /></button>
+  {title}
+  </div>)
 
+  export const MenuComponent = ()=>{
+    return <div style={{background:"#dddddd", margin:5, display:"block", width:"100px"}}><CE.strong sectionName="title">Hello World!</CE.strong>
+    <EditorValue sectionName="description" transform={(val)=>val ? val.substring(0,10)+"..." : null} />
+    <ContentSection style={{background:"white", transform:"scale(0.25)"}} sectionName="stuff" editing={false} />
+    </div>
+  }
+
+  export const ArticleComponent = ()=>{
+    return <div style={{background:"#dddddd", margin:5, display:"block",width:"500px"}}>
+      <CE.h1 sectionName="title">Article</CE.h1>
+      <CE.h2 sectionName="subtitle">Subtitle</CE.h2>
+      <CE.p sectionName="description">Description</CE.p>
+      <HideIfRendering>
+      <ContentSection sectionName="stuff" />
+      </HideIfRendering>
+    </div>
+  }
+
+const TestRepeater = (props) => {
+  return  <><div style={{background:"#440077",padding:15, display:"inline-block", width:"20%"}}><Repeater {...props} sectionName="header">
+      <MenuComponent />
+  </Repeater>
+  </div>
+
+  <div style={{display:"inline-block", width:"75%"}}>
+    <Repeater {...props} sectionName="header" hideCounter>
+      <ArticleComponent />
+    </Repeater>
+  </div>
+  </>
+}
+editor.addComponents(TestRepeater, "repeater", "Repeater");
+// editor.addComponents(MigrationComponent, "migration", "Migration");
+// editor.addComponents( MDH1, "mdh1", "Header 1");
+// editor.addComponents( MDH2, "mdh2", "Header 2");
+// editor.addComponents( MDH3, "mdh3", "Header 3");
+// editor.addComponents( MDH4, "mdh4", "Header 4");
+// editor.addComponents( MDH5, "mdh5", "Header 5");
+// editor.addComponents( MDH6, "mdh6", "Header 6");
+// editor.addComponents( MDBlockQuote, "mdblockquote", "Block Quote");
+// editor.addComponents( MDParagraph, "mdparagraph", "Paragraph");
+// editor.addComponents( MDBold, "mdbold", "Bold Text");
+// editor.addComponents( MDItalic, "mditalic", "Italic Text");
+// editor.addComponents( MDCodeBlock, "mdcodeblock", "Code Block");
+// editor.addComponents( MDHorizontalRule, "mdhorizontalrule", "Horizontal Rule");
+// editor.addComponents( MDImage, "mdimage", "Image");
+// editor.addComponents( MDLink, "mdlink", "Link");
+// editor.addComponents( MDInlineCode, "mdinlinecode", "Inline Code");
+// editor.addComponents( MDOrderedList, "mdorderedlist", "Ordered List");
+// editor.addComponents( MDStrikethrough, "mdstrikethrough", "Strikethrough");
+// editor.addComponents( MDUnorderedList, "mdunorderedlist", "Unordered List");
+
+
+
+// const TestRepeater = (props) => {
+//   return  <div>
+//     <div style={{background:"#dddddd",padding:40}}>
+//       <div style={{overflow:"hidden",display:"inline-block",width:"45%"}}>
+//         <Repeater {...props}>
+//           <ExampleComponent ></ExampleComponent>
+//         </Repeater>
+//       </div>
+//       <div style={{overflow:"hidden",display:"inline-block",width:"45%"}}>
+//         <Repeater hideCounter {...props}>
+//           <DifferentComponent ></DifferentComponent>
+//         </Repeater>
+//       </div>
+//     </div>
+//   </div>
+// }
 
 editor.start(
   document.getElementById("root"),
@@ -153,8 +260,8 @@ editor.start(
   null,
   { noAdd: false, noRearrange: false, inlineOptionBar: true }
 );
-editor.addComponents(MyComponent, "mycomp", "MyComponent");
-editor.addComponents(DemoComponent, "demo", "DemoComponent");
+editor.addComponents(MyComponent, "mycomp", "Demo Component");
+// editor.addComponents(DemoComponent, "demo", "DemoComponent");
 // editor.addComponents(TestTableComponent, "test-componenta", "Test Component");
 // editor.insertComponent("test-componenta");
 

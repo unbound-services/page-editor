@@ -1,7 +1,10 @@
 import { useContext } from "react"
+import * as React from "react";
 import {
   EditorContext,
   EditorContextType,
+  incState,
+  stateDeeper,
 } from "../content-editor/content-editor-editor-context";
 
 export type StreamInputState = {};
@@ -16,9 +19,19 @@ export type StreamInputState = {};
 export const useEditorContext = (
   sectionName: string = null
 ): EditorContextType => {
-  const editorState = useContext(EditorContext);
+  let editorState = useContext(EditorContext);
 
   if (!sectionName) return editorState;
+
+  let sections = [];
+  if(sectionName.indexOf('.') > -1){
+    sections = sectionName.split('.');
+
+    for(let i = 0; i < sections.length; i++){
+      editorState = incState(editorState, sections[i]);
+    }
+      
+  }
 
   let namedState = (newValue) => {
     editorState.setState({

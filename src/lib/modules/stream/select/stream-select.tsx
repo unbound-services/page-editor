@@ -1,5 +1,5 @@
-import InputSlot from "../../input-slot/input-slot";
 
+import * as React from "react";
 import {
   injectEditorContext,
   useEditorContext,
@@ -82,11 +82,7 @@ export const StreamSelect = ({ targetImage, setButtonRender, ...props }) => {
 };
 
 export type StreamInputState = {};
-export class StreamSelectOld extends InputSlot<
-  StreamInputProps,
-  StreamInputState
-> {
-  render() {
+export const StreamSelectOld = (props:StreamInputProps) => {
     const {
       value = "yay",
       sectionName,
@@ -96,13 +92,13 @@ export class StreamSelectOld extends InputSlot<
       inputClass = {},
       children = null,
       ...otherProps
-    } = this.props;
+    } = props;
     const TagName = tagName;
 
     // get the state out of the context
-    const { editorState: state, editing } = this.context;
+    const { editorState: state, editing, setState} = useEditorContext(sectionName);
     const onChange = (newValue) => {
-      this.context.setState({ ...state, [sectionName]: newValue });
+      setState({ ...state, [sectionName]: newValue });
     };
 
     const currentVal = state[sectionName];
@@ -132,5 +128,5 @@ export class StreamSelectOld extends InputSlot<
         </TagName>
       );
     }
-  }
 }
+

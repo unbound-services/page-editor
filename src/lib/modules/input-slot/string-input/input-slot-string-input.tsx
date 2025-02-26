@@ -1,4 +1,5 @@
-import { InputSlot } from "../input-slot";
+import * as React from "react";
+import { useEditorContext } from "../input-slot-hooks";
 
 export interface StringInputProps {
   value?: any;
@@ -11,8 +12,7 @@ export interface StringInputProps {
 }
 
 export type StringInputState = {};
-export class StringInput extends InputSlot<StringInputProps, StringInputState> {
-  render() {
+export const StringInput = (props:StringInputProps) => {
     const {
       value = "yay",
       sectionName,
@@ -22,11 +22,11 @@ export class StringInput extends InputSlot<StringInputProps, StringInputState> {
       inputClass = {},
       children = null,
       ...otherProps
-    } = this.props;
+    } = props;
     const TagName = tagName;
-    const { editorState: state, editing } = this.context;
+    const { editorState: state, editing, setState} = useEditorContext();
     const onChange = (e) => {
-      this.context.setState({ ...state, [sectionName]: e.currentTarget.value });
+      setState({ ...state, [sectionName]: e.currentTarget.value });
     };
 
     console.log('stringinput reporting');
@@ -63,6 +63,5 @@ export class StringInput extends InputSlot<StringInputProps, StringInputState> {
       );
     }
   }
-}
 
 export default StringInput;

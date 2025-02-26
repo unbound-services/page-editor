@@ -1,3 +1,4 @@
+import * as React from "react";
 import "./page-meta.scss";
 
 export const PageMeta = ({ pageMeta, updatePageMetaState }) => {

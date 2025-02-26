@@ -1,8 +1,7 @@
-import { InputSlot } from "../input-slot";
+import React from "react";
+import { useEditorContext } from "../input-slot-hooks";
 
-class 
-NumberSelectInput extends InputSlot {
-  render() {
+export const NumberSelectInput = (props) => {
     const {
       sectionName,
       tagName = "div",
@@ -11,14 +10,17 @@ NumberSelectInput extends InputSlot {
       max,
       step = 1,
       hidden = true,
-      current,
       ...otherProps
-    } = this.props;
+    } = props;
+    let {current=min} = props;
     const TagName = tagName;
-    const { editorState: state, editing } = this.context;
+    const { editorState: state, editing,setState } = useEditorContext();
+    if(state[sectionName] !== undefined){
+      current = state[sectionName];
+    }
     const onChange = (e) => {
-      let value = e.currentTarget.value;
-      if (value === "") {
+      let value = parseFloat(e.currentTarget.value);
+      if (!value) {
         value = 0;
       }
       if(min !==undefined && value < min){
@@ -27,7 +29,7 @@ NumberSelectInput extends InputSlot {
       if(max !==undefined && value > max){
         value = max;
       }
-      this.context.setState({ ...state, [sectionName]: value });
+      setState({ ...state, [sectionName]: (value) });
     };
 
     if (editing) {
@@ -69,6 +71,6 @@ NumberSelectInput extends InputSlot {
       return <TagName {...otherProps}>{state[sectionName]}</TagName>;
     }
   }
-}
+
 
 export default NumberSelectInput;

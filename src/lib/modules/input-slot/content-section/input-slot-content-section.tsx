@@ -1,4 +1,4 @@
-import { InputSlot } from "../input-slot";
+
 import * as React from "react"
 import EditorContext, {
   incState,
@@ -6,16 +6,18 @@ import EditorContext, {
 import "./input-slot-content-section.scss";
 import { useContext, useEffect, useState } from "react"
 import { createPortal } from "react-dom";
-import editorStyles from "./unb-editor.css?inline";
+import editorStyles from "@sass/unb-editor.css?inline";
+import { Interface } from "readline";
 
-export interface ContentSectionProps {
+export type ContentSectionProps = & React.HTMLProps<HTMLButtonElement> & React.HTMLAttributes<HTMLButtonElement> & {
   sectionName?: string;
   tagName?: string;
   isRoot?: boolean;
   previewing?: boolean;
   editing?: boolean;
+  editorOnly?: boolean;
   iframeRef?: React.MutableRefObject<HTMLIFrameElement>;
-}
+} 
 
 export type ContentSectionState = {
   component: any;
@@ -28,6 +30,8 @@ export const ContentSection = (props: ContentSectionProps) => {
       tagName: TagName = "div",
       isRoot = false,
       iframeRef,
+      editing:editingProp=undefined,
+      editorOnly,
       ...otherProps
     } = props;
 
@@ -37,6 +41,15 @@ export const ContentSection = (props: ContentSectionProps) => {
     const iframeHead = React.useRef(null);
     const [iframeBody, setIframeBody] = useState(null);
     const [iframeHeadStateful, setIframeHead] = useState(null);
+    const compRefs = React.useRef({});
+    const [wrappers,setWrappers] = useState({});
+    const handleRef = React.useRef(null);
+    const setWrapper = (key)=>(node)=>{
+      if(key==0) compRefs.current={};
+      if(wrappers[key]==node) return;
+      compRefs.current[key] = node;
+     };
+
     const getButtonState = (key)=> {
       return buttonState[key];
     }
@@ -58,11 +71,17 @@ export const ContentSection = (props: ContentSectionProps) => {
     // grab the editor state from context
     const {
       editorState = { [sectionName]: [] },
-      editing,
+      
       previewing,
       renderFlags,
       editorOptions
     } = editorContext;
+    let {
+
+      editing  
+
+    } = editorContext;
+    if(editingProp!==undefined) editing = editingProp;
 
     let componentData = editorState[sectionName];
     let currentChildren = editorState[sectionName] ? editorState[sectionName] : [];
@@ -107,7 +126,7 @@ export const ContentSection = (props: ContentSectionProps) => {
     };
 
     if (componentData) {
-      const getComp = getComponentFromData(editorContext);
+      const getComp = getComponentFromData(editorContext,setWrapper,editing);
       childs = RenderComponents( {componentData:componentData, 
       renderFlags:renderFlags,
       editing:editing,
@@ -143,13 +162,13 @@ export const ContentSection = (props: ContentSectionProps) => {
 
     // component for adding a new component
     let addButton = null;
-    if (editorContext.editing && !renderFlags.noAdd) {
+    if (editing && !renderFlags.noAdd) {
       addButton = (
-        <div className="add-component">
+        <div className="unb-comp-section__add-component">
           <button
-            className="add-component__button"
+            className="unb-comp-section__add-component__button"
             onClick={addComponent}
-            data-testid="add-component-button">
+            data-testid="unb-comp-section__add-component-button">
             {" "}
             +
           </button>
@@ -228,15 +247,119 @@ export const ContentSection = (props: ContentSectionProps) => {
         iframeRef.current.contentDocument.body.style.minWidth = `${width-20/zoom*100.0}px`;
         iframeRef.current.contentDocument.body.style.minHeight = `${height-20/zoom*100.0}px`;
       }
-    },[iframeBody, viewportDimensions])
 
-    let final= (<SectionControlWrapper editing={editing}>
+      // return ()=>{
+      //   if(iframeRef && iframeRef.current){
+      //     iframeRef.current = null;
+      //     setIframeBody(null);
+      //   }
+      // }
+
+    },[iframeBody, viewportDimensions]);
+
+    React.useEffect(()=>{
+      
+      if(!compRefs.current) return;
+
+      const onResize = ()=>{
+        if(!compRefs.current) return;
+        const parentOff = {x:0,y:0};
+        const firstNode= compRefs.current[0] as HTMLDivElement;
+        
+        // update all the sectionControlWrappers
+        for(let key in compRefs.current){
+          // update their size based on their next sybling
+          const currentNode = compRefs.current[key] as HTMLDivElement;
+          if(!currentNode) continue;
+          let node = currentNode.nextSibling as HTMLDivElement;
+          const totalDims = {x:1000000000,y:1000000000, bottom:-10000000, right:-10000000};
+          while(node 
+            && !(node?.classList.contains('content-section-controls__wrapper'))
+            && !(node?.classList.contains('unb-comp-section__add-component'))){
+            console.log('node',node);
+            const boundingBox = node.getBoundingClientRect();
+            console.log('boundingBox',boundingBox, node.clientLeft,node.clientTop);
+            totalDims.x = Math.min(totalDims.x,boundingBox.left);
+            totalDims.y = Math.min(totalDims.y,boundingBox.top);
+            totalDims.bottom = Math.max(totalDims.bottom,boundingBox.top + boundingBox.height);
+            totalDims.right = Math.max(totalDims.right,boundingBox.left + boundingBox.width);
+
+
+            node = node.nextSibling as HTMLDivElement;
+          }
+          console.log('totalDims',totalDims);
+
+
+          
+          currentNode.style.width = `${totalDims.right-totalDims.x}px`;
+          currentNode.style.height = `${totalDims.bottom-totalDims.y}px`;
+          currentNode.style.position="absolute";
+          const parentRect = currentNode.parentElement.getBoundingClientRect();
+          //adjust by parent node
+          currentNode.style.left = `${totalDims.x - parentRect.x}px`;
+          currentNode.style.top = `${totalDims.y - parentRect.y}px`;
+        }
+      }
+      window.addEventListener('resize',onResize);
+      onResize();
+      return ()=>window.removeEventListener('resize',onResize);
+    },[editorState,compRefs.current,viewportDimensions]);
+
+    useEffect(()=>{
+      if(handleRef.current==null) return;
+      handleRef.current.addEventListener('mousedown',(e)=>{
+        e.preventDefault();
+        e.stopPropagation();
+        let start = {x:e.clientX, y:e.clientY};
+        let viewportStart = {x:viewportDimensions.width, y:viewportDimensions.height};
+        let startDim = {x:viewportDimensions.width, y:viewportDimensions.height};
+        let mouseMove = (e)=>{
+          e.preventDefault();
+          e.stopPropagation();
+          let diff = {x:e.clientX-start.x, y:e.clientY-start.y};
+          let newDim = {x:startDim.x+diff.x, y:startDim.y+diff.y};
+          start = {x:e.clientX, y:e.clientY};
+          editorContext.updateViewportDimension('width',diff.x,true);
+          editorContext.updateViewportDimension('height',diff.y,true);
+        }
+        let mouseIn = (e)=>{
+          e.preventDefault();
+          e.stopPropagation();
+          // see if the mouse is down
+          if(e.buttons==1){
+            mouseMove(e);
+          }else {
+            mouseUp(e);
+          }
+        }
+        let mouseUp = (e)=>{
+          e.preventDefault();
+          e.stopPropagation();
+          let diff = {x:e.clientX-start.x, y:e.clientY-start.y};
+          let newDim = {x:startDim.x+diff.x, y:startDim.y+diff.y};
+          start = {x:e.clientX, y:e.clientY};
+          editorContext.updateViewportDimension('width',diff.x,true);
+          editorContext.updateViewportDimension('height',diff.y,true);-
+
+          window.removeEventListener('mousemove',mouseMove);
+          window.removeEventListener('mouseup',mouseUp);
+          window.removeEventListener('mousein',mouseIn);
+        }
+        window.addEventListener('mousemove',mouseMove);
+        window.addEventListener('mouseup',mouseUp);
+        window.addEventListener('mousein',mouseIn);
+      }
+      );
+    },[]);
+
+    let final= (<SectionControlWrapper editing={editing} >
       <TagName {...otherProps as any}>
         {childs}
         {addButton}
       </TagName>
       </SectionControlWrapper>
     );
+
 
     // render into a react portal if we're root
     let renderInIframe = editorOptions?.pageOptions?.renderInIframe;
@@ -251,13 +374,11 @@ export const ContentSection = (props: ContentSectionProps) => {
         srcDoc = undefined;
       }
 
-      final = <iframe className="page-editor__viewport-iframe" 
+      final = <div className="page-editor__viewport-holder"  style={{width:viewportDimensions.width *viewportDimensions.zoom/100.0, height:viewportDimensions.height*viewportDimensions.zoom/100.0}}><iframe className="page-editor__viewport-iframe" 
       src={src} 
       key="iframe"
       srcDoc={srcDoc} 
-      style={{width:viewportDimensions.width, 
-        height:viewportDimensions.height, 
-        border:"2px #dddddd solid",}}
+
       onLoad={e=>{
         const node = e.currentTarget as HTMLIFrameElement;
         
@@ -321,7 +442,8 @@ export const ContentSection = (props: ContentSectionProps) => {
       }}>
         {/* {iframeHead.current } */}
         {iframeBody && createPortal(final, iframeBody)}
-      </iframe>
+      </iframe><div ref={handleRef} className={`page-editor__viewport-handle`}></div>
+      </div>
     }
 
     return final;
@@ -377,7 +499,7 @@ const RenderComponents = ({componentData, renderFlags,editing,context,moveUp,mov
 
     // if you don't treat this like a function call it will 
     // think you're calling your hooks outside a function
-    return getComp(item, key, optionButtons,buttonRenderState(key),sectionName);
+    return getComp({data:item, key, optionButtons,buttonRenderState:buttonRenderState(key),sectionName});
     const Comp = getComp(item, key, optionButtons);
     return <Comp key={key+"-wrapper"} />;
   });
@@ -386,33 +508,38 @@ const RenderComponents = ({componentData, renderFlags,editing,context,moveUp,mov
 
 // get the component from the data that represents it
 export const getComponentFromData =
-  (currentContext) => (data, key, optionButtons,buttonRenderState,sectionName) =>{
+  (currentContext,setDomNode, editing=undefined) => ({data, key, optionButtons,buttonRenderState,sectionName}) =>{
     const compData = currentContext.componentList[data.comp];
     const [buttonRender, setButtonRender] = buttonRenderState;
     if (!compData) return null;
     const Comp = currentContext.componentList[data.comp].comp;
     let currentProps = data.props;
+    if(editing === undefined) editing = currentContext.editing;
 
-    return (
-      <EditorContext.Provider value={incState(currentContext, key,sectionName)}>
+    return (<EditorContext.Provider value={{...currentContext, ...incState(currentContext, key,sectionName),editing}} key={key+"-slot-provider"}>
         <ComponentSlotWrapper
+          key={key+"-slot-wrapper"}
           optionButtons={optionButtons}
           componentName={compData.displayName}
-          editing={currentContext.editing}
+          editing={editing}
           previewing={currentContext.previewing}
           buttonRender={buttonRender}
-          sectionName={sectionName}>
-          <Comp
+          sectionName={sectionName}
+          setWrapperDomNode={setDomNode(key)}>
+
+        </ComponentSlotWrapper>
+        <Comp
             key={key+"-comp"}
             {...currentProps}
-            editing={currentContext.editing}
+            editing={editing}
             componentName={compData.displayName}
             previewing={currentContext.previewing}
             sectionName={sectionName}
+            
             setButtonRender={setButtonRender}> 
             {data.props[sectionName]}
+            
           </Comp>
-        </ComponentSlotWrapper>
       </EditorContext.Provider>
     );
   };
@@ -423,8 +550,9 @@ const ComponentSlotWrapper = (props) => {
   // onMouseOut={(e)=>{console.log('event', e.target); setShowingButtons(false)}}
 
   // dont do anything with this when they're just previewing
-  const { editing, previewing, buttonRender,sectionName } = props;
+  const { editing, previewing, buttonRender,sectionName,setWrapperDomNode } = props;
   if (!editing) {
+    setWrapperDomNode(null);
     return props.children;
   }
 
@@ -450,7 +578,7 @@ const ComponentSlotWrapper = (props) => {
   );
 
   return (
-    <div className="content-section-controls__wrapper">
+    <div className="content-section-controls__wrapper" ref={setWrapperDomNode}>
       {buttonSection}
       {props.children}
     </div>
@@ -459,12 +587,12 @@ const ComponentSlotWrapper = (props) => {
 
 
 export const SectionControlWrapper = (props)=>{
-  const {editing,children} = props;
+  const {editing,children,setWrapperDomNode,key} = props;
   if (!editing) {
     return <>{children}</>;
   }
   return (
-    <div className="content-section-controls__wrapper">
+    <div className="content-section-controls__wrapper --unb-content-section"  ref={setWrapperDomNode}>
       {children}
     </div>
   )

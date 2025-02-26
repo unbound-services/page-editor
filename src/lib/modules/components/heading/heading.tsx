@@ -1,3 +1,4 @@
+import * as React from "react";
 import { Fragment } from "react"
 import StringInput from "../../input-slot/string-input/input-slot-string-input";
 import SelectInput from "../../input-slot/select-input/input-slot-select-input";

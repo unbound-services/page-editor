@@ -1,5 +1,5 @@
 import { CE } from "./lib/modules/input-slot/content-editable/input-slot-content-editable";
-
+import React from "react";
 
 
 export const MyDumbComponent = ({title}) => {
@@ -10,21 +10,13 @@ export const MyDumbComponent = ({title}) => {
             <div className="left-content">
               <CE.span>our presentation is for you</CE.span>
               <CE.h4 />
-              <p>
-                <CE.rawText sectionName="p1" />
-                <CE.a
-                  rel="nofollow"
-                  href="https://templatemo.com/contact"
-                  target="_parent"
-                >
-                  contact TemplateMo
-                </CE.a>
-                for details.
+              <CE.p>
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed
                 <br />
                 <br />
                 Suspendisse tincidunt, magna ut finibus rutrum, libero dolor
                 euismod odio, nec interdum quam felis non ante.
-              </p>
+              </CE.p>
             <VideoSectionCTAButton />
             </div>
           </div>

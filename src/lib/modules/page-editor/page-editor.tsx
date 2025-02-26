@@ -1,4 +1,4 @@
-import * as React from "react"
+import React from "react";
 import { renderToString } from 'react-dom/server';
 
 import Drawer from "../common/drawer/common-drawer";
@@ -37,9 +37,15 @@ export type PageEditorPropType = {
   editorOptions?: PageEditorAppOptions;
 };
 
+export type ViewportDimensions = {
+  width: number;
+  height: number;
+  zoom:number;
+  
+};
+
 export const PageEditor = (props: PageEditorPropType) => {
 
-    
     const [state, setState] = useState({
       editorState: props.pageData ? props.pageData : window["pageData"] ? window["pageData"] : { children: [] },
       pageMetaState: props.pageMeta,
@@ -47,11 +53,36 @@ export const PageEditor = (props: PageEditorPropType) => {
       changes: false,
       advancedOpen: false,
       pageEditorDrawerOpen: false,
-      viewportDimensions: { width: 1200, height: 800,zoom:100 },
+
     });
+    const [viewportDimensions, setViewportDimensions] = useState({ width: 1200, height: 800,zoom:100 });
 
     
-  const updateViewportDimension=  (key,val)=>setState({...state, viewportDimensions:{...state.viewportDimensions,[key]: parseInt(val)}});
+    const divRef = React.useRef<HTMLDivElement>(null);
+    const currentEditorSize = React.useRef({width:0,height:0,viewport:{width:viewportDimensions.width,height:viewportDimensions.height}});
+    
+    const enterFullscreen = () => {
+      if (divRef.current?.requestFullscreen) {
+        divRef.current.requestFullscreen();
+      }
+    };
+  const updateViewportDimension=  (key,val,add=false)=>{
+    // if(iframeRef.current){
+    //   if(key=='width'|| key=='height'){
+    //     iframeRef.current.style.width = `${val}px`;
+    //     iframeRef.current.style.height = `${val}px`;
+    //   }
+    // }
+    currentEditorSize.current.viewport[key]=parseInt(val);
+    setViewportDimensions(state=>{
+      if(add){
+        return {...state,[key]: state[key]+parseInt(val)}
+      }else{
+        return {...state,[key]: parseInt(val)}
+      }
+    });
+  }
+
   const iframeRef = React.useRef(null);
   React.useEffect(() => {
     // attach that to the window
@@ -66,11 +97,37 @@ export const PageEditor = (props: PageEditorPropType) => {
         return confirmationMessage; //Gecko + Webkit, Safari, Chrome etc.
       }
     });
+
+    if(iframeRef.current){
+      const iframeEl = iframeRef.current;
+      const boundingRec = iframeEl.getBoundingClientRect();
+      currentEditorSize.current.viewport.width=boundingRec.width;
+      currentEditorSize.current.viewport.height=boundingRec.height;
+      
+    }
+
+    window.addEventListener("resize", () => {
+      // update the viewport
+      if(!divRef.current || true) return;
+
+      const boundRect = divRef.current.getBoundingClientRect();
+      const width = boundRect.width;
+      let height = boundRect.height;
+      const deltaX = width - currentEditorSize.current.width;
+      const deltaY = height - currentEditorSize.current.height;
+      currentEditorSize.current.width = width;
+      currentEditorSize.current.height = height;
+
+      updateViewportDimension('width',currentEditorSize.current.viewport.width+deltaX);
+      updateViewportDimension('height',currentEditorSize.current.viewport.height+deltaY);
+
+    }
+    );
   },[]);
 
 
     const demoState = state.editorState;
-    const { preview,viewportDimensions } = state;
+    const { preview } = state;
     const {
       streams,
       renderFlags: renderFlagProps = {},
@@ -150,6 +207,7 @@ export const PageEditor = (props: PageEditorPropType) => {
             renderFlags,
             streams,
             viewportDimensions: viewportDimensions,
+            updateViewportDimension
           }}>
           <ContentSection isRoot />
         </EditorContext.Provider>
@@ -177,8 +235,21 @@ export const PageEditor = (props: PageEditorPropType) => {
       optionBarClasses += "page-editor__menu--inline";
     }
 
+    const setDivRef = (divEl)=>{
+      console.log('divEl',divEl)
+      if(divEl && divRef.current != divEl){
+        const boundingRec = divEl.getBoundingClientRect();
+        currentEditorSize.current.width=boundingRec.width;
+        currentEditorSize.current.height=boundingRec.height;
+        
+      }
+      divRef.current = divEl;
+    }
+
+
+
     return (
-      <div>
+      <div ref={setDivRef} className="page-editor__inner">
         <Drawer
           open={state.pageEditorDrawerOpen}
           onClose={togglePageDrawer}>
@@ -206,6 +277,9 @@ export const PageEditor = (props: PageEditorPropType) => {
           <button className="page-editor__button" onClick={()=>{iframeRef?.current?.contentWindow?.location.reload()}}>
             Refresh
           </button>
+          <button className="page-editor__button" onClick={enterFullscreen}>
+            Fullscreen
+          </button>
           <button className="page-editor__button" onClick={togglePageDrawer}>
             Options
           </button>
@@ -230,6 +304,7 @@ export const PageEditor = (props: PageEditorPropType) => {
             contextualPageData: props.contextualPageData,
             editorOptions: editorOptions,
             viewportDimensions: viewportDimensions,
+            updateViewportDimension
           }} key="root-provider">
           <ContentSection isRoot key="root-content-section" iframeRef={iframeRef} />
           <div><StreamDriverComponent /></div>

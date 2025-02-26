@@ -5,10 +5,9 @@ $buttonHeight: 24px;
 
 .content-section-controls {
 
-
     &__wrapper {
         box-sizing: border-box;
-        position: relative;
+        position: absolute;
         border: 4px #0084ff50 solid;
         // border-color: transparent;
         border-radius: 6px;
@@ -17,8 +16,27 @@ $buttonHeight: 24px;
         transition-timing-function: ease-in-out;
         overflow: visible;
         min-height: 30px;
-        padding: 2px;
-        padding-bottom: 10px;
+        padding: 0;
+        pointer-events: none;
+
+        &.--unb-content-section {
+            position: relative;
+            padding-bottom: 30px;
+        }
+
+        &:hover {
+            pointer-events: auto;
+        }
+
+        &>* {
+            pointer-events: auto;
+        }
+
+
+
+
+
+
 
         &:hover {
 
@@ -45,7 +63,7 @@ $buttonHeight: 24px;
                 }
             }
 
-            &>.add-component {
+            &>.unb-comp-section__add-component {
                 transform: translateY(-10px);
             }
 
@@ -203,7 +221,7 @@ $buttonHeight: 24px;
     }
 }
 
-.add-component {
+.unb-comp-section__add-component {
     display: flex;
     background: $greyBG;
     $buttonWidth: 250px;

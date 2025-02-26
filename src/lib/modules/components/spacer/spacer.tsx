@@ -96,7 +96,7 @@ const spacer = (props) => {
   return (
     <React.Fragment>
 
-      <div style={{height: `${space}px`}}>{handle}</div>
+      <div className="unbeditor-spacer" style={{height: `${space}px`}}>{handle}</div>
       
     </React.Fragment>
   );

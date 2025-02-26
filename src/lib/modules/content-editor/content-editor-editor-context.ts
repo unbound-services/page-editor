@@ -15,6 +15,7 @@ export type EditorContextType = {
   contextualPageData?: any;
   editorOptions: PageEditorAppOptions;
   viewportDimensions: { width: number; height: number, zoom:number };
+  updateViewportDimension: (key: string, val: number, add?:boolean) => void;
 };
 export const EditorContext = createContext<EditorContextType>(null);
 

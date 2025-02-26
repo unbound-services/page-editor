@@ -1,4 +1,4 @@
-import React, { CSSProperties, FC, JSX, ReactNode } from "react"
+import React, { CSSProperties, FC, JSX, PropsWithChildren, ReactNode } from "react"
 import {
   useContext,
   useEffect,
@@ -13,18 +13,29 @@ import {renderToString} from "react-dom/server";
 
 
 
-type tagTypeMap = {"div":HTMLDivElement, "span":HTMLSpanElement, "em":HTMLElement, "strong":HTMLElement,
-  "li":HTMLLIElement,"a":HTMLAnchorElement, "p":HTMLParagraphElement, "h1":HTMLHeadingElement, 
-  "h2":HTMLHeadingElement, "h3":HTMLHeadingElement, "h4":HTMLHeadingElement, "h5":HTMLHeadingElement,
-  "h6":HTMLHeadingElement, "ul":HTMLUListElement, "ol":HTMLOListElement, "blockquote":HTMLQuoteElement,
-  "pre":HTMLPreElement, "code":HTMLElement,
-  "figcaption":HTMLElement, "table":HTMLTableElement,
-  "td":HTMLTableCellElement,"tr":HTMLTableRowElement,
-  "tbody":HTMLTableSectionElement, "rawText":HTMLDivElement};
+type tagTypeMap = {"div": JSX.IntrinsicElements["div"], "span":JSX.IntrinsicElements["span"], "em":JSX.IntrinsicElements["em"], "strong":JSX.IntrinsicElements["strong"],
+  "li":JSX.IntrinsicElements["li"],"a":JSX.IntrinsicElements["a"], "p":JSX.IntrinsicElements["p"], "h1":JSX.IntrinsicElements["h1"],
+  "h2":JSX.IntrinsicElements["h2"], "h3":JSX.IntrinsicElements["h3"], "h4":JSX.IntrinsicElements["h4"], "h5":JSX.IntrinsicElements["h5"],
+  "h6":JSX.IntrinsicElements["h6"], "ul":JSX.IntrinsicElements["ul"], "ol":JSX.IntrinsicElements["ol"], "blockquote":JSX.IntrinsicElements["blockquote"],
+  "pre":JSX.IntrinsicElements["pre"], "code":JSX.IntrinsicElements["code"],
+  "figcaption":JSX.IntrinsicElements["figcaption"], "table":JSX.IntrinsicElements["table"],
+  "td":JSX.IntrinsicElements["td"],"tr":JSX.IntrinsicElements["tr"],
+  "tbody":JSX.IntrinsicElements["tbody"], "rawText":JSX.IntrinsicElements["div"],"del":JSX.IntrinsicElements["del"],"ins":JSX.IntrinsicElements["ins"],
+"details":JSX.IntrinsicElements["details"],"summary":JSX.IntrinsicElements["summary"],"math":JSX.IntrinsicElements["span"],"text":JSX.IntrinsicElements["text"]};
+
+  
+  
+  
+  
+  
+  
+  
+  
+  
 type editableTagList = keyof tagTypeMap;
 
 
-export const CE = new Proxy<{[Property in editableTagList ]: React.FC< {sectionName?:string,children?:ReactNode,number?:boolean } & Omit<Partial<tagTypeMap[Property]>, 'children'> >}>(
+export const CE = new Proxy<{[Property in editableTagList ]: React.FC<  tagTypeMap[Property] & PropsWithChildren<{sectionName?:string,children?:ReactNode,number?:boolean,textOnly?:boolean, placeholder?:string }> >}>(
 {} as any,
   {
     get: function (target, prop) {
@@ -38,7 +49,7 @@ export const CE = new Proxy<{[Property in editableTagList ]: React.FC< {sectionN
           "h2", "h3", "h4", "h5",
           "h6", "ul", "ol", "blockquote",
           "pre", "code",
-          "figcaption", "table","td","tr","tbody","rawText"
+          "figcaption", "table","td","tr","tbody","rawText","del","ins"
         
         ].includes(tagName)) {
           throw new Error("Invalid tagname for CE");
@@ -60,6 +71,7 @@ export const ContentEditableInputSlot = ({
   sectionName:sectionNameProp="",
   tagName = "div",
   number=false,
+  textOnly=false,
   ...props
 }) => {
   props = {...props};
@@ -89,11 +101,15 @@ export const ContentEditableInputSlot = ({
     e.preventDefault();
     e.stopPropagation();
     let curHtml = contentRef.current.innerHTML;
-    if(number){
-      const parsed =Number.parseInt(curHtml);
-      curHtml = parsed ? parsed : 0 as any;
+    if(number || textOnly){
+      curHtml = curHtml.replace(/<[^>]*>?/gm, '');
+      if(number){
+        const parsed =Number.parseInt(curHtml);
+        curHtml = parsed ? parsed : 0 as any;
+      }
       contentRef.current.innerHTML = curHtml;
     }
+    
     if (curHtml !== lastHtml.current) {
       lastHtml.current = curHtml;
       editorContext.setState(curHtml);

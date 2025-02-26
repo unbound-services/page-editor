@@ -1,5 +1,6 @@
-import { InputSlot } from "../input-slot";
 
+import * as React from "react";
+import { useEditorContext } from "../input-slot-hooks";
 interface SelectInputProps {
   sectionName: string;
   options: string[] | { [key: string]: string };
@@ -10,8 +11,7 @@ interface SelectInputProps {
   tagName?: any;
   selectList?: boolean;
 }
-class SelectInput extends InputSlot<SelectInputProps> {
-  render() {
+export const SelectInput = (props:SelectInputProps) =>{
     const {
       sectionName,
       options,
@@ -22,11 +22,11 @@ class SelectInput extends InputSlot<SelectInputProps> {
       tagName = "div",
       selectList = false,
       ...otherProps
-    } = this.props;
+    } = props;
     const TagName = tagName;
-    const { editorState: state, editing } = this.context;
+    const { editorState: state, editing, setState} = useEditorContext();
     const onChange = (e) => {
-      this.context.setState({ ...state, [sectionName]: e.currentTarget.value });
+      setState({ ...state, [sectionName]: e.currentTarget.value });
     };
 
     let selectOptions: any = "";
@@ -87,7 +87,7 @@ class SelectInput extends InputSlot<SelectInputProps> {
       }
       return <TagName {...otherProps}>{state[sectionName]}</TagName>;
     }
-  }
 }
+
 
 export default SelectInput;

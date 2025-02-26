@@ -1,5 +1,5 @@
 import { FunctionComponent, JSX } from "react"
-import { Stream } from "stream";
+import * as React from "react";
 import { StreamBase, StreamGetCallback } from "./stream-base";
 
 export type StreamList<StreamOptionType = any> = {
