@@ -10,9 +10,10 @@ export const NumberSelectInput = (props) => {
       max,
       step = 1,
       hidden = true,
+
       ...otherProps
     } = props;
-    let {current=min} = props;
+    let {current= typeof min =="number" ? min : 0} = props;
     const TagName = tagName;
     const { editorState: state, editing,setState } = useEditorContext();
     if(state[sectionName] !== undefined){
@@ -41,9 +42,9 @@ export const NumberSelectInput = (props) => {
               value={current}
               type="number"
               onChange={onChange}
-              min={min}
-              max={max}
-              step={step}
+              min={ typeof min === "number" ? min : undefined}
+              max={ typeof max === "number" ? max : undefined}
+              step={typeof step === "number" ? step : undefined}
             />
           </TagName>
         );

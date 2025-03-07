@@ -6,7 +6,7 @@ import path from "path";
 export default defineConfig(({ mode }) => {
   const isDev = mode === "development";
 
-  let outDir = isDev ? "dist" : "pkg_build";
+  let outDir = "dist";
 
   return {
     // Set the root to the src folder

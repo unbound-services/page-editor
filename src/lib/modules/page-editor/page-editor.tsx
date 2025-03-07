@@ -11,7 +11,10 @@ import { ContentSection } from "../input-slot/content-section/input-slot-content
 import { StreamDriver } from "../stream/stream-driver";
 import { defaultRendererFlags, PageEditorAppOptions, PageEditorRenderFlags } from "./page-editor-app";
 import { useState } from "react";
-
+import { render } from "react-dom";
+import reloadIcon from "./reload-window.svg";
+import  { ExpandIcon } from "./page-editor-expand-icon";
+import {ReloadWindowIcon} from "./reload-window-icon";
 // page editor prop types
 export type PageEditorStateType = {
   editorState: any;
@@ -32,7 +35,7 @@ export type PageEditorPropType = {
   pageData?: any;
   pageMeta?: any;
   renderFlags?: PageEditorRenderFlags;
-  exportState?: (setState: Function) => void;
+  exportState?: (getState:Function, setState: Function,getMarkup:Function) => void;
   contextualPageData?: any;
   editorOptions?: PageEditorAppOptions;
 };
@@ -47,8 +50,8 @@ export type ViewportDimensions = {
 export const PageEditor = (props: PageEditorPropType) => {
 
     const [state, setState] = useState({
-      editorState: props.pageData ? props.pageData : window["pageData"] ? window["pageData"] : { children: [] },
-      pageMetaState: props.pageMeta,
+      editorState: props.pageData ? props.pageData : { children: [] },
+      pageMetaState: props.pageMeta ? props.pageMeta : { name: "", slug: "", status: "draft" },
       preview: false,
       changes: false,
       advancedOpen: false,
@@ -137,14 +140,11 @@ export const PageEditor = (props: PageEditorPropType) => {
 
     let renderFlags = defaultRendererFlags;
     if (renderFlagProps) {
-      console.log('inrenderflagprops',renderFlagProps,renderFlags)
+
       renderFlags = { ...renderFlags, ...renderFlagProps };
     }
 
-    // export state will not always be passed in
-    if (exportState) {
-      exportState(setState.bind(this));
-    }
+
 
     const baseSetState = (obj) => {
       setState({ ...state, ...obj, changes: true });
@@ -163,38 +163,33 @@ export const PageEditor = (props: PageEditorPropType) => {
       });
     };
 
-    const saveData = () => {
-      if (!props.onSave) {
-        console.log("No onSave function connected to app");
-        return;
-      }
+    const renderIndividualComponentsMarkup = ()=> demoState.children.map((data) => {
+        const compData = props.componentList[data.comp];
+        if (!compData) return "";
+        const Comp = props.componentList[data.comp].comp;
+        let currentProps = data.props;
 
-      let componentsMarkup = [];
-      if (renderFlags.individualComponents) {
-        componentsMarkup = demoState.children.map((data) => {
-          const compData = props.componentList[data.comp];
-          if (!compData) return "";
-          const Comp = props.componentList[data.comp].comp;
-          let currentProps = data.props;
+        return {
+          comp: data.comp,
+          markup: renderToString(
+            <Comp
+              {...currentProps}
+              editing={false}
+              componentName={compData.displayName}
+              previewing={true}
+              setButtonRender={(val) => {}}>
+              {data.children}
+            </Comp>
+          ).replaceAll(/[class|style]\=\"\""/, ""),
+        };
+      });
+    
 
-          return {
-            comp: data.comp,
-            markup: renderToString(
-              <Comp
-                {...currentProps}
-                editing={false}
-                componentName={compData.displayName}
-                previewing={true}
-                setButtonRender={(val) => {}}>
-                {data.children}
-              </Comp>
-            ).replaceAll(/[class|style]\=\"\""/, ""),
-          };
-        });
-      }
-
-
-      const pageMarkup = renderToString(
+      const renderMarkup = (renderSeparately=false) => {
+        if(renderSeparately){
+          return renderIndividualComponentsMarkup();
+        }
+        return renderToString(
         <EditorContext.Provider
           value={{
             setState: stateDeeper("editorState", state, baseSetState),
@@ -212,6 +207,26 @@ export const PageEditor = (props: PageEditorPropType) => {
           <ContentSection isRoot />
         </EditorContext.Provider>
       );
+    }
+
+    // export state will not always be passed in
+    if (exportState) {
+      exportState(()=>state, setState, renderMarkup);
+    }
+
+    const saveData = () => {
+      if (!props.onSave) {
+        console.log("No onSave function connected to app");
+        return;
+      }
+
+      let componentsMarkup = [];
+      if (renderFlags.individualComponents) {
+        componentsMarkup = renderMarkup(true);
+      }
+
+
+      const pageMarkup = renderMarkup();
 
       // submit the form
       const pageState = state.editorState;
@@ -224,6 +239,15 @@ export const PageEditor = (props: PageEditorPropType) => {
         (props.onSave as PageEditorOnsaveFunction)(data);
       }
     };
+    let saveButton = null;
+    if(props.onSave){
+      saveButton = <a
+            className="page-editor__button"
+            onClick={saveData}
+            data-testid="save-page-button">
+            Save {state.changes ? "*" : ""}{" "}
+          </a>
+    }
 
     // get the streamdriver component
     let StreamDriverComponent = null;
@@ -236,7 +260,7 @@ export const PageEditor = (props: PageEditorPropType) => {
     }
 
     const setDivRef = (divEl)=>{
-      console.log('divEl',divEl)
+
       if(divEl && divRef.current != divEl){
         const boundingRec = divEl.getBoundingClientRect();
         currentEditorSize.current.width=boundingRec.width;
@@ -259,7 +283,7 @@ export const PageEditor = (props: PageEditorPropType) => {
           />
         </Drawer>
         <div className={"page-editor__menu " + optionBarClasses}>
-          <button
+          <a
             className="page-editor__button"
             onClick={(e) => {
               e.preventDefault();
@@ -267,22 +291,17 @@ export const PageEditor = (props: PageEditorPropType) => {
               setState({...state,  preview: !preview });
             }}>
             {!preview ? "Preview" : "Edit"}
-          </button>
-          <button
-            className="page-editor__button"
-            onClick={saveData}
-            data-testid="save-page-button">
-            Save {state.changes ? "*" : ""}{" "}
-          </button>
-          <button className="page-editor__button" onClick={()=>{iframeRef?.current?.contentWindow?.location.reload()}}>
-            Refresh
-          </button>
-          <button className="page-editor__button" onClick={enterFullscreen}>
-            Fullscreen
-          </button>
-          <button className="page-editor__button" onClick={togglePageDrawer}>
+          </a>
+          {saveButton}
+          <a className="page-editor__button" title="Refresh Page" onClick={()=>{iframeRef?.current?.contentWindow?.location.reload()}}>
+          <ReloadWindowIcon />
+          </a>
+          <a className="page-editor__button" title="Full Screen"  onClick={enterFullscreen}>
+          <ExpandIcon />
+          </a>
+          <a className="page-editor__button" onClick={togglePageDrawer}>
             Options
-          </button>
+          </a>
           <div className="page-editor__dimensions">
             <input type='number' step={100} onChange={e=>updateViewportDimension('width',parseInt(e.target.value))} value={viewportDimensions.width} /><strong>px</strong>
             X

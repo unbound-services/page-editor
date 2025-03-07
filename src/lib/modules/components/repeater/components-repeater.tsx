@@ -29,6 +29,6 @@ export const Repeater = (props: React.PropsWithChildren<{ sectionName?: string,
     }
     
     let numSelect=null;
-    if(editing && !hideCounter) numSelect = <NumberSelect {...otherProps} label="Count:" min={1} current={count} sectionName={"count"} />;
+    if(editing && !hideCounter) numSelect = <NumberSelect label="Count:" min={1} current={count} sectionName={"count"} />;
     return <>{numSelect}{children}</>;
 }

@@ -5,22 +5,23 @@ import path from "path";
 
 // Common configuration for both builds
 const baseConfig = ({ isDev }) => ({
-  root: "./src/lib",
   plugins: [
     react(),
-    dts({
-      // Output types once (they’ll be identical for both builds)
-      outDir: "../../pkg_build/types",
+    dts({ rollupTypes: true,
+      entry: "types_raw/index.d.ts",
+      outDir: "pkg_build/types",
       insertTypesEntry: true,
-      name: "unb-editor",
-      entry: "./index.tsx",
-      entryOnly:true,
-      format:["es", "umd", "cjs"],
-      fileName: "index",
-      only:true,
-      // declarationOnly: true,
-      include: ["./**/*.ts", "./**/*.tsx","../global.d.ts"],
-    }),
+      esModuleInterop: true,
+      declaration:true,
+      module: "es6",
+      target: "es6",
+      moduleResolution: "node",
+      typeRoots: [
+        "node_modules/@types",
+      ],
+      outputDir: "pkg_build/types",
+      include: ["src/lib/**/*.ts", "src/lib/**/*.tsx","src/global.d.ts"],
+     }),
   ],
   resolve: {
     alias: {
@@ -28,7 +29,7 @@ const baseConfig = ({ isDev }) => ({
     },
   },
   
-  publicDir: "../../prod_public",
+  publicDir: "prod_public",
   
 });
 
@@ -36,9 +37,9 @@ const baseConfig = ({ isDev }) => ({
 const buildWithoutReact = ({ isDev }) => ({
   build: {
     emptyOutDir: false,
-    outDir: "../../pkg_build/without-react",
+    outDir: "pkg_build/without-react",
     lib:{
-          entry: "./index.tsx",
+          entry: "src/lib/index.tsx",
           name: "unb-editor",
           fileName: (format) => `index.${format}.js`,
           formats: ["es", "umd", "cjs"],
@@ -46,6 +47,7 @@ const buildWithoutReact = ({ isDev }) => ({
     rollupOptions: {
       // Mark React libraries as external so they won’t be bundled
       external: ["react", "react-dom"],
+      
       output: {
         globals: {
           react: "React",
@@ -62,9 +64,9 @@ const buildWithoutReact = ({ isDev }) => ({
 const buildWithReact = ({ isDev }) => ({
   build: {
     emptyOutDir: false,
-    outDir: "../../pkg_build/with-react",
+    outDir: "pkg_build/with-react",
     lib:{
-      entry: "./index.tsx",
+      entry: "src/lib/index.tsx",
       name: "unb-editor",
       fileName: (format) => `index.${format}.js`,
       formats: ["es", "umd", "cjs"],

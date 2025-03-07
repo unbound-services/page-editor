@@ -29,7 +29,7 @@ const heading = (props) => {
         <StringInput sectionName="customClass" label="Custom CSS Class" />
       </Fragment>
     ));
-    console.log("called set button render");
+    // console.log("called set button render");
   }, []);
 
   return (

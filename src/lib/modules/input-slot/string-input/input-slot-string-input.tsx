@@ -29,8 +29,6 @@ export const StringInput = (props:StringInputProps) => {
       setState({ ...state, [sectionName]: e.currentTarget.value });
     };
 
-    console.log('stringinput reporting');
-
     if (editing) {
       if (!label) {
         return (

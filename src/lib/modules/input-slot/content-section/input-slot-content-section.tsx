@@ -176,7 +176,7 @@ export const ContentSection = (props: ContentSectionProps) => {
             className="add-component__component-list"
             onChange={(e) => {
               const newComponent = e.currentTarget.value;
-              console.log('e',e,e.currentTarget.value,e.target.value);
+              // console.log('e',e,e.currentTarget.value,e.target.value);
               setComponent(newComponent);
 
               // addComponent(null, newComponent);
@@ -248,12 +248,6 @@ export const ContentSection = (props: ContentSectionProps) => {
         iframeRef.current.contentDocument.body.style.minHeight = `${height-20/zoom*100.0}px`;
       }
 
-      // return ()=>{
-      //   if(iframeRef && iframeRef.current){
-      //     iframeRef.current = null;
-      //     setIframeBody(null);
-      //   }
-      // }
 
     },[iframeBody, viewportDimensions]);
 
@@ -276,9 +270,9 @@ export const ContentSection = (props: ContentSectionProps) => {
           while(node 
             && !(node?.classList.contains('content-section-controls__wrapper'))
             && !(node?.classList.contains('unb-comp-section__add-component'))){
-            console.log('node',node);
+            // console.log('node',node);
             const boundingBox = node.getBoundingClientRect();
-            console.log('boundingBox',boundingBox, node.clientLeft,node.clientTop);
+            // console.log('boundingBox',boundingBox, node.clientLeft,node.clientTop);
             totalDims.x = Math.min(totalDims.x,boundingBox.left);
             totalDims.y = Math.min(totalDims.y,boundingBox.top);
             totalDims.bottom = Math.max(totalDims.bottom,boundingBox.top + boundingBox.height);
@@ -287,7 +281,7 @@ export const ContentSection = (props: ContentSectionProps) => {
 
             node = node.nextSibling as HTMLDivElement;
           }
-          console.log('totalDims',totalDims);
+          // console.log('totalDims',totalDims);
 
 
           
@@ -372,6 +366,9 @@ export const ContentSection = (props: ContentSectionProps) => {
       if(editorOptions?.pageOptions?.href){
         src = editorOptions.pageOptions.href;
         srcDoc = undefined;
+      } else if(editorOptions?.pageOptions?.pageHtml){
+        srcDoc = editorOptions.pageOptions.pageHtml;
+        src = undefined;
       }
 
       final = <div className="page-editor__viewport-holder"  style={{width:viewportDimensions.width *viewportDimensions.zoom/100.0, height:viewportDimensions.height*viewportDimensions.zoom/100.0}}><iframe className="page-editor__viewport-iframe" 

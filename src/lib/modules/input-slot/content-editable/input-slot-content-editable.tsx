@@ -41,7 +41,7 @@ export const CE = new Proxy<{[Property in editableTagList ]: React.FC<  tagTypeM
     get: function (target, prop) {
       
       return (props) => {
-        console.log('props',props);
+        // console.log('props',props);
         let tagName=prop as any;
         // make sure tagname is allowed
         if (!["div", "span", "em", "strong",
@@ -122,7 +122,7 @@ export const ContentEditableInputSlot = ({
 
   // if we have children then we need to render them to html
   useEffect(() => {
-    console.log('children changed!!', lastHtml.current, props.children);
+    // console.log('children changed!!', lastHtml.current, props.children);
     if(!lastHtml.current && props.children){
       const innerHtml = renderToString(props.children);
       lastHtml.current = innerHtml;

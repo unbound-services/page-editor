@@ -1,38 +1,24 @@
 {
   "name": "unb-editor",
-  "version": "0.3.3",
+  "version": "0.3.12",
   "private": false,
   "description": "Drop-In document editor to generate webpages and pdfs",
   "author": {
     "name": "Unbound"
   },
-
-  "exports": {
-
-    "./without-react": {
-      "types": "./pkg_build/types/index.d.ts",
-      "require": "./pkg_build/with-react/index.cjs.js",
-      "import": "./pkg_build/with-react/index.es.js"
-    },
-    "./with-react": {
-      "types": "./pkg_build/types/index.d.ts",
-      "require": "./pkg_build/with-react/index.cjs.js",
-      "import": "./pkg_build/with-react/index.es.js"
-    },
-    "./unb-editor.css": {
-      "import": "./pkg_build/with-react/unb-editor.css",
-      "require": "./pkg_build/with-react/unb-editor.css"
-    },
-    ".": {
-      "types": "./pkg_build/types/index.d.ts",
-      "require": "./pkg_build/with-react/index.cjs.js",
-      "import": "./pkg_build/with-react/index.es.js"
-
-    }
-  },
   "main": "pkg_build/without-react/index.cjs.js",
   "module": "pkg_build/without-react/index.es.js",
   "types": "pkg_build/types/index.d.ts",
+  "exports": {
+    ".": {
+      "require": "./pkg_build/without-react/index.cjs.js",
+      "import": "./pkg_build/without-react/index.es.js"
+    },
+    "./unb-editor.css": {
+      "default": "./pkg_build/without-react/unb-editor.css"
+    }
+  },
+
   "files": [
     "pkg_build/",
     "README.md"
@@ -41,14 +27,11 @@
     "type": "git",
     "url": "https://github.com/unbound-services/page-editor "
   },
-    
-  "dependencies": {
-
-  },
   "scripts": {
     "watch": "vite",
     "watch-webpack": "webpack watch --config webpack.config.js",
-    "build": "vite build --config vite.build.config.js --mode production --emptyOutDir && vite build --config vite.build.config.js --mode with-react --emptyOutDir",
+    "build-ts": "tsc --emitDeclarationOnly",
+    "build": "tsc --emitDeclarationOnly && vite build --config vite.build.config.js --mode production",
     "preview": "vite preview",
     "build-webpack": "webpack --mode production --config webpack.config.js",
     "package": "rimraf /F /Q pkg_build && babel src/lib --out-dir pkg_build --copy-files && yarn pack",
@@ -85,6 +68,7 @@
     "@babel/preset-react": "^7.26.3",
     "@babel/preset-typescript": "^7.26.0",
     "@preact/preset-vite": "^2.10.0",
+    "@rollup/plugin-commonjs": "^28.0.2",
     "@testing-library/jest-dom": "^6.6.3",
     "@testing-library/preact": "^3.2.4",
     "@testing-library/user-event": "^14.5.2",
@@ -100,19 +84,25 @@
     "canvas": "^3.0.1",
     "css-loader": "^7.1.2",
     "declaration-bundler-webpack-plugin": "^1.0.3",
+    "diff": "^7.0.0",
+    "dts-bundle-generator": "^9.5.1",
     "express": "^4.21.2",
     "identity-obj-proxy": "^3.0.0",
     "ignore-loader": "^0.1.2",
     "ignore-styles": "^5.0.1",
+    "ipsumlorem": "^1.0.2",
     "jest": "^29.7.0",
     "jest-environment-jsdom": "^29.7.0",
     "jest-preset-preact": "^4.1.1",
     "jsdom": "^26.0.0",
+    "jsdom-global": "^3.0.2",
     "mini-css-extract-plugin": "^2.9.2",
     "node-polyfill-webpack-plugin": "^4.1.0",
     "preact": "^10.25.3",
     "preact-render-to-string": "^6.5.12",
     "prettier": "^3.4.2",
+    "react": "^18.0.0",
+    "react-dom": "^18.0.0",
     "rimraf": "^6.0.1",
     "sass": "^1.83.1",
     "sass-loader": "^16.0.4",
@@ -120,27 +110,24 @@
     "ts-jest": "^29.2.5",
     "ts-loader": "^9.5.1",
     "ts-node": "^10.9.2",
-    "typescript": "^5.7.2",
+    "types-webpack-bundler": "^1.0.2",
+    "typescript": "^5.7.3",
     "vite": "^6.0.11",
     "vite-bundle-analyzer": "^0.16.1",
     "vite-plugin-dts": "^4.5.0",
+    "web-vitals": "^4.2.4",
     "webpack": "^5.97.1",
     "webpack-cli": "^6.0.1",
     "webpack-node-externals": "^3.0.0",
-    "ws": "^8.18.0",
-    "@rollup/plugin-commonjs": "^28.0.2",
-    "diff": "^7.0.0",
-    "dts-bundle-generator": "^9.5.1",
-    "ipsumlorem": "^1.0.2",
-    "jsdom-global": "^3.0.2",
-    "react": "^18.0.0",
-    "react-dom": "^18.0.0",
-    "types-webpack-bundler": "^1.0.2",
-    "web-vitals": "^4.2.4"
+    "ws": "^8.18.0"
   },
   "overrides": {
     "jest-environment-jsdom": {
       "canvas": "^3.0.1"
     }
+  },
+  "peerDependencies": {
+    "react": "^17.0.0 || ^18.0.0",
+    "react-dom": "^17.0.0 || ^18.0.0"
   }
 }

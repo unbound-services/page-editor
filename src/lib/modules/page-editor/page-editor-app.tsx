@@ -9,6 +9,7 @@ import * as React from "react";
 
 import { PageEditor } from "./page-editor";
 import {componentList,
+  ComponentListType,
   PageEditorComponentType,
 } from "./page-editor-components";
 
@@ -23,6 +24,8 @@ export type PageEditorRenderFlags = {
   noRearrange?: boolean;
   noAdd?: boolean;
   inlineOptionBar?: boolean;
+  disableFullscreen?:boolean;
+  disableRefresh?:boolean;
 };
 
 export const defaultRendererFlags: Readonly<PageEditorRenderFlags> = {
@@ -30,25 +33,31 @@ export const defaultRendererFlags: Readonly<PageEditorRenderFlags> = {
   noRearrange: false,
   noAdd: false,
   inlineOptionBar: true,
+  disableFullscreen:false,
+  disableRefresh:false
 };
 
 export type PageEditorAppOptions = {
   plugins?: PageEditorPlugin[];
-  components?: PageEditorComponentType[];
+  components?: ComponentListType;
   pageOptions?: {
     pageHtml?: string,
     renderInIframe?:boolean,
     clearContainer?:boolean,
     documentRoot?: string | HTMLElement | ((iframeDocument:HTMLIFrameElement) => HTMLElement),
-    href?: string } & Partial<PageEditorAssetType>;
+    href?: string,
+    js?: string[],
+    css?: string[],
+    stylesheets?: string[],
+    scripts?: string[] };
+  onSave?: (data: object) => boolean | void;
+  pageData?: { children: any[] };
+  pageMeta?: { name: "", slug: "", status: "draft" };
+  renderFlags?: PageEditorRenderFlags;
+  contextualPageData?:any;
 }
 
-export type PageEditorAssetType = {
-  js: string[];
-  css: string[];
-  stylesheets: string[];
-  scripts: string[];
-}
+
 
 
 
@@ -57,6 +66,8 @@ export default class PageEditorApp {
   protected _streamDriver: StreamDrawerDriver;
   protected _setForceRefreshVal: Function;
   protected _externalSetState: Function;
+  protected _externalGetState: Function;
+  protected _externalGetMarkup: Function;
   public get streamDriver() {
     return this._streamDriver;
   }
@@ -77,23 +88,34 @@ export default class PageEditorApp {
     this.plugins = plugins ? [...plugins] : [] ;
   }
 
+  protected processOptions(options:PageEditorAppOptions) {
+    if(options.components) {
+      this.components = options.components;
+    }
+    if(options.plugins) {
+      this.plugins = options.plugins;
+    }
+    if(this._editorOptions) {
+      this._editorOptions = {...this._editorOptions, ...
+        options};
+    } else {
+      this._editorOptions = options;
+    }
+
+
+  }
+
+  
+
   start(
     domObject,
-    onSave: (data: object) => boolean | void = null,
-    pageData = { children: [] },
-    pageMeta = { name: "", slug: "", status: "draft" },
-    newComponentList: any = false,
-    renderFlags: PageEditorRenderFlags = {
-      individualComponents: false,
-      noRearrange: false,
-      noAdd: false,
-      inlineOptionBar: false,
-    },
-    contextualPageData = null
-  ) {
-    if (newComponentList) {
-      this.components = newComponentList;
-    }
+    options?:PageEditorAppOptions) {
+
+      if(options){
+        this.processOptions(options);
+      }
+
+    const { pageData={children:[]}, pageMeta, onSave, renderFlags, contextualPageData } = this._editorOptions;
 
     // if there isn't a streamdriver then create it
     this._streamDriver = this.createStreamDriver();
@@ -101,6 +123,7 @@ export default class PageEditorApp {
     const AppComp = (props) => {
       const [refreshCount, setRefreshCount] = useState(1);
       this._setForceRefreshVal = setRefreshCount; //for forcing refreshes
+
 
       return (
         <div className="page-editor" data-testid="page-editor">
@@ -114,8 +137,10 @@ export default class PageEditorApp {
             onSave={onSave}
             renderFlags={renderFlags}
             streams={this._streamDriver}
-            exportState={(setState) => {
+            exportState={(getState, setState, getMarkup) => {
               this._externalSetState = setState;
+              this._externalGetState = getState;
+              this._externalGetMarkup = getMarkup;
             }}
             contextualPageData={contextualPageData}
           />
@@ -201,6 +226,32 @@ export default class PageEditorApp {
       this._setForceRefreshVal((val) => val + 1);
     }
   }
+
+  //saving and loading
+  getEditorState(){
+    if(!this._externalGetState) return null;
+    return this._externalGetState()?.editorState;
+  }
+
+  /**
+   * 
+   * @returns the markup for the page
+   */
+  getMarkup(){
+    if(!this._externalGetMarkup) return null;
+    return this._externalGetMarkup();
+  }
+
+  /**
+ * 
+ * @returns the markup for the page
+ */
+  getIndividualMarkup() : string{
+    if(!this._externalGetMarkup) return null;
+    return this._externalGetMarkup(true);
+  }
+
+
 }
 
 export { PageEditorApp };

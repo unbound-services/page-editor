@@ -27,7 +27,69 @@ import {  MDBlockQuote, MDH1, MDH2, MDH3, MDH4, MDH5, MDH6,
 import Paragraph from "./lib/modules/components/paragraph/paragraph";
 import {Repeater} from "./lib/modules/components/repeater/components-repeater";
 import {HideIfEditing, HideIfRendering} from "./lib/modules/page-editor/page-editor-visibility";
-let editor = new UNBEditor({ pageOptions:{
+let editor = new UNBEditor({ pageData: {
+  "children": [
+      {
+          "type": "repeater",
+          "count": 3,
+          "sectionName": "header",
+          "children": [
+              {
+                  "type": "menu",
+                  "title": "Menu",
+                  "children": [
+                      {
+                          "type": "article",
+                          "title": "Article",
+                          "subtitle": "Subtitle",
+                          "description": "Description",
+                          "children": [
+                              {
+                                  "type": "content",
+                                  "sectionName": "stuff",
+                                  "children": [
+                                      {
+                                          "type": "paragraph",
+                                          "content": "Some content"
+                                      }
+                                  ]
+                              }
+                          ]
+                      }
+                  ]
+              }
+          ]
+      },
+      {
+          "comp": "heading",
+          "props": {
+              "text": "beautiful heading"
+          }
+      },
+      {
+          "comp": "repeater",
+          "props": {
+              "rep0": {
+                  "description": "Description",
+                  "subtitle": "Subtitle",
+                  "title": "Article",
+                  "stuff": [
+                      {
+                          "comp": "heading",
+                          "props": {}
+                      }
+                  ]
+              },
+              "count": 2,
+              "rep1": {
+                  "description": "Description",
+                  "subtitle": "Subtitle",
+                  "title": "Article"
+              }
+          }
+      }
+  ]
+},pageOptions:{
   href: "template.html",
   documentRoot: "main",
   clearContainer: true,
@@ -254,12 +316,16 @@ editor.addComponents(TestRepeater, "repeater", "Repeater");
 
 editor.start(
   document.getElementById("root"),
-  onSave,
-  undefined,
-  undefined,
-  null,
-  { noAdd: false, noRearrange: false, inlineOptionBar: true }
+  {onSave,
+    renderFlags:{ noAdd: false, noRearrange: false, inlineOptionBar: true },
+    
+  }
 );
+document.querySelector("#save")?.addEventListener("click", ()=>{
+  console.log('markup', editor.getMarkup());
+  console.log('state', editor.getEditorState());
+  console.log('individual', editor.getIndividualMarkup());
+});
 editor.addComponents(MyComponent, "mycomp", "Demo Component");
 // editor.addComponents(DemoComponent, "demo", "DemoComponent");
 // editor.addComponents(TestTableComponent, "test-componenta", "Test Component");

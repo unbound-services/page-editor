@@ -5,6 +5,7 @@ export const PageMeta = ({ pageMeta, updatePageMetaState }) => {
   const onChange = (e, key) => {
     updatePageMetaState(key, e.target.value);
   };
+  const { name="", status="", slug="" } = pageMeta;
 
   return (
     <div className="drawer-contents">
@@ -16,7 +17,7 @@ export const PageMeta = ({ pageMeta, updatePageMetaState }) => {
             className="drawer-contents__input"
             name="name"
             onChange={(e) => onChange(e, "name")}
-            value={pageMeta.name}
+            value={name}
           />
         </label>
       </div>
@@ -27,7 +28,7 @@ export const PageMeta = ({ pageMeta, updatePageMetaState }) => {
             name="status"
             className="base-form__select drawer-contents__input"
             onChange={(e) => onChange(e, "status")}
-            value={pageMeta.status}>
+            value={status}>
             <option value="draft">Draft</option>
             <option value="published">Published</option>
           </select>
@@ -41,7 +42,7 @@ export const PageMeta = ({ pageMeta, updatePageMetaState }) => {
             className="drawer-contents__input"
             name="slug"
             onChange={(e) => onChange(e, "slug")}
-            value={pageMeta.slug}
+            value={slug}
           />
           <div
             style={{ fontSize: "0.8em", color: "#dddddd", paddingTop: 4 }}>
