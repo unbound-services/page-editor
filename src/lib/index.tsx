@@ -19,26 +19,34 @@ import { FakeStream } from "./modules/stream/fake/stream-fake";
 import type { StreamContextType } from "./modules/stream/stream-context";
 import {
   injectEditorContext,
+  injectEditorState,
   useEditorContext,
+  useEditorState,
+  useEditorStateWithProps,
 } from "./modules/input-slot/input-slot-hooks";
 import { EditorContext } from "./modules/content-editor/content-editor-editor-context";
 import type { EditorContextType } from "./modules/content-editor/content-editor-editor-context";
 import { StreamSelectButton } from "./modules/stream/select/stream-select";
-import { CE, ContentEditableInputSlot } from "./modules/input-slot/content-editable/input-slot-content-editable";
+import { createContentEditable, ContentEditableInputSlot, CE } from "./modules/input-slot/content-editable/input-slot-content-editable";
 import "./modules/common/drawer/common-drawer.scss";
 import "../sass/app.scss";
 import { HideIf, HideIfEditing, HideIfRendering } from "./modules/page-editor/page-editor-visibility";
 import { Repeater } from "./modules/components/repeater/components-repeater";
+import ColumnSection from "./modules/components/columns/columns";
+import { Spacer } from "./modules/components/spacer/spacer";
 
 
 export {
   PageEditor,
   componentList,
   HTTPStreamFields,
+
+  // components
   ComponentListType,
   ContentSection,
-  CE,
+  createContentEditable,
   EditorValue,
+  ColumnSection,
   StreamGroup,
   NumberSelect,
   StreamSelectButton,
@@ -53,6 +61,9 @@ export {
   StreamDriver,
   useEditorContext,
   injectEditorContext,
+  injectEditorState,
+  useEditorState,
+  useEditorStateWithProps,
   StreamContextType,
   StreamDrawerDriver,
   FakeStream,
@@ -60,6 +71,8 @@ export {
   HideIfEditing,
   HideIfRendering,
   HideIf,
+  CE,
+  Spacer,
   Repeater
 };
 

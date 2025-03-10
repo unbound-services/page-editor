@@ -15,7 +15,7 @@ import {
 } from "./lib/index";
 
 import React,{ useEffect, useState } from "react"
-import { CE, CE as INPUT } from "./lib/modules/input-slot/content-editable/input-slot-content-editable";
+import { createContentEditable } from "./lib/modules/input-slot/content-editable/input-slot-content-editable";
 import { MyDumbComponent } from "./TestComponent";
 import { DemoComponent } from "./DemoComponent";
 import {  MDBlockQuote, MDH1, MDH2, MDH3, MDH4, MDH5, MDH6,
@@ -27,6 +27,9 @@ import {  MDBlockQuote, MDH1, MDH2, MDH3, MDH4, MDH5, MDH6,
 import Paragraph from "./lib/modules/components/paragraph/paragraph";
 import {Repeater} from "./lib/modules/components/repeater/components-repeater";
 import {HideIfEditing, HideIfRendering} from "./lib/modules/page-editor/page-editor-visibility";
+
+const INPUT = createContentEditable({bem: true, bemPrefix: "ce"});
+const CE = INPUT;
 let editor = new UNBEditor({ pageData: {
   "children": [
       {
@@ -179,9 +182,21 @@ const MigrationComponent = (props:React.PropsWithChildren<{slotName:string}>) =>
 
 
 
+const BEMCE = createContentEditable({bem: true, bemPrefix: "bem"});
+const INPUTCE = createContentEditable({bem: true, bemPrefix: "input"});
 /** page editor components can be passed as props */
-const MyComponent = ({title="Title"}) => (
-  <MyDumbComponent title={<INPUT.span sectionName="title" />} />
+const MyComponent = () => (
+  <div className="my-component">
+    <BEMCE.p sectionName="content" bemName="custom-bem">Hello World</BEMCE.p>
+
+    <div className="other-widget">
+      <BEMCE.BEM value={{ bemPrefix: "other-widget"}} >
+        <INPUTCE.h1 sectionName="other-title">Hello World</INPUTCE.h1>
+        <BEMCE.h1 sectionName="title">Hello World</BEMCE.h1>
+        <BEMCE.p bemPrefix="custom-prefix" sectionName="description">This is a description</BEMCE.p>
+      </BEMCE.BEM>
+    </div>
+  </div>
 );
 
 
@@ -262,14 +277,16 @@ const DifferentComponent = ({title="title"}) => (<div style={{fontSize:"0.8em",p
   }
 
 const TestRepeater = (props) => {
-  return  <><div style={{background:"#440077",padding:15, display:"inline-block", width:"20%"}}><Repeater {...props} sectionName="header">
+  return  <><div style={{background:"#440077",padding:15, display:"inline-block", width:"20%"}}><Repeater  sectionName="header">
       <MenuComponent />
   </Repeater>
   </div>
 
   <div style={{display:"inline-block", width:"75%"}}>
     <Repeater {...props} sectionName="header" hideCounter>
+      <INPUT.BEM value={{bemPrefix: "bem-test"}} >
       <ArticleComponent />
+      </INPUT.BEM>
     </Repeater>
   </div>
   </>
@@ -318,6 +335,7 @@ editor.start(
   document.getElementById("root"),
   {onSave,
     renderFlags:{ noAdd: false, noRearrange: false, inlineOptionBar: true },
+    pageOptions:{renderInIframe:false}
     
   }
 );

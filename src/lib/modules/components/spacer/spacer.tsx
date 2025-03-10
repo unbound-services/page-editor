@@ -3,7 +3,7 @@ import NumberSelectInput from "../../input-slot/number-select-input/input-slot-n
 import { useEditorContext } from "../../input-slot/input-slot-hooks";
 import "./spacer.scss";
 import { CE } from "../../input-slot/content-editable/input-slot-content-editable";
-const spacer = (props) => {
+export const Spacer = (props) => {
   const { space =10 } = props;
   const { editing,setState } = useEditorContext();
   const handleRef = React.useRef(null);
@@ -101,5 +101,3 @@ const spacer = (props) => {
     </React.Fragment>
   );
 };
-
-export default spacer;

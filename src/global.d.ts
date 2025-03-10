@@ -1,4 +1,11 @@
 declare module "*.scss";
-declare module "*.css";
-declare module "*.css?inline";
+declare module "*.css" {
+    const value: string;
+    export default value;
+}
+declare module "*.css?inline"
+{
+    const value: string;
+    export default value;
+}
 declare module "*.svg";

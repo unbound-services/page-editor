@@ -6,8 +6,9 @@ import EditorContext, {
 import "./input-slot-content-section.scss";
 import { useContext, useEffect, useState } from "react"
 import { createPortal } from "react-dom";
-import editorStyles from "@sass/unb-editor.css?inline";
+// import editorStyles from "unb-editor/unb-editor.css?inline";
 import { Interface } from "readline";
+import Drawer from "../../common/drawer/common-drawer";
 
 export type ContentSectionProps = & React.HTMLProps<HTMLButtonElement> & React.HTMLAttributes<HTMLButtonElement> & {
   sectionName?: string;
@@ -34,19 +35,21 @@ export const ContentSection = (props: ContentSectionProps) => {
       editorOnly,
       ...otherProps
     } = props;
-
+    const [componentDrawerOpen, setComponentDrawerOpen] = useState(false);
     const [buttonState, setButtonStateRaw] = useState({});
-    const [component, setComponent] = useState(null);
     const editorContext = useContext(EditorContext);
     const iframeHead = React.useRef(null);
     const [iframeBody, setIframeBody] = useState(null);
     const [iframeHeadStateful, setIframeHead] = useState(null);
+    const [editorReady, setEditorReady] = useState(false);
     const compRefs = React.useRef({});
     const [wrappers,setWrappers] = useState({});
     const handleRef = React.useRef(null);
+    const [compSearch, setCompSearch] = useState('');
     const setWrapper = (key)=>(node)=>{
       if(key==0) compRefs.current={};
-      if(wrappers[key]==node) return;
+      if(compRefs.current[key]==node) return;
+      // setWrappers((wrappers)=>({...wrappers, [key]:node}));
       compRefs.current[key] = node;
      };
 
@@ -143,13 +146,9 @@ export const ContentSection = (props: ContentSectionProps) => {
     const {componentList, viewportDimensions} = editorContext;
 
     // method for adding a new component to the content section state
-    const addComponent = (e) => {
+    const addComponent = (component) => {
       let neweditorState = { ...editorState, [sectionName]: [...currentChildren] };
-      if (e) {
-        e.preventDefault();
-        e.stopPropagation();
-      }
-
+      setComponentDrawerOpen(false);
       // probably should find a better way to do this
       let whichComponent =  component;
       if (!whichComponent)
@@ -164,36 +163,23 @@ export const ContentSection = (props: ContentSectionProps) => {
     let addButton = null;
     if (editing && !renderFlags.noAdd) {
       addButton = (
-        <div className="unb-comp-section__add-component">
-          <button
-            className="unb-comp-section__add-component__button"
-            onClick={addComponent}
-            data-testid="unb-comp-section__add-component-button">
-            {" "}
-            +
-          </button>
-          <select
-            className="add-component__component-list"
-            onChange={(e) => {
-              const newComponent = e.currentTarget.value;
-              // console.log('e',e,e.currentTarget.value,e.target.value);
-              setComponent(newComponent);
-
-              // addComponent(null, newComponent);
-            }}
-            data-testid="add-component-listbox">
-            {sortedComponentList.map((index) => {
-              const value = componentList[index];
-              const displayName = value.displayName ? value.displayName : value;
-              return (
-                <option key={index} value={index}>
-                  {" "}
-                  {displayName}{" "}
-                </option>
-              );
-            })}
-          </select>
-        </div>
+        <><div className="unb-comp-section__add-component" onClick={()=>setComponentDrawerOpen(true)}></div>
+        <Drawer open={componentDrawerOpen} className="component-drawer" onClose={()=>setComponentDrawerOpen(false)}><h1 className="component-drawer__h1">Insert Component</h1>
+        <label>Search:<input placeholder="search" type="text" value={compSearch} onChange={(e)=>{
+          setCompSearch(e.target.value);
+        }} /></label>
+        <div className="componeent-drawer__component-list">{sortedComponentList.map((index) => {
+          const value = componentList[index];
+          const displayName = value.displayName ? value.displayName : value;
+          const displayDescription = value.description;
+          if(compSearch && displayName.toLowerCase().indexOf(compSearch.toLowerCase())==-1) return null;
+          return (
+            <div key={index} onClick={()=>addComponent(index)}  className="component-drawer__component">
+              {displayName}
+              {displayDescription && <div className="component-drawer__description">{displayDescription}</div>}
+            </div>
+          );
+        })}</div></Drawer></>
       );
     }
 
@@ -271,15 +257,16 @@ export const ContentSection = (props: ContentSectionProps) => {
             && !(node?.classList.contains('content-section-controls__wrapper'))
             && !(node?.classList.contains('unb-comp-section__add-component'))){
             // console.log('node',node);
-            const boundingBox = node.getBoundingClientRect();
+            const boundingBox = node?.getBoundingClientRect();
             // console.log('boundingBox',boundingBox, node.clientLeft,node.clientTop);
+            if(boundingBox){
             totalDims.x = Math.min(totalDims.x,boundingBox.left);
             totalDims.y = Math.min(totalDims.y,boundingBox.top);
             totalDims.bottom = Math.max(totalDims.bottom,boundingBox.top + boundingBox.height);
             totalDims.right = Math.max(totalDims.right,boundingBox.left + boundingBox.width);
+            }
 
-
-            node = node.nextSibling as HTMLDivElement;
+            node = node?.nextSibling as HTMLDivElement;
           }
           // console.log('totalDims',totalDims);
 
@@ -288,16 +275,28 @@ export const ContentSection = (props: ContentSectionProps) => {
           currentNode.style.width = `${totalDims.right-totalDims.x}px`;
           currentNode.style.height = `${totalDims.bottom-totalDims.y}px`;
           currentNode.style.position="absolute";
-          const parentRect = currentNode.parentElement.getBoundingClientRect();
+          const parentRect = currentNode?.parentElement?.getBoundingClientRect();
           //adjust by parent node
+          if(parentRect){
           currentNode.style.left = `${totalDims.x - parentRect.x}px`;
           currentNode.style.top = `${totalDims.y - parentRect.y}px`;
+          }
         }
       }
       window.addEventListener('resize',onResize);
-      onResize();
-      return ()=>window.removeEventListener('resize',onResize);
-    },[editorState,compRefs.current,viewportDimensions]);
+      let timeout= setTimeout(onResize,10);
+      return ()=>{
+        
+        window.removeEventListener('resize',onResize);
+      }
+    },[editorState,
+      compRefs.current,
+      viewportDimensions, 
+      iframeBody, 
+      iframeHead.current, 
+      editing,
+      editorReady, 
+      iframeHeadStateful]);
 
     useEffect(()=>{
       if(handleRef.current==null) return;
@@ -376,7 +375,7 @@ export const ContentSection = (props: ContentSectionProps) => {
       key="iframe"
       srcDoc={srcDoc} 
 
-      onLoad={e=>{
+      onLoad={async (e)=>{
         const node = e.currentTarget as HTMLIFrameElement;
         
         if(!node.contentDocument) return;
@@ -386,6 +385,9 @@ export const ContentSection = (props: ContentSectionProps) => {
         iframeHead.current = node.contentDocument.head;
         // bootstrap css
         const bootstrap = document.createElement('style');
+        // dynamically import the editor styles
+        const editorStyles =  (await import("unb-editor/unb-editor.css?inline")).default;
+
         bootstrap.textContent = editorStyles;
         node.contentDocument.head.appendChild(bootstrap);
         // add the raw css
@@ -434,6 +436,7 @@ export const ContentSection = (props: ContentSectionProps) => {
           
           // iframeHead.current = node.contentDocument.head;
           setIframeBody(root);
+          setEditorReady(true);
         }
         // createPortal(final, node.contentDocument.getElementById('root'));
       }}>
@@ -513,7 +516,7 @@ export const getComponentFromData =
     let currentProps = data.props;
     if(editing === undefined) editing = currentContext.editing;
 
-    return (<EditorContext.Provider value={{...currentContext, ...incState(currentContext, key,sectionName),editing}} key={key+"-slot-provider"}>
+    return (<EditorContext.Provider value={{...currentContext, ...incState(currentContext, key, sectionName),editing}} key={key+"-slot-provider"}>
         <ComponentSlotWrapper
           key={key+"-slot-wrapper"}
           optionButtons={optionButtons}

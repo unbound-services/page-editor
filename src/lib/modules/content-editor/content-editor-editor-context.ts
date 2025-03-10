@@ -28,7 +28,7 @@ export const stateDeeper = (name, state, setState) => (newStateObj) => {
 export const incState = (currentContext, index,sectionName="children") => {
   const newVal = { ...currentContext };
 
-  let setState = (stateUpdate, otherval) => {
+  let setState = (stateUpdate) => {
 
     const newState = { ...currentContext.editorState };
     if (newState[sectionName]) {

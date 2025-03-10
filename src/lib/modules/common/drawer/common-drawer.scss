@@ -35,10 +35,20 @@
 	left: 0;
 	right: 0;
 	background: rgba(77, 77, 77, 0.8);
+
 	z-index: 1500;
 
 	animation-name: screen-fade;
  	animation-duration: 0.5s;
+  //  mask-image: url(#masksvg);
+  //  mask-composite: exclude;;
+  mix-blend-mode: hard-light;
+  .window{
+    background:gray;
+    width:200px;
+    height:200px;
+    position:absolute;
+  }
 
 }
 

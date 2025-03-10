@@ -3,10 +3,13 @@ import NumberSelectInput from "../../input-slot/number-select-input/input-slot-n
 import SlotSection from "../../input-slot/slot-section/input-slot-slot-section";
 import { ContentSection } from "../../input-slot/content-section/input-slot-content-section";
 import "./components-columns.scss";
+import { CheckboxInput } from "../../input-slot/checkbox/input-slot-checkbox";
+import { HideIfRendering } from "../../page-editor/page-editor-visibility";
+import { useEditorContext } from "../../input-slot/input-slot-hooks";
 
 
 const column = (props) => {
-  const { text = "", count, setButtonRender} = props;
+  const { text = "", count, } = props;
 
   return (
       <div className="section__column">
@@ -15,19 +18,39 @@ const column = (props) => {
   );
 };
 
-const columnSection = (props) => {
-  const { count = 3 } = props;
+const ColumnSection = (props) => {
+  const { count = 3,responsive=false, setButtonRender } = props;
   let Column = column;
   let columns = [];
   let columnSectionClass;
 
-  if (count == 2) {
-    columnSectionClass = "section__inner-div column-section --double";
-  } else if (count == 3) {
-    columnSectionClass = "section__inner-div column-section --triple";
-  } else {
-    columnSectionClass = "section__inner-div column-section --single";
-  }
+  React.useEffect(() => {
+    setButtonRender(() => (
+      <React.Fragment>
+        <NumberSelectInput
+        hidden={true}
+        label="Number of Columns: "
+        sectionName="count"
+        current={count}
+        min={2}
+        max={6}
+      />
+      
+      <CheckboxInput
+        label="Responsive Columns"
+        sectionName="responsive"
+      />
+      </React.Fragment>
+    ));
+    // console.log("called set button render");
+  }, []);
+
+  
+
+  if (count) {
+    const mode = responsive ? "--responsive" : "--fixed"
+    columnSectionClass = `section__inner-div column-section ${mode} --cols-${count}`;
+  } 
 
   for (var i = 0; i < count; i++) {
     let slotName = "column" + i;
@@ -44,19 +67,17 @@ const columnSection = (props) => {
 
   return (
     <React.Fragment>
+        <HideIfRendering >
+          <div className="section__columns__heading">
+
+      </div>
+      </HideIfRendering>
       <section className="section">
         <div className={columnSectionClass}>{columns}</div>
       </section>
-      <NumberSelectInput
-        hidden={true}
-        label="Number of Columns: "
-        sectionName="count"
-        current={count}
-        min={0}
-        max={3}
-      />
+
     </React.Fragment>
   );
 };
 
-export default columnSection;
+export default ColumnSection;

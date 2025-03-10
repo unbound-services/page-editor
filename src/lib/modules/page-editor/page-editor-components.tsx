@@ -2,7 +2,7 @@ import React from "react";
 import Columns from "../components/columns/columns";
 import Heading from "../components/heading/heading";
 import Paragraph from "../components/paragraph/paragraph";
-import Spacer from "../components/spacer/spacer";
+import {Spacer} from "../components/spacer/spacer";
 
 // our sample component
 // const someComponent = (props) => {
@@ -27,6 +27,9 @@ export type ComponentListType = {
   [componentKey: string]: {
     displayName: string;
     comp: PageEditorComponentType;
+    shortDescription?: string;
+    fullDescription?: string;
+    previewProps?: { [key: string]: any };
   };
 };
 

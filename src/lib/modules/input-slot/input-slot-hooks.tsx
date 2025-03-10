@@ -19,31 +19,47 @@ export type StreamInputState = {};
 export const useEditorContext = (
   sectionName: string = null
 ): EditorContextType => {
-  let editorState = useContext(EditorContext);
+  let editorContext = useContext(EditorContext);
 
-  if (!sectionName) return editorState;
+  if (!sectionName) return editorContext;
+
+  let state = editorContext.editorState;
 
   let sections = [];
   if(sectionName.indexOf('.') > -1){
     sections = sectionName.split('.');
-
-    for(let i = 0; i < sections.length; i++){
-      editorState = incState(editorState, sections[i]);
-    }
-      
+  } else {
+    sections = [sectionName];
   }
+  for(let i = 0; i < sections.length; i++){
+    state = state[sections[i]];
+    if(!state){
+      break;
+    }
+  }
+      
+  
 
   let namedState = (newValue) => {
-    editorState.setState({
-      ...editorState.editorState,
-      [sectionName]: newValue,
-    });
+    let newState = { ...editorContext.editorState };
+    for(let i = 0; i < sections.length; i++){
+      if(i === sections.length - 1){
+        newState[sections[i]] = newValue;
+      } else {
+        if(!newState[sections[i]]){
+          newState[sections[i]] = {};
+        }
+        newState = {...newState[sections[i]]};
+      }
+    }
+    editorContext.setState(newState);
   };
 
   // if they passed in a sectionName then give them a proper state
   return {
-    ...editorState,
+    ...editorContext,
     setState: namedState,
+    editorState:state
   };
 };
 
@@ -51,6 +67,32 @@ interface useEditorContextOutputProps {
   editorContext: EditorContextType;
   [x: string]: any;
 }
+
+/**
+ * @description injectEditorState is a higher-order function that injects the editor state into a component
+ * @param Comp the component that you would like to inject the editor state into
+ * @returns a component which will have the editor state injected from the context through the props
+ **/
+
+export const injectEditorState = (Comp:React.ComponentType) => (props:any) => {
+  const { editorState, editing, setState } = useEditorContext(props.sectionName);
+  return <Comp {...editorState} editing={editing} setState={setState} {...props}  />
+}
+
+/**
+ * @description useEditorState is a hook that returns the editor state
+ * @param sectionName the name for the section of state that this component is in charge of
+ * @returns
+ */
+export const useEditorState = (sectionName: string = null, ) => {
+  return useEditorContext(sectionName).editorState;
+}
+
+export const useEditorStateWithProps  = (sectionName: string = null, props:any) => {
+  return {...useEditorContext(sectionName).editorState, ...props};
+}
+
+
 
 /**
  * @description injectEditorContext creates a higher-order component - it is simply another way to inject the context
@@ -71,3 +113,5 @@ export const injectEditorContext = (
     );
   };
 };
+
+

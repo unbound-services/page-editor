@@ -1,8 +1,10 @@
 import * as React from "react";
 import { Fragment } from "react"
 
+
 export const Drawer = (props) => {
-  const { onClose, children, open = false, innerClass } = props;
+  const { onClose, children, open = false, className="", innerClass=""
+   } = props;
 
   // add the contents in
   let contents = null;
@@ -15,15 +17,18 @@ export const Drawer = (props) => {
   if (open) {
     contents = children;
     drawerClass = "open";
-    screen = <div className="common-drawer-outer" onClick={onClose}></div>;
+    screen = <div className={`common-drawer-outer ${className}`} onClick={onClose}>
+      {/* <div className="window"></div> */}
+      </div>;
   }
 
   return (
     <Fragment>
       {screen}
-      <div className={`${drawerInnerClass} common-drawer-inner ${drawerClass}`}>
+      <div className={`${drawerInnerClass} common-drawer-inner ${drawerClass}`} >
         {contents}
       </div>
+      
     </Fragment>
   );
 };

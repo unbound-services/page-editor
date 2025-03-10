@@ -5,10 +5,12 @@ $buttonHeight: 24px;
 
 .content-section-controls {
 
+    
+
     &__wrapper {
         box-sizing: border-box;
         position: absolute;
-        border: 4px #0084ff50 solid;
+        border: 2px #0084ff40 solid;
         // border-color: transparent;
         border-radius: 6px;
         // padding-top:30px;
@@ -46,11 +48,11 @@ $buttonHeight: 24px;
                 // background:red;
                 opacity: 100%;
                 z-index: 9;
-                transform: translateY(calc(-100% + 8px));
-                border-radius: 5px;
-
                 &:before {
-                    width: 100%;
+                    display:inline-block;
+    
+                    width:100%;
+                    content:"";
                     border-radius: 5px;
                 }
 
@@ -63,9 +65,7 @@ $buttonHeight: 24px;
                 }
             }
 
-            &>.unb-comp-section__add-component {
-                transform: translateY(-10px);
-            }
+
 
 
             &>.content-section-controls__component-type {
@@ -80,11 +80,11 @@ $buttonHeight: 24px;
         position: absolute;
         box-sizing: border-box;
         height: auto;
-        top: 0;
+        bottom:100%;
         right: 0;
-        padding: 4px 8px;
+        padding: 0px 8px;
         background: white;
-        z-index: 8;
+        z-index: 10;
         transition: opacity 0.25s, width 0.25s, transform 0.25s, border-radius 0.25s;
         opacity: 50%;
         border-bottom-left-radius: 5px;
@@ -131,12 +131,11 @@ $buttonHeight: 24px;
         height: auto;
         top: 0;
         right: 0;
-        // left: 300px;
+        
         padding: 8px 8px;
         background: #7e7e7e;
         border-radius: 4px;
-        z-index: 20;
-
+        z-index: 30;
 
 
         transition: opacity 0.25s, transform 0.5s;
@@ -160,7 +159,7 @@ $buttonHeight: 24px;
 
         font-weight: bold;
 
-        z-index: 10;
+        z-index: 20;
         overflow: hidden;
 
 
@@ -222,21 +221,12 @@ $buttonHeight: 24px;
 }
 
 .unb-comp-section__add-component {
-    display: flex;
-    background: $greyBG;
-    $buttonWidth: 250px;
-    overflow: hidden;
-    width: 50%;
-    height: 20px;
-    top: calc(100%);
-    left: 50%;
-    transform: translateX(-50%) translateY(-8px);
-    border-radius: 10px;
-    transition: width 0.1s, height 0.1s, padding 0.2s, background-color 0.5s;
-    position: absolute;
-    text-align: center;
-    justify-content: center;
 
+    display:block;
+    box-sizing:border-box;
+    max-width:100%;
+    height: 0px;
+    background:red;
     button,
     select {
         display: none;
@@ -247,57 +237,94 @@ $buttonHeight: 24px;
 
     &:before {
         content: "+";
+        background: $greyBG;
+        width: 30px;
+        height: 30px;
+        display:block;
+        bottom:-20px;
+        left: 50%;
+        transform: translateX(-50%);
+        border-radius: 15px;
+        transition: width 0.1s, height 0.1s, padding 0.2s, background-color 0.5s;
+        position: absolute;
         font-size: 2em;
         font-weight: bold;
         color: white;
-        display: inline-block;
-        width: 20px;
-        height: 20px;
-        line-height: 20px;
         text-align: center;
-
+        line-height:30px;
+        cursor:pointer;
+        white-space:nowrap;
+        z-index:5;
     }
+
+    &:after{
+        height:0px;
+        display:block;
+        content:"";
+        transition: height 0.1s, width 0.1s, padding 0.2s, background-color 0.5s;
+        pointer-events:none;
+    }
+
+    // highlight the box where the things will be added
 
     &:hover {
         // width: 300px;
         // height: 130px;
-        width: 90%;
-        height: auto;
-        padding: 4px;
-        transform: translateX(-50%) translateY(-8px);
-        z-index: 10;
-        opacity: 1.0;
-        background: rgba($overlayColor, 1.0);
 
-        &:before {
-            display: none;
+        &:after{
+            height:30px;
+            display:block;
+            content:"";
+            width:calc(100%);
+            left:50%;
+            bottom:0;
+            transform:translateX(-50%);
+            position:absolute;
+            background: linear-gradient(#00ddff00, #00ddff80);
+         
         }
 
-        button,
-        select {
-            display: block;
+        &::before{
+            content: "+ ADD COMPONENT";
+            width:250px;
+            z-index:15;
+            background:#00aadd;
+            font-size:1em;
         }
+
+
 
     }
 
-    &__button {
-        display: block;
-        width: $buttonWidth;
-        padding: 12px;
-        margin-bottom: 10px;
-        border-radius: 12px;
-        background: $lightGreyBG;
-        border: none;
-        font-size: 12px;
-        font-weight: bold;
-        text-transform: uppercase;
-        cursor: pointer;
+
+}
+
+.component-drawer {
+    color:white;
+
+    &__h1{
+        color:#aaaaaa;
+        font-size:1.2em;
+        font-weight:bold;
+        border-bottom:2px #555555 solid;
+        padding-bottom:8px;
+        text-transform:uppercase;
     }
 
-    &__component-list {
-        display: block;
-        width: $buttonWidth;
-        padding: 10px;
-        border-radius: 12px;
+
+
+    &__component{
+        color: #333333;
+        cursor:pointer;
+        padding:5px;
+        letter-spacing:0.5px;
+        font-weight:bold;
+        background: linear-gradient(175deg, #dddddd, #aaaaaa);
+        border-bottom:1px #555555 solid;
+        &:hover{
+            background: linear-gradient(175deg, #33ddff, #99eeee);
+            color:black;
+        }
+        
     }
 }

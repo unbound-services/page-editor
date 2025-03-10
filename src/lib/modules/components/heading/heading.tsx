@@ -13,7 +13,7 @@ const heading = (props) => {
     editing = true,
     setButtonRender,
   } = props;
-  const headingOptions = ["h1", "h2", "h3", "h4", "h5"];
+  const headingOptions = ["h1", "h2", "h3", "h4", "h5", "h6"];
   const TagName = headingType;
 
   useEffect(() => {
@@ -22,7 +22,6 @@ const heading = (props) => {
         <SelectInput
           sectionName="headingType"
           options={headingOptions}
-          current={headingType}
           label="Heading Type"
         />
         <StringInput sectionName="text" label="Heading Text" />

@@ -1,13 +1,13 @@
 {
   "compilerOptions": {
-    "outDir": "./pkg_build/",
+    "outDir": "types_raw",
     "declaration": true,
-    "inlineSourceMap": true,
+    "inlineSourceMap": false,
     "skipLibCheck": true,
     "noImplicitAny": false,
     "declarationMap": true, // (Optional) Source maps for .d.ts
     "emitDeclarationOnly": true, // Prevents generating .js files (optional)
-    "module": "es6",
+    "module": "ESNext",
     "lib": [
       "ESNext",
       "dom"
@@ -15,7 +15,7 @@
     // "lib": ["es2015", "es2016", "es2017", "dom"],
     // "lib": [  "es6"],
     "target": "es6",
-    "jsx": "react-jsx",
+    "jsx": "react",
     // "jsxImportSource": "react",
     "moduleResolution": "node",
     "allowJs": true,
@@ -26,24 +26,20 @@
     "strictFunctionTypes": true,
     // "types":["@types/jest","node"],
     "typeRoots": [
-      "./src/types",
-      "./node_modules/@types"
+      "node_modules/@types",
     ],
-    "baseUrl": "./",
-    "paths": {
-      //   "react": [
-      //     "node_modules/preact/compat"
-      //   ],
-      //   "react-dom": [
-      //     "node_modules/preact/compat"
-      //   ],
-      "react/jsx-runtime": [
-        "./node_modules/react/jsx-runtime"
-      ]
-    }
+    // "paths": {
+    //   //   "react": [
+    //   //     "node_modules/preact/compat"
+    //   //   ],
+    //   //   "react-dom": [
+    //   //     "node_modules/preact/compat"
+    //   //   ],
+    // }
   },
   "include": [
-    "src/**/*"
+    "src/lib/**/*",
+    "src/global.d.ts"
   ],
   "ts-node": {
     // these options are overrides used only by ts-node

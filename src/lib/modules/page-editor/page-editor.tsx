@@ -66,7 +66,11 @@ export const PageEditor = (props: PageEditorPropType) => {
     
     const enterFullscreen = () => {
       if (divRef.current?.requestFullscreen) {
+        if(document.fullscreenElement){
+          document.exitFullscreen();
+        }else {
         divRef.current.requestFullscreen();
+        }
       }
     };
   const updateViewportDimension=  (key,val,add=false)=>{
