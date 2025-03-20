@@ -220,7 +220,6 @@ const DifferentComponent = ({title="title"}) => (<div style={{fontSize:"0.8em",p
 
 const TestRepeater = (props) => {
 
-  console.log('props', props)
   return  <><div style={{background:"#440077",padding:15, display:"inline-block", width:"20%"}}><Repeater  >
       <MenuComponent />
   </Repeater>

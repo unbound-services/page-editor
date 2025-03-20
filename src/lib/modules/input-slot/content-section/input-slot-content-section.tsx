@@ -109,14 +109,16 @@ export const ContentSection = (props: ContentSectionProps) => {
 
       const comp = currentChildren[key];
       if (key == 0) return;
+      let holdValue = neweditorState[key];
       neweditorState[key] = neweditorState[key - 1];
-      neweditorState[key - 1] = comp;
+      neweditorState[key - 1] = holdValue;
       
       // swap the button states
-      setButtonStateRaw({});
+      
 
       // probably should find a better way to do this
       editorContext.setState(neweditorState);
+      setButtonStateRaw({});
     };
 
     const moveDown = (key) => (e) => {
@@ -127,11 +129,13 @@ export const ContentSection = (props: ContentSectionProps) => {
       
       const comp = currentChildren[key];
       if (key == currentChildren.length - 1) return;
+      let holdValue = neweditorState[key];
       neweditorState[key] = neweditorState[key + 1];
-      neweditorState[key + 1] = comp;
-      setButtonStateRaw({});
+      neweditorState[key + 1] = holdValue;
+      
       // probably should find a better way to do this
       editorContext.setState(neweditorState);
+      setButtonStateRaw({});
     };
 
     if (componentData) {
@@ -525,7 +529,7 @@ export const getComponentFromData =
 
     return (<EditorContext.Provider value={{...currentContext[key], ...incState(currentContext, key),editing}} key={reorderRef.current+'-'+key+"-slot-provider"}>
         <ComponentSlotWrapper
-          key={key+"-slot-wrapper"}
+          key={reorderRef.current+'-'+key+"-slot-wrapper"}
           optionButtons={optionButtons}
           componentName={compData.displayName}
           editing={editing}
@@ -535,7 +539,7 @@ export const getComponentFromData =
 
         </ComponentSlotWrapper>
         <Comp
-            key={key+"-comp"}
+            key={reorderRef.current+'-'+key+"-comp"}
             {...currentProps}
             editing={editing}
             componentName={compData.displayName}

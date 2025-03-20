@@ -20,6 +20,7 @@ const  countStateName= "count";
   const {count = (state && state[countStateName]) ? state[countStateName] : 1} = otherProps;
 
   const childrenWithProps = (i,children) => React.Children.map(children, (child) => {
+
       // Checking isValidElement is the safe way and avoids a
       // typescript error too.
       if (React.isValidElement(child)) {
@@ -41,7 +42,7 @@ const  countStateName= "count";
   if (editing && !hideAddButton) {
     addButton = <button onClick={() => {
       const newCount = count + 1;
-      editorContext.setState({ [countStateName]: newCount });
+      editorContext.setState({ ...state, [countStateName]: newCount });
     }}>{addLabel}</button>;
   }
   let numSelect=null;

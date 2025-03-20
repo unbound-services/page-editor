@@ -111,6 +111,7 @@ export const ContentEditableInputSlot = ({
 
   bemPrefix="",
   classFunction=null,
+  children=undefined,
   ...props
 }) => {
   props = {...props};
@@ -150,7 +151,7 @@ export const ContentEditableInputSlot = ({
     let curHtml = contentRef.current.innerHTML;
 
     if( textOnly){
-      curHtml = curHtml.replace(/<[^>]*>?/gm, '');
+      curHtml = contentRef.current.innerText;
 
       contentRef.current.innerHTML = curHtml;
     } 
@@ -167,14 +168,15 @@ export const ContentEditableInputSlot = ({
 
   // if we have children then we need to render them to html
   useEffect(() => {
+    
     // console.log('children changed!!', lastHtml.current, props.children);
-    if(!lastHtml.current && props.children){
+    if(!editorState && !lastHtml.current && props.children){
       const innerHtml = renderToString(props.children);
       lastHtml.current = innerHtml;
       editorContext.setState(innerHtml);
     } 
 
-}, [props.children])
+}, [])
 
 
 
