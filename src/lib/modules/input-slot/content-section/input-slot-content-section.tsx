@@ -1,14 +1,13 @@
 
 import * as React from "react"
-import EditorContext, {
-  incState,
-} from "../../content-editor/content-editor-editor-context";
+import EditorContext from "../../content-editor/content-editor-editor-context";
 import "./input-slot-content-section.scss";
 import { useContext, useEffect, useState } from "react"
 import { createPortal } from "react-dom";
 // import editorStyles from "unb-editor/unb-editor.css?inline";
 import { Interface } from "readline";
 import Drawer from "../../common/drawer/common-drawer";
+import { cloneState, useEditorContext } from "../input-slot-hooks";
 
 export type ContentSectionProps = & React.HTMLProps<HTMLButtonElement> & React.HTMLAttributes<HTMLButtonElement> & {
   sectionName?: string;
@@ -37,7 +36,7 @@ export const ContentSection = (props: ContentSectionProps) => {
     } = props;
     const [componentDrawerOpen, setComponentDrawerOpen] = useState(false);
     const [buttonState, setButtonStateRaw] = useState({});
-    const editorContext = useContext(EditorContext);
+    const editorContext = useEditorContext(sectionName);
     const iframeHead = React.useRef(null);
     const [iframeBody, setIframeBody] = useState(null);
     const [iframeHeadStateful, setIframeHead] = useState(null);
@@ -62,18 +61,19 @@ export const ContentSection = (props: ContentSectionProps) => {
     }
 
     const sortComponentList = (componentsToSort) => {
+      if(!componentsToSort) return [];
       return Object.keys(componentsToSort).sort((a, b) =>
-        componentsToSort[a].displayName > componentsToSort[b].displayName
+        componentsToSort[a]?.displayName > componentsToSort[b]?.displayName
           ? 1
           : -1
       );
     };
 
-    const sortedComponentList = sortComponentList(editorContext.componentList);
+    const sortedComponentList = sortComponentList(editorContext?.componentList);
 
     // grab the editor state from context
     const {
-      editorState = { [sectionName]: [] },
+      editorState = [] ,
       
       previewing,
       renderFlags,
@@ -86,46 +86,50 @@ export const ContentSection = (props: ContentSectionProps) => {
     } = editorContext;
     if(editingProp!==undefined) editing = editingProp;
 
-    let componentData = editorState[sectionName];
-    let currentChildren = editorState[sectionName] ? editorState[sectionName] : [];
+    let componentData = editorState;
+    let currentChildren = editorState ? editorState : [];
     let childs = null;
     const removeComponent = (key) => (e) => {
-      let neweditorState = { ...editorState, [sectionName]: [...currentChildren] };
+      let neweditorState = [...currentChildren] ;
       e.preventDefault();
       e.stopPropagation();
 
       // probably should find a better way to do this
 
-      neweditorState[sectionName].splice(key, 1);
-      editorContext.setState(neweditorState,sectionName);
+      neweditorState.splice(key, 1);
+      editorContext.setState(neweditorState);
     };
 
     const moveUp = (key) => (e) => {
-      let neweditorState = { ...editorState, [sectionName]: [...currentChildren] };
+      let neweditorState = [...currentChildren] ;
       e.preventDefault();
       e.stopPropagation();
 
       const comp = currentChildren[key];
       if (key == 0) return;
-      neweditorState[sectionName][key] = neweditorState[sectionName][key - 1];
-      neweditorState[sectionName][key - 1] = comp;
+      neweditorState[key] = neweditorState[key - 1];
+      neweditorState[key - 1] = comp;
+      
+      // swap the button states
+      setButtonStateRaw({});
 
       // probably should find a better way to do this
-      editorContext.setState(neweditorState,sectionName);
+      editorContext.setState(neweditorState);
     };
 
     const moveDown = (key) => (e) => {
-      let neweditorState = { ...editorState, [sectionName]: [...currentChildren] };
+      let neweditorState = [...currentChildren] ;
       e.preventDefault();
       e.stopPropagation();
 
+      
       const comp = currentChildren[key];
       if (key == currentChildren.length - 1) return;
-      neweditorState[sectionName][key] = neweditorState[sectionName][key + 1];
-      neweditorState[sectionName][key + 1] = comp;
-
+      neweditorState[key] = neweditorState[key + 1];
+      neweditorState[key + 1] = comp;
+      setButtonStateRaw({});
       // probably should find a better way to do this
-      editorContext.setState(neweditorState,sectionName);
+      editorContext.setState(neweditorState);
     };
 
     if (componentData) {
@@ -138,8 +142,7 @@ export const ContentSection = (props: ContentSectionProps) => {
        moveDown:moveDown, 
        currentChildren:currentChildren, 
        removeComponent:removeComponent, getComp:getComp,
-      buttonRenderState:(key)=>[getButtonState(key), (val)=>setButtonState(key,val)],
-      sectionName},
+      buttonRenderState:(key)=>[getButtonState(key), (val)=>setButtonState(key,val)]},
       );
     }
 
@@ -147,7 +150,7 @@ export const ContentSection = (props: ContentSectionProps) => {
 
     // method for adding a new component to the content section state
     const addComponent = (component) => {
-      let neweditorState = { ...editorState, [sectionName]: [...currentChildren] };
+      let neweditorState = [...currentChildren] ;
       setComponentDrawerOpen(false);
       // probably should find a better way to do this
       let whichComponent =  component;
@@ -155,13 +158,13 @@ export const ContentSection = (props: ContentSectionProps) => {
         whichComponent = component
           ? component
           : sortedComponentList[0];
-      neweditorState[sectionName].push({ comp: whichComponent, props: {} });
-      editorContext.setState(neweditorState,sectionName);
+      neweditorState.push({ comp: whichComponent, props: {} });
+      editorContext.setState(neweditorState);
     };
 
     // component for adding a new component
     let addButton = null;
-    if (editing && !renderFlags.noAdd) {
+    if (editing && !renderFlags?.noAdd) {
       addButton = (
         <><div className="unb-comp-section__add-component" onClick={()=>setComponentDrawerOpen(true)}></div>
         <Drawer open={componentDrawerOpen} className="component-drawer" onClose={()=>setComponentDrawerOpen(false)}><h1 className="component-drawer__h1">Insert Component</h1>
@@ -449,7 +452,7 @@ export const ContentSection = (props: ContentSectionProps) => {
     return final;
   }
 
-const RenderComponents = ({componentData, renderFlags,editing,context,moveUp,moveDown,currentChildren,removeComponent, getComp, buttonRenderState,sectionName})=>{
+const RenderComponents = ({componentData, renderFlags,editing,context,moveUp,moveDown,currentChildren,removeComponent, getComp, buttonRenderState})=>{
   
   return componentData.map((item, key) => {
     let optionButtons = null;
@@ -464,7 +467,7 @@ const RenderComponents = ({componentData, renderFlags,editing,context,moveUp,mov
       // ===========================
       // up and down buttons =======
       // ===========================
-      if (!renderFlags.noRearrange) {
+      if (!renderFlags?.noRearrange) {
         if (key > 0)
           optionButtons.push(
             <button key={`${item.comp}-up-button`} onClick={moveUp(key)}>
@@ -484,7 +487,7 @@ const RenderComponents = ({componentData, renderFlags,editing,context,moveUp,mov
       // =========================
       // delete button
       // ==========================
-      if (!renderFlags.noAdd) {
+      if (!renderFlags?.noAdd) {
         optionButtons.push(
           <button
             className={"content-section-controls__delete-button"}
@@ -499,7 +502,7 @@ const RenderComponents = ({componentData, renderFlags,editing,context,moveUp,mov
 
     // if you don't treat this like a function call it will 
     // think you're calling your hooks outside a function
-    return getComp({data:item, key, optionButtons,buttonRenderState:buttonRenderState(key),sectionName});
+    return getComp({data:item, key, optionButtons,buttonRenderState:buttonRenderState(key)});
     const Comp = getComp(item, key, optionButtons);
     return <Comp key={key+"-wrapper"} />;
   });
@@ -508,15 +511,16 @@ const RenderComponents = ({componentData, renderFlags,editing,context,moveUp,mov
 
 // get the component from the data that represents it
 export const getComponentFromData =
-  (currentContext,setDomNode, editing=undefined) => ({data, key, optionButtons,buttonRenderState,sectionName}) =>{
+  (currentContext,setDomNode, editing=undefined) => ({data, key, optionButtons,buttonRenderState}) =>{
     const compData = currentContext.componentList[data.comp];
     const [buttonRender, setButtonRender] = buttonRenderState;
+  
     if (!compData) return null;
     const Comp = currentContext.componentList[data.comp].comp;
     let currentProps = data.props;
     if(editing === undefined) editing = currentContext.editing;
 
-    return (<EditorContext.Provider value={{...currentContext, ...incState(currentContext, key, sectionName),editing}} key={key+"-slot-provider"}>
+    return (<EditorContext.Provider value={{...currentContext[key], ...incState(currentContext, key),editing}} key={key+"-slot-provider"}>
         <ComponentSlotWrapper
           key={key+"-slot-wrapper"}
           optionButtons={optionButtons}
@@ -524,7 +528,6 @@ export const getComponentFromData =
           editing={editing}
           previewing={currentContext.previewing}
           buttonRender={buttonRender}
-          sectionName={sectionName}
           setWrapperDomNode={setDomNode(key)}>
 
         </ComponentSlotWrapper>
@@ -534,23 +537,21 @@ export const getComponentFromData =
             editing={editing}
             componentName={compData.displayName}
             previewing={currentContext.previewing}
-            sectionName={sectionName}
             
             setButtonRender={setButtonRender}> 
-            {data.props[sectionName]}
             
           </Comp>
       </EditorContext.Provider>
     );
   };
 
-const ComponentSlotWrapper = (props) => {
+const ComponentSlotWrapper = ({componentName,optionButtons,...props}) => {
   // const [showingButtons, setShowingButtons] = useState(false);
   // onMouseOver={()=>setShowingButtons(true)}
   // onMouseOut={(e)=>{console.log('event', e.target); setShowingButtons(false)}}
 
   // dont do anything with this when they're just previewing
-  const { editing, previewing, buttonRender,sectionName,setWrapperDomNode } = props;
+  const { editing, previewing, buttonRender,setWrapperDomNode } = props;
   if (!editing) {
     setWrapperDomNode(null);
     return props.children;
@@ -569,10 +570,10 @@ const ComponentSlotWrapper = (props) => {
   const buttonSection = (
     <div className="content-section-controls__inner">
       <strong className="content-section-controls__component-type">
-        {props.componentName}
+        {componentName}
       </strong>
       
-        {props.optionButtons}
+        {optionButtons}
         {extra}
     </div>
   );
@@ -597,3 +598,45 @@ export const SectionControlWrapper = (props)=>{
     </div>
   )
 }
+
+
+// this function is specifically for isolating the state of components added to the input slot content section
+const incState = (currentContext, index,sectionName?) => {
+
+  const newVal = cloneState( currentContext );
+
+  let setState;
+  if(sectionName){
+    setState = (stateUpdate) => {
+
+    const newState = cloneState(currentContext.editorState);
+    if (newState[sectionName]) {
+      newState[sectionName] = cloneState(newState[sectionName]);
+    }
+    newState[sectionName][index].props = {
+      ...newState[sectionName][index].props,
+      ...stateUpdate,
+    };
+    currentContext.setState(newState);
+  };
+
+  newVal.editorState = currentContext.editorState[sectionName][index].props;
+} else {
+  setState = (stateUpdate) => {
+    const newState = cloneState(currentContext.editorState);
+    newState[index].props = {
+      ...newState[index].props,
+      ...stateUpdate,
+    };
+    currentContext.setState(newState);
+  }
+
+  newVal.editorState = currentContext.editorState[index].props;
+}
+
+
+  newVal.setState = setState;
+
+  
+  return newVal;
+};

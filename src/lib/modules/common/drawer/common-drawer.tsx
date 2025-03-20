@@ -1,6 +1,6 @@
 import * as React from "react";
 import { Fragment } from "react"
-
+import "./common-drawer.scss";
 
 export const Drawer = (props) => {
   const { onClose, children, open = false, className="", innerClass=""

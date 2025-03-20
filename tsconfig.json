@@ -41,6 +41,7 @@
     "src/lib/**/*",
     "src/global.d.ts"
   ],
+  "exclude":["pkg_build/**/*","types_raw/**/*"],
   "ts-node": {
     // these options are overrides used only by ts-node
     "compilerOptions": {

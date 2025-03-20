@@ -1,7 +1,7 @@
 import React from "react";
-import Columns from "../components/columns/columns";
+import Columns from "../components/columns/components-columns";
 import Heading from "../components/heading/heading";
-import Paragraph from "../components/paragraph/paragraph";
+import {Paragraph} from "../components/paragraph/paragraph";
 import {Spacer} from "../components/spacer/spacer";
 
 // our sample component

@@ -5,6 +5,10 @@
 /.pnp
 .pnp.js
 
+public
+public_prod
+types_raw
+
 # testing
 /coverage
 
@@ -27,3 +31,5 @@ page-editor*.tgz
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+
+*storybook.log

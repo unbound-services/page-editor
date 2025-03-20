@@ -31,6 +31,7 @@ export type PageEditorPropType = {
   componentList?: any;
   streams?: StreamDriver;
   plugins?: any;
+  editing?:boolean;
   onSave?: PageEditorOnsaveFunction;
   pageData?: any;
   pageMeta?: any;
@@ -38,6 +39,7 @@ export type PageEditorPropType = {
   exportState?: (getState:Function, setState: Function,getMarkup:Function) => void;
   contextualPageData?: any;
   editorOptions?: PageEditorAppOptions;
+  children?: any;
 };
 
 export type ViewportDimensions = {
@@ -139,7 +141,8 @@ export const PageEditor = (props: PageEditorPropType) => {
       streams,
       renderFlags: renderFlagProps = {},
       exportState,
-      editorOptions
+      editorOptions,
+      editing = !preview
     } = props;
 
     let renderFlags = defaultRendererFlags;
@@ -166,6 +169,19 @@ export const PageEditor = (props: PageEditorPropType) => {
         },
       });
     };
+    
+    let getWrappedRoot = (props={}, isRender=true)=>{
+       
+    if(editorOptions?.pageOptions?.wrapperComponent){
+      if(isRender && !editorOptions?.pageOptions?.includeWrapperInRender) return <ContentSection isRoot {...props
+      } />;
+      const WrapperComponent = editorOptions.pageOptions.wrapperComponent;
+      return <WrapperComponent>
+        <ContentSection isRoot {...props} />
+      </WrapperComponent>
+    }
+    return <ContentSection isRoot {...props} />
+  }
 
     const renderIndividualComponentsMarkup = ()=> demoState.children.map((data) => {
         const compData = props.componentList[data.comp];
@@ -208,7 +224,7 @@ export const PageEditor = (props: PageEditorPropType) => {
             viewportDimensions: viewportDimensions,
             updateViewportDimension
           }}>
-          <ContentSection isRoot />
+          {getWrappedRoot()}
         </EditorContext.Provider>
       );
     }
@@ -274,8 +290,6 @@ export const PageEditor = (props: PageEditorPropType) => {
       divRef.current = divEl;
     }
 
-
-
     return (
       <div ref={setDivRef} className="page-editor__inner">
         <Drawer
@@ -329,7 +343,8 @@ export const PageEditor = (props: PageEditorPropType) => {
             viewportDimensions: viewportDimensions,
             updateViewportDimension
           }} key="root-provider">
-          <ContentSection isRoot key="root-content-section" iframeRef={iframeRef} />
+            {getWrappedRoot({key:"root-content-section", iframeRef},false)}
+            
           <div><StreamDriverComponent /></div>
         </EditorContext.Provider>
       </div>

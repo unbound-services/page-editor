@@ -18,13 +18,19 @@ const column = (props) => {
   );
 };
 
-const ColumnSection = (props) => {
+export type ColumnSectionProps = {
+  count?: number;
+  responsive?: boolean;
+  setButtonRender?: (render:()=>React.ReactNode)=>void;
+}
+export const ColumnSection = (props:ColumnSectionProps) => {
   const { count = 3,responsive=false, setButtonRender } = props;
   let Column = column;
   let columns = [];
   let columnSectionClass;
 
   React.useEffect(() => {
+    if(!setButtonRender) return;
     setButtonRender(() => (
       <React.Fragment>
         <NumberSelectInput
@@ -43,7 +49,7 @@ const ColumnSection = (props) => {
       </React.Fragment>
     ));
     // console.log("called set button render");
-  }, []);
+  }, [setButtonRender]);
 
   
 

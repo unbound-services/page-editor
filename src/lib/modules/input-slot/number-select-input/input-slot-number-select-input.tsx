@@ -13,12 +13,13 @@ export const NumberSelectInput = (props) => {
 
       ...otherProps
     } = props;
-    let {current= typeof min =="number" ? min : 0} = props;
+    let {current= (typeof min =="number") ? min : 1} = props;
     const TagName = tagName;
-    const { editorState: state, editing,setState } = useEditorContext();
-    if(state[sectionName] !== undefined){
-      current = state[sectionName];
+    const { editorState: state, editing,setState } = useEditorContext(sectionName);
+    if(state !== undefined){
+      current = state;
     }
+
     const onChange = (e) => {
       let value = parseFloat(e.currentTarget.value);
       if (!value) {
@@ -30,7 +31,7 @@ export const NumberSelectInput = (props) => {
       if(max !==undefined && value > max){
         value = max;
       }
-      setState({ ...state, [sectionName]: (value) });
+      setState(value);
     };
 
     if (editing) {
@@ -69,7 +70,7 @@ export const NumberSelectInput = (props) => {
       if (hidden) {
         return null;
       }
-      return <TagName {...otherProps}>{state[sectionName]}</TagName>;
+      return <TagName {...otherProps}>{state}</TagName>;
     }
   }
 

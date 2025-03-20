@@ -8,13 +8,14 @@ export interface StringInputProps {
   tagName?: string;
   hidden?: boolean;
   inputClass?: string;
+  placeholder?: string;
   children?: any;
 }
 
 export type StringInputState = {};
 export const StringInput = (props:StringInputProps) => {
     const {
-      value = "yay",
+      value,
       sectionName,
       label,
       tagName = "div",
@@ -24,9 +25,10 @@ export const StringInput = (props:StringInputProps) => {
       ...otherProps
     } = props;
     const TagName = tagName;
-    const { editorState: state, editing, setState} = useEditorContext();
+    const { editorState: state, editing, setState} = useEditorContext(sectionName);
+    let valueToUse = value ? value : state ? state : "";
     const onChange = (e) => {
-      setState({ ...state, [sectionName]: e.currentTarget.value });
+      setState(e.currentTarget.value );
     };
 
     if (editing) {
@@ -34,7 +36,7 @@ export const StringInput = (props:StringInputProps) => {
         return (
           // @ts-ignore
           <TagName {...inputClass} {...otherProps}>
-            <input type="text" onChange={onChange} value={state[sectionName]} />
+            <input type="text" onChange={onChange} value={valueToUse} />
           </TagName>
         );
       }
@@ -44,7 +46,7 @@ export const StringInput = (props:StringInputProps) => {
         <TagName {...inputClass} {...otherProps}>
           <label>
             <span>{label}</span>
-            <input type="text" onChange={onChange} value={state[sectionName]} />
+            <input type="text" onChange={onChange} value={valueToUse} />
           </label>
         </TagName>
       );

@@ -44,6 +44,8 @@ export type PageEditorAppOptions = {
     pageHtml?: string,
     renderInIframe?:boolean,
     clearContainer?:boolean,
+    wrapperComponent?: React.ComponentType<React.PropsWithChildren<any>>,
+    includeWrapperInRender?:boolean,
     documentRoot?: string | HTMLElement | ((iframeDocument:HTMLIFrameElement) => HTMLElement),
     href?: string,
     js?: string[],
@@ -96,8 +98,18 @@ export default class PageEditorApp {
       this.plugins = options.plugins;
     }
     if(this._editorOptions) {
-      this._editorOptions = {...this._editorOptions, ...
-        options};
+      const newOptions = {...this._editorOptions, ...
+        options };
+        if(options.pageOptions) {
+          newOptions.pageOptions = {...this._editorOptions.pageOptions, ...
+            options.pageOptions };
+        }
+        if(options.renderFlags) {
+          newOptions.renderFlags = {...this._editorOptions.renderFlags, ...
+            options.renderFlags };
+        }
+
+      this._editorOptions = newOptions;
     } else {
       this._editorOptions = options;
     }
@@ -119,7 +131,7 @@ export default class PageEditorApp {
 
     // if there isn't a streamdriver then create it
     this._streamDriver = this.createStreamDriver();
-
+      console.log(this._editorOptions);
     const AppComp = (props) => {
       const [refreshCount, setRefreshCount] = useState(1);
       this._setForceRefreshVal = setRefreshCount; //for forcing refreshes

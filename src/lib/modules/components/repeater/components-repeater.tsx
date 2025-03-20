@@ -3,21 +3,27 @@ import { useEditorContext } from "../../input-slot/input-slot-hooks";
 import SlotSection from "../../input-slot/slot-section/input-slot-slot-section";
 import { NumberSelect } from "../../..";
 
-export const Repeater = (props: React.PropsWithChildren<{ sectionName?: string,
+export type RepeaterProps = React.PropsWithChildren<{ sectionName?: string,
   count?:number,
   TagName?:any,
-  countStateName?:string,
-  hideCounter?:boolean }>) => {
-  const { sectionName="repeater", countStateName= "count" , hideCounter = false, ...otherProps } = props;
+  editing?:boolean,
+  addLabel?:string,
+  hideCounter?:boolean,
+hideAddButton?:boolean, }>
 
-  const { editorState: state, editing} = useEditorContext(sectionName);
+export const Repeater = (props: RepeaterProps) => {
+  const { sectionName="repeater" , addLabel="Add Row",hideAddButton=false, editing:editingProp, hideCounter = false, ...otherProps } = props;
+const  countStateName= "count";
+  const editorContext = useEditorContext(sectionName);
+  const { editorState: state} = (editorContext ? editorContext : { editorState: null }); 
+  const editing = (editingProp !== undefined) ? editingProp : editorContext?.editing;
   const {count = (state && state[countStateName]) ? state[countStateName] : 1} = otherProps;
 
   const childrenWithProps = (i,children) => React.Children.map(children, (child) => {
       // Checking isValidElement is the safe way and avoids a
       // typescript error too.
       if (React.isValidElement(child)) {
-        let currentState = state ? state[`rep${i}`] || {} : {};
+        let currentState = (state && state[`rep${i}`]) ? state[`rep${i}`] : {};
         return React.cloneElement(child, { repeaterIndex: i,...currentState} as any);
       }
       return child;
@@ -28,11 +34,20 @@ export const Repeater = (props: React.PropsWithChildren<{ sectionName?: string,
   for (let i = 0; i < count; i++) {
       let child = childrenWithProps(i,props.children);
 
-      children.push(<SlotSection sectionName={`rep${i}`} key={i}>{child}</SlotSection>);
+      children.push(<SlotSection sectionName={`${sectionName}.rep${i}`} key={i}>{child}</SlotSection>);
   }
 
+  let addButton = null;
+  if (editing && !hideAddButton) {
+    addButton = <button onClick={() => {
+      const newCount = count + 1;
+      editorContext.setState({ [countStateName]: newCount });
+    }}>{addLabel}</button>;
+  }
   let numSelect=null;
-  if(editing && !hideCounter) numSelect = <NumberSelect label="Count:" min={1}  sectionName={countStateName} />;
+  if(editing && !hideCounter) numSelect = <NumberSelect label="Count:" min={1}  sectionName={`${sectionName}.${countStateName}`} />;
   if(props.TagName) return <props.TagName {...otherProps}>{numSelect}{children}</props.TagName>;
-  return <>{numSelect}{children}</>;
+  return <>{numSelect}{children}{addButton}</>;
 }
+
+

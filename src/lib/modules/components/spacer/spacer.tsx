@@ -4,8 +4,9 @@ import { useEditorContext } from "../../input-slot/input-slot-hooks";
 import "./spacer.scss";
 import { CE } from "../../input-slot/content-editable/input-slot-content-editable";
 export const Spacer = (props) => {
-  const { space =10 } = props;
-  const { editing,setState } = useEditorContext();
+  const {sectionName = "space"} = props;
+  const { editorState, editing,setState } = useEditorContext(sectionName);
+  const { space =editorState ? editorState : 10 } = props;
   const handleRef = React.useRef(null);
   const handleData = React.useRef({startY:0, startHeight:0, mouseDown:false});
   let handle = null;
@@ -23,14 +24,14 @@ export const Spacer = (props) => {
       const currentY = e.clientY || e.touches[0].clientY;
       let diff = currentY - handleData.current.startY;
       const newHeight = Math.max(0,handleData.current.startHeight + diff);
-      setState( {space:newHeight});
+      setState( newHeight);
     };
     const handleMouseUp = (e) => {
       if(!handleData.current.mouseDown) return;
       const currentY = e.clientY || e.touches[0].clientY;
       let diff = currentY - handleData.current.startY;
       const newHeight = Math.max(0,handleData.current.startHeight + diff);
-      setState( {space:newHeight});
+      setState( newHeight);
       handleData.current.mouseDown = false;
     };
 
@@ -81,7 +82,7 @@ export const Spacer = (props) => {
     handle = <div ref={onRef} style={{height:space}} className="spacer-handle">      
     <NumberSelectInput
     key="num-select"
-    sectionName="space"
+    sectionName={sectionName}
     className="spacer-input"
     current={space}
     max={1000}

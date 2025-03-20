@@ -12,6 +12,8 @@ import {
   ContentSection,
   useEditorContext,
   EditorValue,
+  StreamContextType,
+  useEditorState,
 } from "./lib/index";
 
 import React,{ useEffect, useState } from "react"
@@ -24,78 +26,18 @@ import {  MDBlockQuote, MDH1, MDH2, MDH3, MDH4, MDH5, MDH6,
   MDInlineCode,MDOrderedList,MDStrikethrough,MDUnorderedList
   // MDList, MDListItem, MDTable, MDTableRow, MDTableCell, MDTableHeaderCell, MDTableHeaderRow, MDUnorderedList
  } from "./lib/modules/md/md";
-import Paragraph from "./lib/modules/components/paragraph/paragraph";
+import {Paragraph} from "./lib/modules/components/paragraph/paragraph";
 import {Repeater} from "./lib/modules/components/repeater/components-repeater";
 import {HideIfEditing, HideIfRendering} from "./lib/modules/page-editor/page-editor-visibility";
 
 const INPUT = createContentEditable({bem: true, bemPrefix: "ce"});
 const CE = INPUT;
-let editor = new UNBEditor({ pageData: {
-  "children": [
-      {
-          "type": "repeater",
-          "count": 3,
-          "sectionName": "header",
-          "children": [
-              {
-                  "type": "menu",
-                  "title": "Menu",
-                  "children": [
-                      {
-                          "type": "article",
-                          "title": "Article",
-                          "subtitle": "Subtitle",
-                          "description": "Description",
-                          "children": [
-                              {
-                                  "type": "content",
-                                  "sectionName": "stuff",
-                                  "children": [
-                                      {
-                                          "type": "paragraph",
-                                          "content": "Some content"
-                                      }
-                                  ]
-                              }
-                          ]
-                      }
-                  ]
-              }
-          ]
-      },
-      {
-          "comp": "heading",
-          "props": {
-              "text": "beautiful heading"
-          }
-      },
-      {
-          "comp": "repeater",
-          "props": {
-              "rep0": {
-                  "description": "Description",
-                  "subtitle": "Subtitle",
-                  "title": "Article",
-                  "stuff": [
-                      {
-                          "comp": "heading",
-                          "props": {}
-                      }
-                  ]
-              },
-              "count": 2,
-              "rep1": {
-                  "description": "Description",
-                  "subtitle": "Subtitle",
-                  "title": "Article"
-              }
-          }
-      }
-  ]
-},pageOptions:{
+let editor = new UNBEditor({pageOptions:{
   href: "template.html",
   documentRoot: "main",
+  wrapperComponent: (props) => <div style={{background:"#ee0000", padding:50}}>{props.children}</div>,
   clearContainer: true,
+  includeWrapperInRender:true,
   scripts:[    "vendor/jquery/jquery.min.js",
     "vendor/bootstrap/js/bootstrap.min.js",
     "assets/js/isotope.min.js",
@@ -161,10 +103,10 @@ const onSave = (data) => {
 };
 
 
-const MigrationComponent = (props:React.PropsWithChildren<{slotName:string}>) => {
-
-  const editorState = useEditorContext();
-  const {slotName} = props;
+const MigrationComponent = (props:{sectionName:string}) => {
+  const {sectionName} = props;
+  const editorState = useEditorContext(sectionName);
+  
   useEffect(() => {
   //     if(!editorState.editorState?.content){
   //         return;
@@ -259,8 +201,8 @@ const DifferentComponent = ({title="title"}) => (<div style={{fontSize:"0.8em",p
   </div>)
 
   export const MenuComponent = ()=>{
-    return <div style={{background:"#dddddd", margin:5, display:"block", width:"100px"}}><CE.strong sectionName="title">Hello World!</CE.strong>
-    <EditorValue sectionName="description" transform={(val)=>val ? val.substring(0,10)+"..." : null} />
+    return <div style={{background:"#dddddd", margin:5, display:"block", width:"100px"}}><CE.strong sectionName="title" editing={false}>Hello World!</CE.strong>
+    <EditorValue sectionName="description" transform={(val)=>val ? val.substring(0,10)+"..." : null}  />
     <ContentSection style={{background:"white", transform:"scale(0.25)"}} sectionName="stuff" editing={false} />
     </div>
   }
@@ -277,13 +219,15 @@ const DifferentComponent = ({title="title"}) => (<div style={{fontSize:"0.8em",p
   }
 
 const TestRepeater = (props) => {
-  return  <><div style={{background:"#440077",padding:15, display:"inline-block", width:"20%"}}><Repeater  sectionName="header">
+
+  console.log('props', props)
+  return  <><div style={{background:"#440077",padding:15, display:"inline-block", width:"20%"}}><Repeater  >
       <MenuComponent />
   </Repeater>
   </div>
 
   <div style={{display:"inline-block", width:"75%"}}>
-    <Repeater {...props} sectionName="header" hideCounter>
+    <Repeater  hideCounter>
       <INPUT.BEM value={{bemPrefix: "bem-test"}} >
       <ArticleComponent />
       </INPUT.BEM>
@@ -291,7 +235,37 @@ const TestRepeater = (props) => {
   </div>
   </>
 }
+
+
+const StreamButton = ({sectionName}:{sectionName:string}) => {
+  const editorContext = useEditorContext(sectionName);
+  let stream: StreamContextType | undefined;
+  try {
+      stream = editorContext.streams;
+  } catch (e) {
+      console.log(e);
+  }
+
+  const onClick = () => {
+    console.log('stream',stream)
+    editorContext.setState("https://via.placeholder.com/150");
+    // stream?.getStream("image-stream", (images) => {
+    //     console.log("images", images);
+    //     editorContext.setState(images[0].url );
+    // }, {});
+};
+
+return <button onClick={onClick}>Select Img</button>
+}
+
+
+
+
+
+
+
 editor.addComponents(TestRepeater, "repeater", "Repeater");
+
 // editor.addComponents(MigrationComponent, "migration", "Migration");
 // editor.addComponents( MDH1, "mdh1", "Header 1");
 // editor.addComponents( MDH2, "mdh2", "Header 2");
@@ -378,6 +352,7 @@ interface ImageStreamFormat {
 const catStream = new HTTPStream<HTTPStreamFields, ImageStreamFormat>(
   "/api/images",
   (data) => {
+    console.log('data',data)
     const images = data.images as ImageStreamFormat[];
 
     return images;
@@ -411,7 +386,8 @@ const tableImageStream = new HTTPStream<
 // create a stream group to agregate different streams
 // ======================================================
 const imageStreamGroup = new StreamGroup<any, ImageStreamFormat>();
-editor.streamDriver.addStream("test-stream", imageStreamGroup);
+editor.streamDriver.addStream("cat-stream", catStream);
+editor.streamDriver.addStream("image-stream", imageStreamGroup);
 editor.streamDriver.addStream(
   "fake-stream",
   new FakeStream(() => [{ src: "asdf" }])
@@ -489,4 +465,4 @@ imageStreamGroup.adaptStream("Table Stream", tableStream, (tables) => {
 // add streams of agreeing types
 imageStreamGroup.addStream("Table Image Stream", tableImageStream);
 
-imageStreamGroup.addStream("Cat Stream", catStream);
+

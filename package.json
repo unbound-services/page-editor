@@ -1,6 +1,6 @@
 {
   "name": "unb-editor",
-  "version": "0.3.16",
+  "version": "0.3.19",
   "private": false,
   "description": "Drop-In document editor to generate webpages and pdfs",
   "author": {
@@ -18,7 +18,6 @@
       "default": "./pkg_build/without-react/unb-editor.css"
     }
   },
-
   "files": [
     "pkg_build/",
     "README.md"
@@ -41,12 +40,16 @@
     "test": "node --experimental-vm-modules  node_modules/jest/bin/jest.js --config jest.config.js",
     "test-bundle": "webpack --config ./webpack.config.test.js",
     "deprecated-types": "tsc --project types.tsconfig.json --emitDeclarationOnly",
-    "build-server-side": "webpack --mode production --config server-side-webpack.config.js --entry ./src/server-side.tsx -o pkg_build"
+    "build-server-side": "webpack --mode production --config server-side-webpack.config.js --entry ./src/server-side.tsx -o pkg_build",
+    "storybook": "storybook dev -p 6006",
+    "build-storybook": "storybook build"
   },
   "eslintConfig": {
     "extends": [
       "react-app",
-      "react-app/jest"
+      "react-app/jest",
+      "plugin:storybook/recommended",
+      "plugin:storybook/recommended"
     ]
   },
   "browserslist": {
@@ -67,8 +70,18 @@
     "@babel/preset-env": "^7.26.0",
     "@babel/preset-react": "^7.26.3",
     "@babel/preset-typescript": "^7.26.0",
+    "@chromatic-com/storybook": "^3.2.6",
     "@preact/preset-vite": "^2.10.0",
     "@rollup/plugin-commonjs": "^28.0.2",
+    "@storybook/addon-essentials": "^8.6.7",
+    "@storybook/addon-interactions": "^8.6.7",
+    "@storybook/addon-onboarding": "^8.6.7",
+    "@storybook/blocks": "^8.6.7",
+    "@storybook/builder-vite": "^8.6.7",
+    "@storybook/react": "^8.6.7",
+    "@storybook/react-vite": "^8.6.7",
+    "@storybook/test": "^8.6.7",
+    "@storybook/test-runner": "^0.22.0",
     "@testing-library/jest-dom": "^6.6.3",
     "@testing-library/preact": "^3.2.4",
     "@testing-library/user-event": "^14.5.2",
@@ -86,6 +99,7 @@
     "declaration-bundler-webpack-plugin": "^1.0.3",
     "diff": "^7.0.0",
     "dts-bundle-generator": "^9.5.1",
+    "eslint-plugin-storybook": "^0.11.6",
     "express": "^4.21.2",
     "identity-obj-proxy": "^3.0.0",
     "ignore-loader": "^0.1.2",
@@ -106,6 +120,7 @@
     "rimraf": "^6.0.1",
     "sass": "^1.83.1",
     "sass-loader": "^16.0.4",
+    "storybook": "^8.6.7",
     "style-loader": "^4.0.0",
     "ts-jest": "^29.2.5",
     "ts-loader": "^9.5.1",

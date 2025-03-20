@@ -3,8 +3,6 @@ import * as React from "react";
 import {
   EditorContext,
   EditorContextType,
-  incState,
-  stateDeeper,
 } from "../content-editor/content-editor-editor-context";
 
 export type StreamInputState = {};
@@ -17,11 +15,30 @@ export type StreamInputState = {};
  * @returns
  */
 export const useEditorContext = (
-  sectionName: string = null
+  sectionName: string = null,
+  returnObjectIfOutsideContext = false
 ): EditorContextType => {
   let editorContext = useContext(EditorContext);
 
+  if (!editorContext) {
+    if(returnObjectIfOutsideContext){
+      return {
+        setState: (newState) => {},
+        editorState: {},
+        componentList: {},
+        editing: false,
+        previewing: false,
+        editorOptions: {},
+        viewportDimensions: { width: 0, height: 0, zoom: 1 },
+        updateViewportDimension: (key, val, add) => {},
+      };
+    }
+    return undefined;
+  }
+
   if (!sectionName) return editorContext;
+
+  if(!editorContext) return undefined;
 
   let state = editorContext.editorState;
 
@@ -32,24 +49,24 @@ export const useEditorContext = (
     sections = [sectionName];
   }
   for(let i = 0; i < sections.length; i++){
-    state = state[sections[i]];
-    if(!state){
+    if(!state || (typeof(state) !== 'object' && !Array.isArray(state))){
       break;
     }
+    state = state[sections[i]];
+
   }
       
   
 
   let namedState = (newValue) => {
-    let newState = { ...editorContext.editorState };
+    let newState = cloneState(editorContext.editorState);
+    let cursor = newState;
     for(let i = 0; i < sections.length; i++){
       if(i === sections.length - 1){
-        newState[sections[i]] = newValue;
+        cursor[sections[i]] = cloneState(newValue);
       } else {
-        if(!newState[sections[i]]){
-          newState[sections[i]] = {};
-        }
-        newState = {...newState[sections[i]]};
+        cursor[sections[i]] = cloneState(cursor[sections[i]]) || {};
+        cursor = cursor[sections[i]];
       }
     }
     editorContext.setState(newState);
@@ -62,6 +79,15 @@ export const useEditorContext = (
     editorState:state
   };
 };
+
+export const cloneState = (state) => {
+  if(Array.isArray(state)){
+    return [...state];
+  } else if(typeof(state) === 'object'){
+    return { ...state };
+  }
+  return state;
+}
 
 interface useEditorContextOutputProps {
   editorContext: EditorContextType;
@@ -85,7 +111,8 @@ export const injectEditorState = (Comp:React.ComponentType) => (props:any) => {
  * @returns
  */
 export const useEditorState = (sectionName: string = null, ) => {
-  return useEditorContext(sectionName).editorState;
+  const context = useEditorContext(sectionName).editorState;
+  return [context?.editorState, context?.setState, context?.editing];
 }
 
 export const useEditorStateWithProps  = (sectionName: string = null, props:any) => {

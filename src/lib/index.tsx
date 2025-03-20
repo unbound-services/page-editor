@@ -32,8 +32,9 @@ import "./modules/common/drawer/common-drawer.scss";
 import "../sass/app.scss";
 import { HideIf, HideIfEditing, HideIfRendering } from "./modules/page-editor/page-editor-visibility";
 import { Repeater } from "./modules/components/repeater/components-repeater";
-import ColumnSection from "./modules/components/columns/columns";
+import ColumnSection from "./modules/components/columns/components-columns";
 import { Spacer } from "./modules/components/spacer/spacer";
+import { CheckboxInput } from "./modules/input-slot/checkbox/input-slot-checkbox";
 
 
 export {
@@ -62,6 +63,7 @@ export {
   useEditorContext,
   injectEditorContext,
   injectEditorState,
+  CheckboxInput,
   useEditorState,
   useEditorStateWithProps,
   StreamContextType,
