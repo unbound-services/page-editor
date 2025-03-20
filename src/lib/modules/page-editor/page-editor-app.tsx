@@ -131,7 +131,7 @@ export default class PageEditorApp {
 
     // if there isn't a streamdriver then create it
     this._streamDriver = this.createStreamDriver();
-      console.log(this._editorOptions);
+
     const AppComp = (props) => {
       const [refreshCount, setRefreshCount] = useState(1);
       this._setForceRefreshVal = setRefreshCount; //for forcing refreshes
