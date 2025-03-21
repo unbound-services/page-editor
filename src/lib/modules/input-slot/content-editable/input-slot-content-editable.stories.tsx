@@ -3,11 +3,16 @@ import type { Meta, StoryObj } from '@storybook/react';
 import { ContentEditableInputSlot } from './input-slot-content-editable';
 import { EditorContextFrame } from '../../content-editor/content-editor-editor-context';
 import React from 'react';
+import { useEditorContext } from '../input-slot-hooks';
 
 const meta = {
   title: "Components/ContentEditableInputSlot",
   component: ContentEditableInputSlot,
       decorators:[
+        (Story,{args})=> {
+          const {editorState} = useEditorContext();
+        return (<div><code>{JSON.stringify(editorState)}</code><Story/></div>);
+        },
         (Story,{args})=> <EditorContextFrame componentList={{"compa":{displayName:"Component A", comp:(p)=><p>Lorem Ipsum</p>},"compb":{displayName:"Component B", comp:(p)=><strong>Lorem Ipsum</strong>}}} editing={args?.editing}><Story/></EditorContextFrame>
       ],
   args:{

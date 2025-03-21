@@ -35,13 +35,14 @@ import { Repeater } from "./modules/components/repeater/components-repeater";
 import ColumnSection from "./modules/components/columns/components-columns";
 import { Spacer } from "./modules/components/spacer/spacer";
 import { CheckboxInput } from "./modules/input-slot/checkbox/input-slot-checkbox";
+import { Tabs } from "./modules/components/repeater/components-repeater-tabs";
 
 
 export {
   PageEditor,
   componentList,
   HTTPStreamFields,
-
+  Tabs,
   // components
   ComponentListType,
   ContentSection,

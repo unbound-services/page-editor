@@ -26,10 +26,6 @@ $buttonHeight: 24px;
             padding-bottom: 30px;
         }
 
-        &:hover {
-            pointer-events: auto;
-        }
-
         &>* {
             pointer-events: auto;
         }
@@ -47,7 +43,7 @@ $buttonHeight: 24px;
             &>.content-section-controls__inner {
                 // background:red;
                 opacity: 100%;
-                z-index: 9;
+                z-index: 12;
                 &:before {
                     display:inline-block;
     

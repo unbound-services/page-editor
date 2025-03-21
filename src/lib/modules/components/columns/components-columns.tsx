@@ -49,7 +49,7 @@ export const ColumnSection = (props:ColumnSectionProps) => {
       </React.Fragment>
     ));
     // console.log("called set button render");
-  }, [setButtonRender]);
+  }, []);
 
   
 

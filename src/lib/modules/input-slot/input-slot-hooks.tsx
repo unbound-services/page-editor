@@ -49,11 +49,28 @@ export const useEditorContext = (
     sections = [sectionName];
   }
   for(let i = 0; i < sections.length; i++){
+    let section = sections[i];
+
     if(!state || (typeof(state) !== 'object' && !Array.isArray(state))){
       break;
     }
-    state = state[sections[i]];
 
+    // handle square brackets
+    if(section.indexOf('[') > -1){
+      let parts = section.split('[');
+      let name = parts[0];
+      let index = parseInt(parts[1].replace(']',''));
+      if(!state[name]){
+        break;
+      }
+      
+
+      state = state[name][index];
+
+    }else {
+      
+      state = state[sections[i]];
+    }
   }
       
   
@@ -62,11 +79,23 @@ export const useEditorContext = (
     let newState = cloneState(editorContext.editorState);
     let cursor = newState;
     for(let i = 0; i < sections.length; i++){
+      let section = sections[i];
+
+      // account for square brackets
+      if(section.indexOf('[') > -1){
+        let parts = section.split('[');
+        let name = parts[0];
+        let index = parseInt(parts[1].replace(']',''));
+        cursor[name] = cloneState(cursor[name]) || [];
+        cursor[name][index] = cloneState(newValue);
+        break;
+      }
+
       if(i === sections.length - 1){
-        cursor[sections[i]] = cloneState(newValue);
+        cursor[section] = cloneState(newValue);
       } else {
-        cursor[sections[i]] = cloneState(cursor[sections[i]]) || {};
-        cursor = cursor[sections[i]];
+        cursor[section] = cloneState(cursor[section]) || {};
+        cursor = cursor[section];
       }
     }
     editorContext.setState(newState);

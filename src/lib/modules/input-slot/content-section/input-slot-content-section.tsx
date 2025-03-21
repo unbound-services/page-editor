@@ -105,10 +105,11 @@ export const ContentSection = (props: ContentSectionProps) => {
       let neweditorState = [...currentChildren] ;
       e.preventDefault();
       e.stopPropagation();
-      reorderRef.current++;
 
-      const comp = currentChildren[key];
+
+
       if (key == 0) return;
+      reorderRef.current++;
       let holdValue = neweditorState[key];
       neweditorState[key] = neweditorState[key - 1];
       neweditorState[key - 1] = holdValue;
@@ -125,10 +126,11 @@ export const ContentSection = (props: ContentSectionProps) => {
       let neweditorState = [...currentChildren] ;
       e.preventDefault();
       e.stopPropagation();
-      reorderRef.current++;
+
       
-      const comp = currentChildren[key];
+
       if (key == currentChildren.length - 1) return;
+      reorderRef.current++;
       let holdValue = neweditorState[key];
       neweditorState[key] = neweditorState[key + 1];
       neweditorState[key + 1] = holdValue;

@@ -9,10 +9,11 @@ export type RepeaterProps = React.PropsWithChildren<{ sectionName?: string,
   editing?:boolean,
   addLabel?:string,
   hideCounter?:boolean,
+  rowSectionName?:string,
 hideAddButton?:boolean, }>
 
 export const Repeater = (props: RepeaterProps) => {
-  const { sectionName="repeater" , addLabel="Add Row",hideAddButton=false, editing:editingProp, hideCounter = false, ...otherProps } = props;
+  const { sectionName="repeater" , rowSectionName="row", addLabel="Row",hideAddButton=false, editing:editingProp, hideCounter = false, ...otherProps } = props;
 const  countStateName= "count";
   const editorContext = useEditorContext(sectionName);
   const { editorState: state} = (editorContext ? editorContext : { editorState: null }); 
@@ -24,7 +25,7 @@ const  countStateName= "count";
       // Checking isValidElement is the safe way and avoids a
       // typescript error too.
       if (React.isValidElement(child)) {
-        let currentState = (state && state[`rep${i}`]) ? state[`rep${i}`] : {};
+        let currentState = (state && state[rowSectionName] && state[rowSectionName][i]) ? state[rowSectionName][i] : {};
         return React.cloneElement(child, { repeaterIndex: i,...currentState} as any);
       }
       return child;
@@ -35,15 +36,20 @@ const  countStateName= "count";
   for (let i = 0; i < count; i++) {
       let child = childrenWithProps(i,props.children);
 
-      children.push(<SlotSection sectionName={`${sectionName}.rep${i}`} key={i}>{child}</SlotSection>);
+      children.push(<SlotSection sectionName={`${sectionName}.${rowSectionName}[${i}]`} key={i}>{child}</SlotSection>);
   }
 
   let addButton = null;
+  
   if (editing && !hideAddButton) {
-    addButton = <button onClick={() => {
+    addButton = <><button onClick={() => {
       const newCount = count + 1;
       editorContext.setState({ ...state, [countStateName]: newCount });
-    }}>{addLabel}</button>;
+    }}>+ {addLabel}</button>
+    <button onClick={() => {
+      const newCount = Math.max(count -1,1);
+      editorContext.setState({ ...state, [countStateName]: newCount });
+    }}>- {addLabel}</button></>;
   }
   let numSelect=null;
   if(editing && !hideCounter) numSelect = <NumberSelect label="Count:" min={1}  sectionName={`${sectionName}.${countStateName}`} />;

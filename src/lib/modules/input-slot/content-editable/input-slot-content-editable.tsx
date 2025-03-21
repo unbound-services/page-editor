@@ -64,7 +64,7 @@ return new Proxy<CEType>({__compCache:{},context :React.createContext<CEBemConte
 
         target.__compCache[tagName] = (props) => {
           
-          let {bem:bemProp, bemPrefix:bemPrefixProp,bemName,editing, sectionName} = props;
+          let {bem:bemProp, bemPrefix:bemPrefixProp,bemName,editing, sectionName, ...otherProps} = props;
           const bemContext = useContext(target.context);
 
           let finalBem = defaultBem;
@@ -79,6 +79,7 @@ return new Proxy<CEType>({__compCache:{},context :React.createContext<CEBemConte
             return <ContentEditableInputSlot  tagName={tagName}
              bem={finalBem}
              editing={editing}
+            
               bemPrefix={finalBemPrefix}
               sectionName={sectionName}
               bemName={bemName ? bemName : sectionName ? sectionName : undefined} 
@@ -228,7 +229,7 @@ export const ContentEditableInputSlot = ({
   }
   
   let TagName = tagName;
-  let styles:CSSProperties = {};
+  let styles:CSSProperties = props.style? props.style : {};
   if(tagName=="rawText"){
     if(!editing){
       return <>{lastHtml.current}</>
@@ -293,6 +294,7 @@ export const ContentEditableInputSlot = ({
       suppressContentEditableWarning 
       
       {...editingProps}
+      {...props}
        />
 
        {/* <label style={{background:"#000000aa", color:"white"}} >Edit HTML:<input type="checkbox"  checked={editingHTML} onChange={e=>changeHTMLMode(!!e.currentTarget.checked)} /></label> */}

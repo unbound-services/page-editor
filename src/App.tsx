@@ -14,6 +14,7 @@ import {
   EditorValue,
   StreamContextType,
   useEditorState,
+  Tabs,
 } from "./lib/index";
 
 import React,{ useEffect, useState } from "react"
@@ -264,7 +265,7 @@ return <button onClick={onClick}>Select Img</button>
 
 
 editor.addComponents(TestRepeater, "repeater", "Repeater");
-
+editor.addComponents(Tabs, "tabs", "Tabs");
 // editor.addComponents(MigrationComponent, "migration", "Migration");
 // editor.addComponents( MDH1, "mdh1", "Header 1");
 // editor.addComponents( MDH2, "mdh2", "Header 2");
