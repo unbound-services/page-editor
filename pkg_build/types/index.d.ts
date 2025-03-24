@@ -1,443 +1,40 @@
-import { Context } from 'react';
 import { default as default_2 } from 'react';
 import { FunctionComponent } from 'react';
 import { JSX as JSX_2 } from 'react';
 import * as React_2 from 'react';
-import { ReactNode } from 'react';
 
-export declare const CE: {
-    __compCache: any;
-    BEM: default_2.Provider<CEBemContext>;
-    context: default_2.Context<CEBemContext>;
-} & {
-    a: default_2.FC<default_2.ClassAttributes<HTMLAnchorElement> & default_2.AnchorHTMLAttributes<HTMLAnchorElement> & {
-        sectionName?: string;
-        children?: ReactNode;
-        number?: boolean;
-        textOnly?: boolean;
-        placeholder?: string;
-        bemName?: string;
-        bem?: boolean;
-        bemPrefix?: string;
-        allowHTMLEdit?: boolean;
-        allowHTML?: boolean;
-    } & {
-        children?: ReactNode | undefined;
-    }>;
-    blockquote: default_2.FC<default_2.ClassAttributes<HTMLQuoteElement> & default_2.BlockquoteHTMLAttributes<HTMLQuoteElement> & {
-        sectionName?: string;
-        children?: ReactNode;
-        number?: boolean;
-        textOnly?: boolean;
-        placeholder?: string;
-        bemName?: string;
-        bem?: boolean;
-        bemPrefix?: string;
-        allowHTMLEdit?: boolean;
-        allowHTML?: boolean;
-    } & {
-        children?: ReactNode | undefined;
-    }>;
-    code: default_2.FC<default_2.ClassAttributes<HTMLElement> & default_2.HTMLAttributes<HTMLElement> & {
-        sectionName?: string;
-        children?: ReactNode;
-        number?: boolean;
-        textOnly?: boolean;
-        placeholder?: string;
-        bemName?: string;
-        bem?: boolean;
-        bemPrefix?: string;
-        allowHTMLEdit?: boolean;
-        allowHTML?: boolean;
-    } & {
-        children?: ReactNode | undefined;
-    }>;
-    del: default_2.FC<default_2.ClassAttributes<HTMLModElement> & default_2.DelHTMLAttributes<HTMLModElement> & {
-        sectionName?: string;
-        children?: ReactNode;
-        number?: boolean;
-        textOnly?: boolean;
-        placeholder?: string;
-        bemName?: string;
-        bem?: boolean;
-        bemPrefix?: string;
-        allowHTMLEdit?: boolean;
-        allowHTML?: boolean;
-    } & {
-        children?: ReactNode | undefined;
-    }>;
-    details: default_2.FC<default_2.ClassAttributes<HTMLDetailsElement> & default_2.DetailsHTMLAttributes<HTMLDetailsElement> & {
-        sectionName?: string;
-        children?: ReactNode;
-        number?: boolean;
-        textOnly?: boolean;
-        placeholder?: string;
-        bemName?: string;
-        bem?: boolean;
-        bemPrefix?: string;
-        allowHTMLEdit?: boolean;
-        allowHTML?: boolean;
-    } & {
-        children?: ReactNode | undefined;
-    }>;
-    div: default_2.FC<default_2.ClassAttributes<HTMLDivElement> & default_2.HTMLAttributes<HTMLDivElement> & {
-        sectionName?: string;
-        children?: ReactNode;
-        number?: boolean;
-        textOnly?: boolean;
-        placeholder?: string;
-        bemName?: string;
-        bem?: boolean;
-        bemPrefix?: string;
-        allowHTMLEdit?: boolean;
-        allowHTML?: boolean;
-    } & {
-        children?: ReactNode | undefined;
-    }>;
-    em: default_2.FC<default_2.ClassAttributes<HTMLElement> & default_2.HTMLAttributes<HTMLElement> & {
-        sectionName?: string;
-        children?: ReactNode;
-        number?: boolean;
-        textOnly?: boolean;
-        placeholder?: string;
-        bemName?: string;
-        bem?: boolean;
-        bemPrefix?: string;
-        allowHTMLEdit?: boolean;
-        allowHTML?: boolean;
-    } & {
-        children?: ReactNode | undefined;
-    }>;
-    figcaption: default_2.FC<default_2.ClassAttributes<HTMLElement> & default_2.HTMLAttributes<HTMLElement> & {
-        sectionName?: string;
-        children?: ReactNode;
-        number?: boolean;
-        textOnly?: boolean;
-        placeholder?: string;
-        bemName?: string;
-        bem?: boolean;
-        bemPrefix?: string;
-        allowHTMLEdit?: boolean;
-        allowHTML?: boolean;
-    } & {
-        children?: ReactNode | undefined;
-    }>;
-    h1: default_2.FC<default_2.ClassAttributes<HTMLHeadingElement> & default_2.HTMLAttributes<HTMLHeadingElement> & {
-        sectionName?: string;
-        children?: ReactNode;
-        number?: boolean;
-        textOnly?: boolean;
-        placeholder?: string;
-        bemName?: string;
-        bem?: boolean;
-        bemPrefix?: string;
-        allowHTMLEdit?: boolean;
-        allowHTML?: boolean;
-    } & {
-        children?: ReactNode | undefined;
-    }>;
-    h2: default_2.FC<default_2.ClassAttributes<HTMLHeadingElement> & default_2.HTMLAttributes<HTMLHeadingElement> & {
-        sectionName?: string;
-        children?: ReactNode;
-        number?: boolean;
-        textOnly?: boolean;
-        placeholder?: string;
-        bemName?: string;
-        bem?: boolean;
-        bemPrefix?: string;
-        allowHTMLEdit?: boolean;
-        allowHTML?: boolean;
-    } & {
-        children?: ReactNode | undefined;
-    }>;
-    h3: default_2.FC<default_2.ClassAttributes<HTMLHeadingElement> & default_2.HTMLAttributes<HTMLHeadingElement> & {
-        sectionName?: string;
-        children?: ReactNode;
-        number?: boolean;
-        textOnly?: boolean;
-        placeholder?: string;
-        bemName?: string;
-        bem?: boolean;
-        bemPrefix?: string;
-        allowHTMLEdit?: boolean;
-        allowHTML?: boolean;
-    } & {
-        children?: ReactNode | undefined;
-    }>;
-    h4: default_2.FC<default_2.ClassAttributes<HTMLHeadingElement> & default_2.HTMLAttributes<HTMLHeadingElement> & {
-        sectionName?: string;
-        children?: ReactNode;
-        number?: boolean;
-        textOnly?: boolean;
-        placeholder?: string;
-        bemName?: string;
-        bem?: boolean;
-        bemPrefix?: string;
-        allowHTMLEdit?: boolean;
-        allowHTML?: boolean;
-    } & {
-        children?: ReactNode | undefined;
-    }>;
-    h5: default_2.FC<default_2.ClassAttributes<HTMLHeadingElement> & default_2.HTMLAttributes<HTMLHeadingElement> & {
-        sectionName?: string;
-        children?: ReactNode;
-        number?: boolean;
-        textOnly?: boolean;
-        placeholder?: string;
-        bemName?: string;
-        bem?: boolean;
-        bemPrefix?: string;
-        allowHTMLEdit?: boolean;
-        allowHTML?: boolean;
-    } & {
-        children?: ReactNode | undefined;
-    }>;
-    h6: default_2.FC<default_2.ClassAttributes<HTMLHeadingElement> & default_2.HTMLAttributes<HTMLHeadingElement> & {
-        sectionName?: string;
-        children?: ReactNode;
-        number?: boolean;
-        textOnly?: boolean;
-        placeholder?: string;
-        bemName?: string;
-        bem?: boolean;
-        bemPrefix?: string;
-        allowHTMLEdit?: boolean;
-        allowHTML?: boolean;
-    } & {
-        children?: ReactNode | undefined;
-    }>;
-    ins: default_2.FC<default_2.ClassAttributes<HTMLModElement> & default_2.InsHTMLAttributes<HTMLModElement> & {
-        sectionName?: string;
-        children?: ReactNode;
-        number?: boolean;
-        textOnly?: boolean;
-        placeholder?: string;
-        bemName?: string;
-        bem?: boolean;
-        bemPrefix?: string;
-        allowHTMLEdit?: boolean;
-        allowHTML?: boolean;
-    } & {
-        children?: ReactNode | undefined;
-    }>;
-    li: default_2.FC<default_2.ClassAttributes<HTMLLIElement> & default_2.LiHTMLAttributes<HTMLLIElement> & {
-        sectionName?: string;
-        children?: ReactNode;
-        number?: boolean;
-        textOnly?: boolean;
-        placeholder?: string;
-        bemName?: string;
-        bem?: boolean;
-        bemPrefix?: string;
-        allowHTMLEdit?: boolean;
-        allowHTML?: boolean;
-    } & {
-        children?: ReactNode | undefined;
-    }>;
-    ol: default_2.FC<default_2.ClassAttributes<HTMLOListElement> & default_2.OlHTMLAttributes<HTMLOListElement> & {
-        sectionName?: string;
-        children?: ReactNode;
-        number?: boolean;
-        textOnly?: boolean;
-        placeholder?: string;
-        bemName?: string;
-        bem?: boolean;
-        bemPrefix?: string;
-        allowHTMLEdit?: boolean;
-        allowHTML?: boolean;
-    } & {
-        children?: ReactNode | undefined;
-    }>;
-    p: default_2.FC<default_2.ClassAttributes<HTMLParagraphElement> & default_2.HTMLAttributes<HTMLParagraphElement> & {
-        sectionName?: string;
-        children?: ReactNode;
-        number?: boolean;
-        textOnly?: boolean;
-        placeholder?: string;
-        bemName?: string;
-        bem?: boolean;
-        bemPrefix?: string;
-        allowHTMLEdit?: boolean;
-        allowHTML?: boolean;
-    } & {
-        children?: ReactNode | undefined;
-    }>;
-    pre: default_2.FC<default_2.ClassAttributes<HTMLPreElement> & default_2.HTMLAttributes<HTMLPreElement> & {
-        sectionName?: string;
-        children?: ReactNode;
-        number?: boolean;
-        textOnly?: boolean;
-        placeholder?: string;
-        bemName?: string;
-        bem?: boolean;
-        bemPrefix?: string;
-        allowHTMLEdit?: boolean;
-        allowHTML?: boolean;
-    } & {
-        children?: ReactNode | undefined;
-    }>;
-    span: default_2.FC<default_2.ClassAttributes<HTMLSpanElement> & default_2.HTMLAttributes<HTMLSpanElement> & {
-        sectionName?: string;
-        children?: ReactNode;
-        number?: boolean;
-        textOnly?: boolean;
-        placeholder?: string;
-        bemName?: string;
-        bem?: boolean;
-        bemPrefix?: string;
-        allowHTMLEdit?: boolean;
-        allowHTML?: boolean;
-    } & {
-        children?: ReactNode | undefined;
-    }>;
-    strong: default_2.FC<default_2.ClassAttributes<HTMLElement> & default_2.HTMLAttributes<HTMLElement> & {
-        sectionName?: string;
-        children?: ReactNode;
-        number?: boolean;
-        textOnly?: boolean;
-        placeholder?: string;
-        bemName?: string;
-        bem?: boolean;
-        bemPrefix?: string;
-        allowHTMLEdit?: boolean;
-        allowHTML?: boolean;
-    } & {
-        children?: ReactNode | undefined;
-    }>;
-    summary: default_2.FC<default_2.ClassAttributes<HTMLElement> & default_2.HTMLAttributes<HTMLElement> & {
-        sectionName?: string;
-        children?: ReactNode;
-        number?: boolean;
-        textOnly?: boolean;
-        placeholder?: string;
-        bemName?: string;
-        bem?: boolean;
-        bemPrefix?: string;
-        allowHTMLEdit?: boolean;
-        allowHTML?: boolean;
-    } & {
-        children?: ReactNode | undefined;
-    }>;
-    table: default_2.FC<default_2.ClassAttributes<HTMLTableElement> & default_2.TableHTMLAttributes<HTMLTableElement> & {
-        sectionName?: string;
-        children?: ReactNode;
-        number?: boolean;
-        textOnly?: boolean;
-        placeholder?: string;
-        bemName?: string;
-        bem?: boolean;
-        bemPrefix?: string;
-        allowHTMLEdit?: boolean;
-        allowHTML?: boolean;
-    } & {
-        children?: ReactNode | undefined;
-    }>;
-    tbody: default_2.FC<default_2.ClassAttributes<HTMLTableSectionElement> & default_2.HTMLAttributes<HTMLTableSectionElement> & {
-        sectionName?: string;
-        children?: ReactNode;
-        number?: boolean;
-        textOnly?: boolean;
-        placeholder?: string;
-        bemName?: string;
-        bem?: boolean;
-        bemPrefix?: string;
-        allowHTMLEdit?: boolean;
-        allowHTML?: boolean;
-    } & {
-        children?: ReactNode | undefined;
-    }>;
-    td: default_2.FC<default_2.ClassAttributes<HTMLTableDataCellElement> & default_2.TdHTMLAttributes<HTMLTableDataCellElement> & {
-        sectionName?: string;
-        children?: ReactNode;
-        number?: boolean;
-        textOnly?: boolean;
-        placeholder?: string;
-        bemName?: string;
-        bem?: boolean;
-        bemPrefix?: string;
-        allowHTMLEdit?: boolean;
-        allowHTML?: boolean;
-    } & {
-        children?: ReactNode | undefined;
-    }>;
-    tr: default_2.FC<default_2.ClassAttributes<HTMLTableRowElement> & default_2.HTMLAttributes<HTMLTableRowElement> & {
-        sectionName?: string;
-        children?: ReactNode;
-        number?: boolean;
-        textOnly?: boolean;
-        placeholder?: string;
-        bemName?: string;
-        bem?: boolean;
-        bemPrefix?: string;
-        allowHTMLEdit?: boolean;
-        allowHTML?: boolean;
-    } & {
-        children?: ReactNode | undefined;
-    }>;
-    ul: default_2.FC<default_2.ClassAttributes<HTMLUListElement> & default_2.HTMLAttributes<HTMLUListElement> & {
-        sectionName?: string;
-        children?: ReactNode;
-        number?: boolean;
-        textOnly?: boolean;
-        placeholder?: string;
-        bemName?: string;
-        bem?: boolean;
-        bemPrefix?: string;
-        allowHTMLEdit?: boolean;
-        allowHTML?: boolean;
-    } & {
-        children?: ReactNode | undefined;
-    }>;
-    text: default_2.FC<default_2.SVGTextElementAttributes<SVGTextElement> & {
-        sectionName?: string;
-        children?: ReactNode;
-        number?: boolean;
-        textOnly?: boolean;
-        placeholder?: string;
-        bemName?: string;
-        bem?: boolean;
-        bemPrefix?: string;
-        allowHTMLEdit?: boolean;
-        allowHTML?: boolean;
-    } & {
-        children?: ReactNode | undefined;
-    }>;
-    math: default_2.FC<default_2.ClassAttributes<HTMLSpanElement> & default_2.HTMLAttributes<HTMLSpanElement> & {
-        sectionName?: string;
-        children?: ReactNode;
-        number?: boolean;
-        textOnly?: boolean;
-        placeholder?: string;
-        bemName?: string;
-        bem?: boolean;
-        bemPrefix?: string;
-        allowHTMLEdit?: boolean;
-        allowHTML?: boolean;
-    } & {
-        children?: ReactNode | undefined;
-    }>;
-    rawText: default_2.FC<default_2.ClassAttributes<HTMLDivElement> & default_2.HTMLAttributes<HTMLDivElement> & {
-        sectionName?: string;
-        children?: ReactNode;
-        number?: boolean;
-        textOnly?: boolean;
-        placeholder?: string;
-        bemName?: string;
-        bem?: boolean;
-        bemPrefix?: string;
-        allowHTMLEdit?: boolean;
-        allowHTML?: boolean;
-    } & {
-        children?: ReactNode | undefined;
-    }>;
-};
+export declare const CE: CEType;
 
 declare type CEBemContext = {
     bem?: boolean;
     bemPrefix?: string;
 };
 
-export declare const ColumnSection: (props: any) => React_2.JSX.Element;
+declare type CEType = {
+    [Property in editableTagList]: typeof ContentEditableInputSlot;
+} & {
+    context: default_2.Context<CEBemContext>;
+    __compCache: {
+        [key: string]: typeof ContentEditableInputSlot;
+    };
+    BEM: default_2.Provider<CEBemContext>;
+};
+
+export declare const CheckboxInput: (props: {
+    sectionName: string;
+    current?: boolean;
+    label: string;
+    hidden?: boolean;
+    tagName?: any;
+}) => React_2.JSX.Element;
+
+export declare const ColumnSection: (props: ColumnSectionProps) => React_2.JSX.Element;
+
+declare type ColumnSectionProps = {
+    count?: number;
+    responsive?: boolean;
+    setButtonRender?: (render: () => React_2.ReactNode) => void;
+};
 
 export declare const componentList: ComponentListType;
 
@@ -453,21 +50,20 @@ export declare type ComponentListType = {
     };
 };
 
-export declare const ContentEditableInputSlot: ({ placeholder, ref, className, sectionName: sectionNameProp, tagName, number, textOnly, bem, bemName, allowHTMLEdit, allowHTML, bemPrefix, classFunction, ...props }: {
+export declare const ContentEditableInputSlot: ({ placeholder, ref, className, sectionName: sectionNameProp, tagName, textOnly, bem, bemName, editing: editingProp, bemPrefix, classFunction, children, ...props }: {
     [x: string]: any;
     placeholder?: string;
     ref?: any;
     className?: string;
-    sectionName?: string;
+    sectionName?: any;
     tagName?: string;
-    number?: boolean;
     textOnly?: boolean;
     bem?: boolean;
     bemName?: string;
-    allowHTMLEdit?: boolean;
-    allowHTML?: boolean;
+    editing?: any;
     bemPrefix?: string;
     classFunction?: any;
+    children?: any;
 }) => JSX_2.Element;
 
 export declare const ContentSection: (props: ContentSectionProps) => React_2.JSX.Element;
@@ -482,439 +78,16 @@ declare type ContentSectionProps = React_2.HTMLProps<HTMLButtonElement> & React_
     iframeRef?: React_2.MutableRefObject<HTMLIFrameElement>;
 };
 
-export declare const createContentEditable: ({ bem, bemPrefix, bemName, classFunction }: {
+export declare const createContentEditable: ({ bem, bemPrefix, classFunction }: {
     bem?: boolean;
     bemPrefix?: string;
     bemName?: string;
     classFunction?: (tagName: string, props: any) => string;
-}) => {
-    __compCache: any;
-    BEM: default_2.Provider<CEBemContext>;
-    context: default_2.Context<CEBemContext>;
-} & {
-    a: default_2.FC<default_2.ClassAttributes<HTMLAnchorElement> & default_2.AnchorHTMLAttributes<HTMLAnchorElement> & {
-        sectionName?: string;
-        children?: ReactNode;
-        number?: boolean;
-        textOnly?: boolean;
-        placeholder?: string;
-        bemName?: string;
-        bem?: boolean;
-        bemPrefix?: string;
-        allowHTMLEdit?: boolean;
-        allowHTML?: boolean;
-    } & {
-        children?: ReactNode | undefined;
-    }>;
-    blockquote: default_2.FC<default_2.ClassAttributes<HTMLQuoteElement> & default_2.BlockquoteHTMLAttributes<HTMLQuoteElement> & {
-        sectionName?: string;
-        children?: ReactNode;
-        number?: boolean;
-        textOnly?: boolean;
-        placeholder?: string;
-        bemName?: string;
-        bem?: boolean;
-        bemPrefix?: string;
-        allowHTMLEdit?: boolean;
-        allowHTML?: boolean;
-    } & {
-        children?: ReactNode | undefined;
-    }>;
-    code: default_2.FC<default_2.ClassAttributes<HTMLElement> & default_2.HTMLAttributes<HTMLElement> & {
-        sectionName?: string;
-        children?: ReactNode;
-        number?: boolean;
-        textOnly?: boolean;
-        placeholder?: string;
-        bemName?: string;
-        bem?: boolean;
-        bemPrefix?: string;
-        allowHTMLEdit?: boolean;
-        allowHTML?: boolean;
-    } & {
-        children?: ReactNode | undefined;
-    }>;
-    del: default_2.FC<default_2.ClassAttributes<HTMLModElement> & default_2.DelHTMLAttributes<HTMLModElement> & {
-        sectionName?: string;
-        children?: ReactNode;
-        number?: boolean;
-        textOnly?: boolean;
-        placeholder?: string;
-        bemName?: string;
-        bem?: boolean;
-        bemPrefix?: string;
-        allowHTMLEdit?: boolean;
-        allowHTML?: boolean;
-    } & {
-        children?: ReactNode | undefined;
-    }>;
-    details: default_2.FC<default_2.ClassAttributes<HTMLDetailsElement> & default_2.DetailsHTMLAttributes<HTMLDetailsElement> & {
-        sectionName?: string;
-        children?: ReactNode;
-        number?: boolean;
-        textOnly?: boolean;
-        placeholder?: string;
-        bemName?: string;
-        bem?: boolean;
-        bemPrefix?: string;
-        allowHTMLEdit?: boolean;
-        allowHTML?: boolean;
-    } & {
-        children?: ReactNode | undefined;
-    }>;
-    div: default_2.FC<default_2.ClassAttributes<HTMLDivElement> & default_2.HTMLAttributes<HTMLDivElement> & {
-        sectionName?: string;
-        children?: ReactNode;
-        number?: boolean;
-        textOnly?: boolean;
-        placeholder?: string;
-        bemName?: string;
-        bem?: boolean;
-        bemPrefix?: string;
-        allowHTMLEdit?: boolean;
-        allowHTML?: boolean;
-    } & {
-        children?: ReactNode | undefined;
-    }>;
-    em: default_2.FC<default_2.ClassAttributes<HTMLElement> & default_2.HTMLAttributes<HTMLElement> & {
-        sectionName?: string;
-        children?: ReactNode;
-        number?: boolean;
-        textOnly?: boolean;
-        placeholder?: string;
-        bemName?: string;
-        bem?: boolean;
-        bemPrefix?: string;
-        allowHTMLEdit?: boolean;
-        allowHTML?: boolean;
-    } & {
-        children?: ReactNode | undefined;
-    }>;
-    figcaption: default_2.FC<default_2.ClassAttributes<HTMLElement> & default_2.HTMLAttributes<HTMLElement> & {
-        sectionName?: string;
-        children?: ReactNode;
-        number?: boolean;
-        textOnly?: boolean;
-        placeholder?: string;
-        bemName?: string;
-        bem?: boolean;
-        bemPrefix?: string;
-        allowHTMLEdit?: boolean;
-        allowHTML?: boolean;
-    } & {
-        children?: ReactNode | undefined;
-    }>;
-    h1: default_2.FC<default_2.ClassAttributes<HTMLHeadingElement> & default_2.HTMLAttributes<HTMLHeadingElement> & {
-        sectionName?: string;
-        children?: ReactNode;
-        number?: boolean;
-        textOnly?: boolean;
-        placeholder?: string;
-        bemName?: string;
-        bem?: boolean;
-        bemPrefix?: string;
-        allowHTMLEdit?: boolean;
-        allowHTML?: boolean;
-    } & {
-        children?: ReactNode | undefined;
-    }>;
-    h2: default_2.FC<default_2.ClassAttributes<HTMLHeadingElement> & default_2.HTMLAttributes<HTMLHeadingElement> & {
-        sectionName?: string;
-        children?: ReactNode;
-        number?: boolean;
-        textOnly?: boolean;
-        placeholder?: string;
-        bemName?: string;
-        bem?: boolean;
-        bemPrefix?: string;
-        allowHTMLEdit?: boolean;
-        allowHTML?: boolean;
-    } & {
-        children?: ReactNode | undefined;
-    }>;
-    h3: default_2.FC<default_2.ClassAttributes<HTMLHeadingElement> & default_2.HTMLAttributes<HTMLHeadingElement> & {
-        sectionName?: string;
-        children?: ReactNode;
-        number?: boolean;
-        textOnly?: boolean;
-        placeholder?: string;
-        bemName?: string;
-        bem?: boolean;
-        bemPrefix?: string;
-        allowHTMLEdit?: boolean;
-        allowHTML?: boolean;
-    } & {
-        children?: ReactNode | undefined;
-    }>;
-    h4: default_2.FC<default_2.ClassAttributes<HTMLHeadingElement> & default_2.HTMLAttributes<HTMLHeadingElement> & {
-        sectionName?: string;
-        children?: ReactNode;
-        number?: boolean;
-        textOnly?: boolean;
-        placeholder?: string;
-        bemName?: string;
-        bem?: boolean;
-        bemPrefix?: string;
-        allowHTMLEdit?: boolean;
-        allowHTML?: boolean;
-    } & {
-        children?: ReactNode | undefined;
-    }>;
-    h5: default_2.FC<default_2.ClassAttributes<HTMLHeadingElement> & default_2.HTMLAttributes<HTMLHeadingElement> & {
-        sectionName?: string;
-        children?: ReactNode;
-        number?: boolean;
-        textOnly?: boolean;
-        placeholder?: string;
-        bemName?: string;
-        bem?: boolean;
-        bemPrefix?: string;
-        allowHTMLEdit?: boolean;
-        allowHTML?: boolean;
-    } & {
-        children?: ReactNode | undefined;
-    }>;
-    h6: default_2.FC<default_2.ClassAttributes<HTMLHeadingElement> & default_2.HTMLAttributes<HTMLHeadingElement> & {
-        sectionName?: string;
-        children?: ReactNode;
-        number?: boolean;
-        textOnly?: boolean;
-        placeholder?: string;
-        bemName?: string;
-        bem?: boolean;
-        bemPrefix?: string;
-        allowHTMLEdit?: boolean;
-        allowHTML?: boolean;
-    } & {
-        children?: ReactNode | undefined;
-    }>;
-    ins: default_2.FC<default_2.ClassAttributes<HTMLModElement> & default_2.InsHTMLAttributes<HTMLModElement> & {
-        sectionName?: string;
-        children?: ReactNode;
-        number?: boolean;
-        textOnly?: boolean;
-        placeholder?: string;
-        bemName?: string;
-        bem?: boolean;
-        bemPrefix?: string;
-        allowHTMLEdit?: boolean;
-        allowHTML?: boolean;
-    } & {
-        children?: ReactNode | undefined;
-    }>;
-    li: default_2.FC<default_2.ClassAttributes<HTMLLIElement> & default_2.LiHTMLAttributes<HTMLLIElement> & {
-        sectionName?: string;
-        children?: ReactNode;
-        number?: boolean;
-        textOnly?: boolean;
-        placeholder?: string;
-        bemName?: string;
-        bem?: boolean;
-        bemPrefix?: string;
-        allowHTMLEdit?: boolean;
-        allowHTML?: boolean;
-    } & {
-        children?: ReactNode | undefined;
-    }>;
-    ol: default_2.FC<default_2.ClassAttributes<HTMLOListElement> & default_2.OlHTMLAttributes<HTMLOListElement> & {
-        sectionName?: string;
-        children?: ReactNode;
-        number?: boolean;
-        textOnly?: boolean;
-        placeholder?: string;
-        bemName?: string;
-        bem?: boolean;
-        bemPrefix?: string;
-        allowHTMLEdit?: boolean;
-        allowHTML?: boolean;
-    } & {
-        children?: ReactNode | undefined;
-    }>;
-    p: default_2.FC<default_2.ClassAttributes<HTMLParagraphElement> & default_2.HTMLAttributes<HTMLParagraphElement> & {
-        sectionName?: string;
-        children?: ReactNode;
-        number?: boolean;
-        textOnly?: boolean;
-        placeholder?: string;
-        bemName?: string;
-        bem?: boolean;
-        bemPrefix?: string;
-        allowHTMLEdit?: boolean;
-        allowHTML?: boolean;
-    } & {
-        children?: ReactNode | undefined;
-    }>;
-    pre: default_2.FC<default_2.ClassAttributes<HTMLPreElement> & default_2.HTMLAttributes<HTMLPreElement> & {
-        sectionName?: string;
-        children?: ReactNode;
-        number?: boolean;
-        textOnly?: boolean;
-        placeholder?: string;
-        bemName?: string;
-        bem?: boolean;
-        bemPrefix?: string;
-        allowHTMLEdit?: boolean;
-        allowHTML?: boolean;
-    } & {
-        children?: ReactNode | undefined;
-    }>;
-    span: default_2.FC<default_2.ClassAttributes<HTMLSpanElement> & default_2.HTMLAttributes<HTMLSpanElement> & {
-        sectionName?: string;
-        children?: ReactNode;
-        number?: boolean;
-        textOnly?: boolean;
-        placeholder?: string;
-        bemName?: string;
-        bem?: boolean;
-        bemPrefix?: string;
-        allowHTMLEdit?: boolean;
-        allowHTML?: boolean;
-    } & {
-        children?: ReactNode | undefined;
-    }>;
-    strong: default_2.FC<default_2.ClassAttributes<HTMLElement> & default_2.HTMLAttributes<HTMLElement> & {
-        sectionName?: string;
-        children?: ReactNode;
-        number?: boolean;
-        textOnly?: boolean;
-        placeholder?: string;
-        bemName?: string;
-        bem?: boolean;
-        bemPrefix?: string;
-        allowHTMLEdit?: boolean;
-        allowHTML?: boolean;
-    } & {
-        children?: ReactNode | undefined;
-    }>;
-    summary: default_2.FC<default_2.ClassAttributes<HTMLElement> & default_2.HTMLAttributes<HTMLElement> & {
-        sectionName?: string;
-        children?: ReactNode;
-        number?: boolean;
-        textOnly?: boolean;
-        placeholder?: string;
-        bemName?: string;
-        bem?: boolean;
-        bemPrefix?: string;
-        allowHTMLEdit?: boolean;
-        allowHTML?: boolean;
-    } & {
-        children?: ReactNode | undefined;
-    }>;
-    table: default_2.FC<default_2.ClassAttributes<HTMLTableElement> & default_2.TableHTMLAttributes<HTMLTableElement> & {
-        sectionName?: string;
-        children?: ReactNode;
-        number?: boolean;
-        textOnly?: boolean;
-        placeholder?: string;
-        bemName?: string;
-        bem?: boolean;
-        bemPrefix?: string;
-        allowHTMLEdit?: boolean;
-        allowHTML?: boolean;
-    } & {
-        children?: ReactNode | undefined;
-    }>;
-    tbody: default_2.FC<default_2.ClassAttributes<HTMLTableSectionElement> & default_2.HTMLAttributes<HTMLTableSectionElement> & {
-        sectionName?: string;
-        children?: ReactNode;
-        number?: boolean;
-        textOnly?: boolean;
-        placeholder?: string;
-        bemName?: string;
-        bem?: boolean;
-        bemPrefix?: string;
-        allowHTMLEdit?: boolean;
-        allowHTML?: boolean;
-    } & {
-        children?: ReactNode | undefined;
-    }>;
-    td: default_2.FC<default_2.ClassAttributes<HTMLTableDataCellElement> & default_2.TdHTMLAttributes<HTMLTableDataCellElement> & {
-        sectionName?: string;
-        children?: ReactNode;
-        number?: boolean;
-        textOnly?: boolean;
-        placeholder?: string;
-        bemName?: string;
-        bem?: boolean;
-        bemPrefix?: string;
-        allowHTMLEdit?: boolean;
-        allowHTML?: boolean;
-    } & {
-        children?: ReactNode | undefined;
-    }>;
-    tr: default_2.FC<default_2.ClassAttributes<HTMLTableRowElement> & default_2.HTMLAttributes<HTMLTableRowElement> & {
-        sectionName?: string;
-        children?: ReactNode;
-        number?: boolean;
-        textOnly?: boolean;
-        placeholder?: string;
-        bemName?: string;
-        bem?: boolean;
-        bemPrefix?: string;
-        allowHTMLEdit?: boolean;
-        allowHTML?: boolean;
-    } & {
-        children?: ReactNode | undefined;
-    }>;
-    ul: default_2.FC<default_2.ClassAttributes<HTMLUListElement> & default_2.HTMLAttributes<HTMLUListElement> & {
-        sectionName?: string;
-        children?: ReactNode;
-        number?: boolean;
-        textOnly?: boolean;
-        placeholder?: string;
-        bemName?: string;
-        bem?: boolean;
-        bemPrefix?: string;
-        allowHTMLEdit?: boolean;
-        allowHTML?: boolean;
-    } & {
-        children?: ReactNode | undefined;
-    }>;
-    text: default_2.FC<default_2.SVGTextElementAttributes<SVGTextElement> & {
-        sectionName?: string;
-        children?: ReactNode;
-        number?: boolean;
-        textOnly?: boolean;
-        placeholder?: string;
-        bemName?: string;
-        bem?: boolean;
-        bemPrefix?: string;
-        allowHTMLEdit?: boolean;
-        allowHTML?: boolean;
-    } & {
-        children?: ReactNode | undefined;
-    }>;
-    math: default_2.FC<default_2.ClassAttributes<HTMLSpanElement> & default_2.HTMLAttributes<HTMLSpanElement> & {
-        sectionName?: string;
-        children?: ReactNode;
-        number?: boolean;
-        textOnly?: boolean;
-        placeholder?: string;
-        bemName?: string;
-        bem?: boolean;
-        bemPrefix?: string;
-        allowHTMLEdit?: boolean;
-        allowHTML?: boolean;
-    } & {
-        children?: ReactNode | undefined;
-    }>;
-    rawText: default_2.FC<default_2.ClassAttributes<HTMLDivElement> & default_2.HTMLAttributes<HTMLDivElement> & {
-        sectionName?: string;
-        children?: ReactNode;
-        number?: boolean;
-        textOnly?: boolean;
-        placeholder?: string;
-        bemName?: string;
-        bem?: boolean;
-        bemPrefix?: string;
-        allowHTMLEdit?: boolean;
-        allowHTML?: boolean;
-    } & {
-        children?: ReactNode | undefined;
-    }>;
-};
+}) => CEType;
 
-export declare const EditorContext: Context<EditorContextType>;
+declare type editableTagList = keyof tagTypeMap;
+
+export declare const EditorContext: default_2.Context<EditorContextType>;
 
 export declare type EditorContextType = {
     setState: (newState: any, sectionName?: any) => void;
@@ -937,6 +110,7 @@ export declare type EditorContextType = {
 
 export declare const EditorValue: (props: React_2.PropsWithChildren<{
     sectionName?: string;
+    defaultValue?: string;
     transform?: TransformFunctionType;
 }>) => React_2.JSX.Element;
 
@@ -1036,6 +210,8 @@ declare type PageEditorAppOptions = {
         pageHtml?: string;
         renderInIframe?: boolean;
         clearContainer?: boolean;
+        wrapperComponent?: React_2.ComponentType<React_2.PropsWithChildren<any>>;
+        includeWrapperInRender?: boolean;
         documentRoot?: string | HTMLElement | ((iframeDocument: HTMLIFrameElement) => HTMLElement);
         href?: string;
         js?: string[];
@@ -1082,6 +258,7 @@ declare type PageEditorPropType = {
     componentList?: any;
     streams?: StreamDriver;
     plugins?: any;
+    editing?: boolean;
     onSave?: PageEditorOnsaveFunction;
     pageData?: any;
     pageMeta?: any;
@@ -1089,6 +266,7 @@ declare type PageEditorPropType = {
     exportState?: (getState: Function, setState: Function, getMarkup: Function) => void;
     contextualPageData?: any;
     editorOptions?: PageEditorAppOptions;
+    children?: any;
 };
 
 declare type PageEditorRenderFlags = {
@@ -1109,13 +287,18 @@ declare type PageEditorStateType = {
     pageEditorDrawerOpen: boolean;
 };
 
-export declare const Repeater: (props: default_2.PropsWithChildren<{
+export declare const Repeater: (props: RepeaterProps) => default_2.JSX.Element;
+
+declare type RepeaterProps = default_2.PropsWithChildren<{
     sectionName?: string;
     count?: number;
     TagName?: any;
-    countStateName?: string;
+    editing?: boolean;
+    addLabel?: string;
     hideCounter?: boolean;
-}>) => default_2.JSX.Element;
+    rowSectionName?: string;
+    hideAddButton?: boolean;
+}>;
 
 export declare const SelectInput: (props: SelectInputProps) => React_2.JSX.Element;
 
@@ -1246,8 +429,47 @@ declare interface StringInputProps {
     tagName?: string;
     hidden?: boolean;
     inputClass?: string;
+    placeholder?: string;
     children?: any;
 }
+
+export declare const Tabs: (props: default_2.PropsWithChildren<{
+    tabNames: string[];
+    setButtonRender: any;
+}>) => default_2.JSX.Element;
+
+declare type tagTypeMap = {
+    "div": JSX_2.IntrinsicElements["div"];
+    "span": JSX_2.IntrinsicElements["span"];
+    "em": JSX_2.IntrinsicElements["em"];
+    "strong": JSX_2.IntrinsicElements["strong"];
+    "li": JSX_2.IntrinsicElements["li"];
+    "a": JSX_2.IntrinsicElements["a"];
+    "p": JSX_2.IntrinsicElements["p"];
+    "h1": JSX_2.IntrinsicElements["h1"];
+    "h2": JSX_2.IntrinsicElements["h2"];
+    "h3": JSX_2.IntrinsicElements["h3"];
+    "h4": JSX_2.IntrinsicElements["h4"];
+    "h5": JSX_2.IntrinsicElements["h5"];
+    "h6": JSX_2.IntrinsicElements["h6"];
+    "ul": JSX_2.IntrinsicElements["ul"];
+    "ol": JSX_2.IntrinsicElements["ol"];
+    "blockquote": JSX_2.IntrinsicElements["blockquote"];
+    "pre": JSX_2.IntrinsicElements["pre"];
+    "code": JSX_2.IntrinsicElements["code"];
+    "figcaption": JSX_2.IntrinsicElements["figcaption"];
+    "table": JSX_2.IntrinsicElements["table"];
+    "td": JSX_2.IntrinsicElements["td"];
+    "tr": JSX_2.IntrinsicElements["tr"];
+    "tbody": JSX_2.IntrinsicElements["tbody"];
+    "rawText": JSX_2.IntrinsicElements["div"];
+    "del": JSX_2.IntrinsicElements["del"];
+    "ins": JSX_2.IntrinsicElements["ins"];
+    "details": JSX_2.IntrinsicElements["details"];
+    "summary": JSX_2.IntrinsicElements["summary"];
+    "math": JSX_2.IntrinsicElements["span"];
+    "text": JSX_2.IntrinsicElements["text"];
+};
 
 declare type TransformFunctionType<ValueType = any> = (value: ValueType) => ValueType;
 
@@ -1257,7 +479,7 @@ declare type TransformFunctionType<ValueType = any> = (value: ValueType) => Valu
  * // if you pass in a section name, the setState you receive will only accept one value; otherwise it will be the state for the whole component
  * @returns
  */
-export declare const useEditorContext: (sectionName?: string) => EditorContextType;
+export declare const useEditorContext: (sectionName?: string, returnObjectIfOutsideContext?: boolean) => EditorContextType;
 
 declare interface useEditorContextOutputProps {
     editorContext: EditorContextType;
@@ -1269,7 +491,7 @@ declare interface useEditorContextOutputProps {
  * @param sectionName the name for the section of state that this component is in charge of
  * @returns
  */
-export declare const useEditorState: (sectionName?: string) => any;
+export declare const useEditorState: (sectionName?: string) => any[];
 
 export declare const useEditorStateWithProps: (sectionName: string, props: any) => any;
 

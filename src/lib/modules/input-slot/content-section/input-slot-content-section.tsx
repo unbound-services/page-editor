@@ -264,6 +264,7 @@ export const ContentSection = (props: ContentSectionProps) => {
           const currentNode = compRefs.current[key] as HTMLDivElement;
           if(!currentNode) continue;
           let node = currentNode.nextSibling as HTMLDivElement;
+          const doc = node.ownerDocument
           const totalDims = {x:1000000000,y:1000000000, bottom:-10000000, right:-10000000};
           while(node 
             && !(node?.classList.contains('content-section-controls__wrapper'))
@@ -272,10 +273,10 @@ export const ContentSection = (props: ContentSectionProps) => {
             const boundingBox = node?.getBoundingClientRect();
             // console.log('boundingBox',boundingBox, node.clientLeft,node.clientTop);
             if(boundingBox){
-            totalDims.x = Math.min(totalDims.x,boundingBox.left);
-            totalDims.y = Math.min(totalDims.y,boundingBox.top);
-            totalDims.bottom = Math.max(totalDims.bottom,boundingBox.top + boundingBox.height);
-            totalDims.right = Math.max(totalDims.right,boundingBox.left + boundingBox.width);
+            totalDims.x = Math.min(totalDims.x,node.offsetLeft);
+            totalDims.y = Math.min(totalDims.y,node.offsetTop);
+            totalDims.bottom = Math.max(totalDims.bottom, node.offsetTop+node.offsetHeight);
+            totalDims.right = Math.max(totalDims.right,node.offsetLeft+node.offsetWidth);
             }
 
             node = node?.nextSibling as HTMLDivElement;
@@ -287,7 +288,13 @@ export const ContentSection = (props: ContentSectionProps) => {
           currentNode.style.width = `${totalDims.right-totalDims.x}px`;
           currentNode.style.height = `${totalDims.bottom-totalDims.y}px`;
           currentNode.style.position="absolute";
-          const parentRect = currentNode?.parentElement?.getBoundingClientRect();
+          const parentRect = {x:0,y:0};
+          const scrollLeft =
+      doc.documentElement.scrollLeft || doc.body.scrollLeft;
+      const scrollTop =
+      doc.documentElement.scrollTop || doc.body.scrollTop;
+          parentRect.x= scrollLeft;
+          parentRect.y = scrollTop;
           //adjust by parent node
           if(parentRect){
           currentNode.style.left = `${totalDims.x - parentRect.x}px`;

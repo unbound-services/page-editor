@@ -21,11 +21,28 @@
             padding: 0;
             font-family: Arial, sans-serif;
         }
+        #wrapper{
+            padding:40px;
+            position:relative;
+            left:-25px;
+
+        }
+        #child{
+            position:absolute;
+            left:120px;
+            top:200px;
+        }
     </style>
 </head>
 
 <body>
+    <div id="wrapper">
+        
+        <header>Page Header</header>
+        <div id="child">
     <div id="root"></div>
+</div>
+</div>
     <button id="save">Save</button>
     <script type="module" src="./App.tsx"></script>
 </body>
