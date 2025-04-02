@@ -2,10 +2,9 @@
 import * as React from "react"
 import EditorContext from "../../content-editor/content-editor-editor-context";
 import "./input-slot-content-section.scss";
-import { useContext, useEffect, useState } from "react"
+import { useEffect, useState } from "react"
 import { createPortal } from "react-dom";
 // import editorStyles from "unb-editor/unb-editor.css?inline";
-import { Interface } from "readline";
 import Drawer from "../../common/drawer/common-drawer";
 import { cloneState, useEditorContext } from "../input-slot-hooks";
 

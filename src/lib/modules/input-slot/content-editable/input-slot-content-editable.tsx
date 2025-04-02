@@ -9,6 +9,7 @@ import {
 import { useEditorContext } from "../input-slot-hooks";
 import "./input-slot-content-editable.scss";
 import {renderToString} from "react-dom/server";
+import { json } from "stream/consumers";
 
 
 
@@ -121,26 +122,61 @@ export const ContentEditableInputSlot = ({
 
   if(!bemName) bemName=sectionNameProp ? sectionNameProp : tagName;
 
-    // default placeholder text
-    let finalPlaceholder = placeholder;
-    if(!placeholder){
-      finalPlaceholder = `${tagName} placeholder`;
-    }
-    // default seciton names
-    let sectionName = sectionNameProp;
-    if(!sectionNameProp){
-      sectionName = `${tagName}`;
+  // default placeholder text
+  let finalPlaceholder = placeholder;
+  if(!placeholder){
+    finalPlaceholder = `${tagName} placeholder`;
+  }
+  // default seciton names
+  let sectionName = sectionNameProp;
+  if(!sectionNameProp){
+    sectionName = `${tagName}`;
+  }
+
+  const contentRef = useRef<HTMLDivElement>(null);
+  const editorContext = useEditorContext(sectionName);
+
+  const editorState = editorContext?.editorState;
+  let {editing =false} = editorContext;
+  if(editingProp !== undefined){
+    editing = editingProp;
+  }
+
+  console.log("myState", editorState);
+
+  const insertIntoContentRef = (e, contentToInsert: string) => {
+    console.log("IN range", range);
+    range.deleteContents();
+    const fragment = range.createContextualFragment(contentToInsert);
+    range.insertNode(fragment);
+    emitChange(e);
+  };
+
+  const [range, setRange] = useState<Range>();
+  console.log("range", range);
+
+  const openInsertButton = (e, setModalOpen) => {
+    const el = contentRef.current;
+    if (!el) return;
+    const sel = el.ownerDocument.getSelection();
+    if (!sel || sel.rangeCount === 0) return false;
+    if (el.contains(sel.anchorNode) && el.contains(sel.focusNode)) {
+      let range = sel.getRangeAt(0);
+      setModalOpen(true);
+      setRange(range);
     }
 
-    const contentRef = useRef<HTMLDivElement>(null);
-    const editorContext = useEditorContext(sectionName);
+  }
 
-    const editorState = editorContext?.editorState;
-    let {editing =false} = editorContext;
-    if(editingProp !== undefined){
-      editing = editingProp;
+  useEffect(() => {
+    if (props.insertButtons && props.setButtonRender) {
+      const insButtons = props.insertButtons?.map((content) => <button onClick={(e) => openInsertButton(e, content.setModalOpen)}>{content.buttonText}</button>);
+      props.setButtonRender(() => <>
+        {insButtons}
+      </>)
     }
-    
+  }, [props.insertButtons]);
+
   let html = editorState
     ? editorState
     : null;
@@ -289,15 +325,17 @@ export const ContentEditableInputSlot = ({
   // }
 
   return (
-    <><TagName
-      className={finalClassName}
-      suppressContentEditableWarning 
+    <>
+      <TagName
+        className={finalClassName}
+        suppressContentEditableWarning 
       
-      {...editingProps}
-      {...props}
-       />
+        {...editingProps}
+        {...props}
+      />
+      {props.insertButtons?.map((ib) => <ib.modal modalOpen={ib.modalOpen} setModalOpen={ib.setModalOpen} insertCallback={insertIntoContentRef} />)}
 
-       {/* <label style={{background:"#000000aa", color:"white"}} >Edit HTML:<input type="checkbox"  checked={editingHTML} onChange={e=>changeHTMLMode(!!e.currentTarget.checked)} /></label> */}
-       </>
+      {/* <label style={{background:"#000000aa", color:"white"}} >Edit HTML:<input type="checkbox"  checked={editingHTML} onChange={e=>changeHTMLMode(!!e.currentTarget.checked)} /></label> */}
+    </>
   );
 };
