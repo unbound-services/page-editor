@@ -26,107 +26,122 @@ type tagTypeMap = {"div": JSX.IntrinsicElements["div"], "span":JSX.IntrinsicElem
   
 
 export type CEBemContext = {bem?:boolean, bemPrefix?:string};
-type CEType ={[Property in editableTagList  ]: typeof ContentEditableInputSlot} & {context:React.Context<CEBemContext>, __compCache:{[key:string]: typeof ContentEditableInputSlot}, BEM:React.Provider<CEBemContext>} 
+
+type CEType ={ [Property in editableTagList]: typeof ContentEditableInputSlot }
+           & {
+               context: React.Context<CEBemContext>,
+               __compCache: { [key:string]: typeof ContentEditableInputSlot },
+               BEM: React.Provider<CEBemContext>
+             }
+
 type editableTagList = keyof tagTypeMap;
-export const createContentEditable = ({bem, bemPrefix, classFunction}:{bem?:boolean, bemPrefix?:string, bemName?:string, classFunction?:(tagName:string, props)=>string}) => {
-return new Proxy<CEType>({__compCache:{},context :React.createContext<CEBemContext>({bem, bemPrefix}) } as any ,
-    {
 
-      get: (target, prop) => {
-        const tagName = prop as editableTagList;
+export const createContentEditable = (
+  {
+    bem,
+    bemPrefix,
+    classFunction
+  }:{
+    bem?: boolean,
+    bemPrefix?: string,
+    bemName?: string,
+    classFunction?: (tagName: string, props) => string
+  }
+) => {
+  return new Proxy<CEType>(
+    {__compCache: {}, context: React.createContext<CEBemContext>({ bem, bemPrefix }) } as any,
+    {get: (target, prop) => {
 
-        if(prop=="BEM"){
-          if(target.BEM){
-            return target.BEM;
-          }
-          
-          target.BEM = target.context.Provider;
+      const tagName = prop as editableTagList;
+
+      if(prop=="BEM") {
+        if(target.BEM){
           return target.BEM;
         }
 
-        if (!["div", "span", "em", "strong",
-          "li","a", "p", "h1", 
-          "h2", "h3", "h4", "h5",
-          "h6", "ul", "ol", "blockquote",
-          "pre", "code",
-          "figcaption", "table","td","tr","tbody","rawText","del","ins"
-        
-        ].includes(tagName)) {
-          throw new Error("Invalid tagname for CE");
-        }
+        target.BEM = target.context.Provider;
+        return target.BEM;
+      }
+
+      if (
+          !["div", "span", "em", "strong", "li", "a", "p", "h1",
+            "h2", "h3", "h4", "h5", "h6", "ul", "ol", "blockquote",
+            "pre", "code", "figcaption", "table", "td", "tr",
+            "tbody", "rawText", "del", "ins"].includes(tagName)
+         ) {
+        throw new Error("Invalid tagname for CE");
+      }
 
 
-        if(!target.__compCache[tagName]){
-          
-        
-
+      if(!target.__compCache[tagName]) {
         const defaultBem = bem;
         const defaultBemPrefix = bemPrefix;
 
         target.__compCache[tagName] = (props) => {
-          
-          let {bem:bemProp, bemPrefix:bemPrefixProp,bemName,editing, sectionName, ...otherProps} = props;
+          let {
+            bem:bemProp, bemPrefix:bemPrefixProp, bemName,
+            editing, sectionName, ...otherProps
+          } = props;
+
           const bemContext = useContext(target.context);
 
           let finalBem = defaultBem;
           let finalBemPrefix = defaultBemPrefix;
-          if(typeof(bemContext?.bem) =="boolean" && bemProp===undefined){
+          if(typeof(bemContext?.bem) == "boolean" && bemProp === undefined) {
             finalBem = bemContext.bem;
           }
-          if(bemContext?.bemPrefix && bemPrefixProp==undefined){
+          if(bemContext?.bemPrefix && bemPrefixProp == undefined) {
             finalBemPrefix = bemContext.bemPrefix;
           }
 
-            return <ContentEditableInputSlot  tagName={tagName}
-             bem={finalBem}
-             editing={editing}
-            
+          return (
+            <ContentEditableInputSlot
+              tagName={tagName}
+              bem={finalBem}
+              editing={editing}
               bemPrefix={finalBemPrefix}
               sectionName={sectionName}
               bemName={bemName ? bemName : sectionName ? sectionName : undefined} 
-              classFunction={classFunction} {...props} />;
-      
+              classFunction={classFunction}
+              {...props}
+            />
+          );
         }
-
       }
-
       return target.__compCache[tagName] as React.FC;
-      },
-    }
+    }}
   );
 }
 
 export const CE = createContentEditable({bem:true});
 
-
 export const ContentEditableInputSlot = ({
   placeholder = "",
   ref = null,
   className = "",
-  sectionName:sectionNameProp=undefined,
+  sectionName: sectionNameProp = undefined,
   tagName = "div",
-
-  textOnly=false,
-  bem=false,
-  bemName="",
+  textOnly = false,
+  bem = false,
+  bemName = "",
   editing:editingProp = undefined,
-
-  bemPrefix="",
-  classFunction=null,
-  children=undefined,
+  bemPrefix = "",
+  classFunction = null,
+  children = undefined,
   ...props
 }) => {
   props = {...props};
 
   const [editingHTML, setEditingHTML] = useState<boolean>(false);
 
-  if(!bemName) bemName=sectionNameProp ? sectionNameProp : tagName;
+  if(!bemName) bemName = sectionNameProp ? sectionNameProp : tagName;
 
   // default placeholder text
   let finalPlaceholder = placeholder;
   if(!placeholder){
     finalPlaceholder = `${tagName} placeholder`;
   }
+
   // default seciton names
   let sectionName = sectionNameProp;
   if(!sectionNameProp){
@@ -170,10 +185,15 @@ export const ContentEditableInputSlot = ({
 
   useEffect(() => {
     if (props.insertButtons && props.setButtonRender) {
-      const insButtons = props.insertButtons?.map((content) => <button onClick={(e) => openInsertButton(e, content.setModalOpen)}>{content.buttonText}</button>);
+      const insButtons = props.insertButtons?.map((content) => (
+        <button onClick={ (e) => openInsertButton(e, content.setModalOpen) }>
+          { content.buttonText }
+        </button>)
+      );
+
       props.setButtonRender(() => <>
         {insButtons}
-      </>)
+      </>);
     }
   }, [props.insertButtons]);
 
@@ -181,22 +201,18 @@ export const ContentEditableInputSlot = ({
     ? editorState
     : null;
     
-    const lastHtml = useRef<string>(html);
+  const lastHtml = useRef<string>(html);
 
   const emitChange = (e ) => {
-
     let curHtml = contentRef.current.innerHTML;
-
-    if( textOnly){
+    if(textOnly){
       curHtml = contentRef.current.innerText;
-
       contentRef.current.innerHTML = curHtml;
     } 
     
     if (curHtml !== lastHtml.current) {
       // lastHtml.current = curHtml;
       editorContext.setState(curHtml);
-      
     }
   };
 
@@ -205,31 +221,27 @@ export const ContentEditableInputSlot = ({
 
   // if we have children then we need to render them to html
   useEffect(() => {
-    
     // console.log('children changed!!', lastHtml.current, props.children);
     if(!editorState && !lastHtml.current && props.children){
       const innerHtml = renderToString(props.children);
       lastHtml.current = innerHtml;
       editorContext.setState(innerHtml);
     } 
-
-}, [])
+  }, []);
 
 
 
   let finalClassName = className;
 
   if(bem){
-
-
     if(bemPrefix) {
       finalClassName = `${bemPrefix}__${bemName} ${finalClassName}`;
-    }else{
+    } else {
       finalClassName = `${bemName} ${finalClassName}`;
     }
   }
 
-  if(classFunction && typeof classFunction =="function"){
+  if(classFunction && typeof classFunction == "function"){
     finalClassName = classFunction(tagName, props);
   }
 
@@ -239,11 +251,9 @@ export const ContentEditableInputSlot = ({
   const editingProps: any = {};
   if (editing) {
     finalClassName += " unbContentEditable";
-    
     editingProps.onInput = emitChange;
     // editingProps.onInput = emitChange;
     editingProps["data-ph"] = finalPlaceholder;
-
     editingProps.ref = contentRef;
     editingProps.contentEditable = true;
     editingProps.suppressContentEditableWarning=true;
@@ -257,11 +267,8 @@ export const ContentEditableInputSlot = ({
 
   
   if(!editing || lastHtml.current){
-    
- 
     editingProps.dangerouslySetInnerHTML = { __html: lastHtml.current };
     props.children = undefined;
-    
   }
   
   let TagName = tagName;
@@ -303,18 +310,17 @@ export const ContentEditableInputSlot = ({
     // convert the content
     if(mode){
       lastHtml.current = lastHtml.current.replace(/&/g, "&amp;")
-      .replace(/</g, "&lt;")
-      .replace(/>/g, "&gt;")
-      .replace(/"/g, "&quot;")
-      .replace(/'/g, "&#039;");;
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
       contentRef.current.innerHTML = lastHtml.current;
     } else {
       lastHtml.current = lastHtml.current.replace(/\&quot;/g, '"')
-      .replace(/\&#039;/g, "'")
-      .replace(/\&lt;/g, "<")
-      .replace(/\&gt;/g, ">")
-      .replace(/\&amp;/g, "&")
-
+        .replace(/\&#039;/g, "'")
+        .replace(/\&lt;/g, "<")
+        .replace(/\&gt;/g, ">")
+        .replace(/\&amp;/g, "&");
       contentRef.current.innerHTML = lastHtml.current;
     }
     setEditingHTML(mode);
@@ -329,11 +335,16 @@ export const ContentEditableInputSlot = ({
       <TagName
         className={finalClassName}
         suppressContentEditableWarning 
-      
         {...editingProps}
         {...props}
       />
-      {props.insertButtons?.map((ib) => <ib.modal modalOpen={ib.modalOpen} setModalOpen={ib.setModalOpen} insertCallback={insertIntoContentRef} />)}
+      {props.insertButtons?.map((ib) => (
+        <ib.modal
+          modalOpen={ib.modalOpen}
+          setModalOpen={ib.setModalOpen}
+          insertCallback={insertIntoContentRef}
+        />
+      ))}
 
       {/* <label style={{background:"#000000aa", color:"white"}} >Edit HTML:<input type="checkbox"  checked={editingHTML} onChange={e=>changeHTMLMode(!!e.currentTarget.checked)} /></label> */}
     </>
