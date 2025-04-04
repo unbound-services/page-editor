@@ -1,4 +1,4 @@
-import React, { CSSProperties, FC, JSX, PropsWithChildren, ReactNode } from "react"
+import React, { CSSProperties, Dispatch, FC, JSX, PropsWithChildren, ReactNode, SetStateAction } from "react"
 import {
   useContext,
   useEffect,
@@ -24,6 +24,13 @@ type tagTypeMap = {"div": JSX.IntrinsicElements["div"], "span":JSX.IntrinsicElem
 "details":JSX.IntrinsicElements["details"],"summary":JSX.IntrinsicElements["summary"],"math":JSX.IntrinsicElements["span"],"text":JSX.IntrinsicElements["text"]};
 
   
+
+export type InsertCallback = (e: any, contentToInsert: string) => void;
+export type InsertButton = {
+  buttonText: string;
+  makeModal: (insertCallback: InsertCallback) => ReactNode;
+  setModalOpen: Dispatch<SetStateAction<boolean>>;
+}
 
 export type CEBemContext = {bem?:boolean, bemPrefix?:string};
 
@@ -159,8 +166,8 @@ export const ContentEditableInputSlot = ({
 
   console.log("myState", editorState);
 
-  const insertIntoContentRef = (e, contentToInsert: string) => {
-    console.log("IN range", range);
+  const insertIntoContentRef: InsertCallback = (e, contentToInsert: string) => {
+    // console.log("IN range", range);
     range.deleteContents();
     const fragment = range.createContextualFragment(contentToInsert);
     range.insertNode(fragment);
@@ -168,9 +175,9 @@ export const ContentEditableInputSlot = ({
   };
 
   const [range, setRange] = useState<Range>();
-  console.log("range", range);
+  // console.log("range", range);
 
-  const openInsertButton = (e, setModalOpen) => {
+  const openInsertButton = (e: any, setModalOpen: React.Dispatch<React.SetStateAction<boolean>>) => {
     const el = contentRef.current;
     if (!el) return;
     const sel = el.ownerDocument.getSelection();
@@ -183,9 +190,10 @@ export const ContentEditableInputSlot = ({
 
   }
 
+  const insertButtons: Array<InsertButton> = props.insertButtons;
   useEffect(() => {
-    if (props.insertButtons && props.setButtonRender) {
-      const insButtons = props.insertButtons?.map((content) => (
+    if (insertButtons && props.setButtonRender) {
+      const insButtons = insertButtons?.map((content) => (
         <button onClick={ (e) => openInsertButton(e, content.setModalOpen) }>
           { content.buttonText }
         </button>)
@@ -195,7 +203,7 @@ export const ContentEditableInputSlot = ({
         {insButtons}
       </>);
     }
-  }, [props.insertButtons]);
+  }, [insertButtons]);
 
   let html = editorState
     ? editorState
@@ -338,13 +346,7 @@ export const ContentEditableInputSlot = ({
         {...editingProps}
         {...props}
       />
-      {props.insertButtons?.map((ib) => (
-        <ib.modal
-          modalOpen={ib.modalOpen}
-          setModalOpen={ib.setModalOpen}
-          insertCallback={insertIntoContentRef}
-        />
-      ))}
+      {insertButtons?.map((ib) => ib.makeModal(insertIntoContentRef))}
 
       {/* <label style={{background:"#000000aa", color:"white"}} >Edit HTML:<input type="checkbox"  checked={editingHTML} onChange={e=>changeHTMLMode(!!e.currentTarget.checked)} /></label> */}
     </>

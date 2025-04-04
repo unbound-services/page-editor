@@ -1,7 +1,10 @@
 import { default as default_2 } from 'react';
+import { Dispatch } from 'react';
 import { FunctionComponent } from 'react';
 import { JSX as JSX_2 } from 'react';
 import * as React_2 from 'react';
+import { ReactNode } from 'react';
+import { SetStateAction } from 'react';
 
 export declare const CE: CEType;
 
@@ -163,6 +166,14 @@ export declare const injectEditorContext: (Component: (props: useEditorContextOu
  * @returns a component which will have the editor state injected from the context through the props
  **/
 export declare const injectEditorState: (Comp: React_2.ComponentType) => (props: any) => React_2.JSX.Element;
+
+export declare type InsertButton = {
+    buttonText: string;
+    makeModal: (insertCallback: InsertCallback) => ReactNode;
+    setModalOpen: Dispatch<SetStateAction<boolean>>;
+};
+
+export declare type InsertCallback = (e: any, contentToInsert: string) => void;
 
 export declare const NumberSelect: (props: any) => default_2.JSX.Element;
 
@@ -494,5 +505,16 @@ declare interface useEditorContextOutputProps {
 export declare const useEditorState: (sectionName?: string) => any[];
 
 export declare const useEditorStateWithProps: (sectionName: string, props: any) => any;
+
+export declare const useModal: () => {
+    modalOpen: boolean;
+    setModalOpen: default_2.Dispatch<default_2.SetStateAction<boolean>>;
+    ModalOuterComponent: ({ children, modalOpen, setModalOpen }: {
+        modalOpen: boolean;
+        setModalOpen: (open: boolean) => void;
+    } & {
+        children?: ReactNode | undefined;
+    }) => default_2.JSX.Element;
+};
 
 export { }
