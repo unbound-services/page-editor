@@ -27,7 +27,7 @@ type tagTypeMap = {"div": JSX.IntrinsicElements["div"], "span":JSX.IntrinsicElem
 
 export type InsertCallback = (e: any, contentToInsert: string) => void;
 
-type InsertButton = {
+export type InsertButton = {
   buttonText: string; //Text to display on the button in the component's options
   makeModal: (insertCallback: InsertCallback) => ReactNode; //Injects the callback for inserting the text into the external-developer-defined modal
   setModalOpen: Dispatch<SetStateAction<boolean>>;
