@@ -607,30 +607,38 @@ const incState = (currentContext, index,sectionName?) => {
   if(sectionName){
     setState = (stateUpdate) => {
 
-    const newState = cloneState(currentContext.editorState);
-    if (newState[sectionName]) {
-      newState[sectionName] = cloneState(newState[sectionName]);
+      const newState = cloneState(currentContext.editorState);
+      if (newState[sectionName]) {
+        newState[sectionName] = cloneState(newState[sectionName]);
+      }
+      newState[sectionName][index].props = {
+        ...newState[sectionName][index].props,
+        ...stateUpdate,
+      };
+      currentContext.setState(newState);
+    };
+    newVal.editorState = currentContext.editorState[sectionName][index].props;
+
+  } else {
+    setState = (stateUpdate, name) => {
+      const newState = cloneState(currentContext.editorState);
+      if (name) {
+        newState[index].props = {
+          ...newState[index].props,
+          [name]: stateUpdate,
+        };
+      } else {
+        newState[index].props = {
+          ...newState[index].props,
+          ...stateUpdate,
+        };
+      }
+
+      currentContext.setState(newState);
     }
-    newState[sectionName][index].props = {
-      ...newState[sectionName][index].props,
-      ...stateUpdate,
-    };
-    currentContext.setState(newState);
-  };
 
-  newVal.editorState = currentContext.editorState[sectionName][index].props;
-} else {
-  setState = (stateUpdate) => {
-    const newState = cloneState(currentContext.editorState);
-    newState[index].props = {
-      ...newState[index].props,
-      ...stateUpdate,
-    };
-    currentContext.setState(newState);
+    newVal.editorState = currentContext.editorState[index].props;
   }
-
-  newVal.editorState = currentContext.editorState[index].props;
-}
 
 
   newVal.setState = setState;
