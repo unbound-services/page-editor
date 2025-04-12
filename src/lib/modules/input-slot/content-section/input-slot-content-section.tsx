@@ -44,7 +44,6 @@ export const ContentSection = (props: ContentSectionProps) => {
   const compRefs = React.useRef({});
   const [wrappers,setWrappers] = useState({});
   const handleRef = React.useRef(null);
-  const reorderRef = React.useRef(0);
   const [compSearch, setCompSearch] = useState('');
   const setWrapper = (uuid)=>(node)=> {
     if(uuid==0) compRefs.current={};
@@ -58,6 +57,7 @@ export const ContentSection = (props: ContentSectionProps) => {
   }
 
   const setButtonState = (key, value) => {
+    console.log("Set button state ", key)
     setButtonStateRaw({...buttonState, [key]: value});
   }
 
@@ -106,7 +106,6 @@ export const ContentSection = (props: ContentSectionProps) => {
 
     const index = neweditorState.findIndex(item => item.uuid == uuid);
     if (index == 0) return;
-    reorderRef.current++;
 
     // swap the button states
     let holdValue = neweditorState[index];
@@ -124,7 +123,6 @@ export const ContentSection = (props: ContentSectionProps) => {
 
     const index = neweditorState.findIndex(item => item.uuid == uuid);
     if (index == currentChildren.length - 1) return;
-    reorderRef.current++;
 
     let holdValue = neweditorState[index];
     neweditorState[index] = neweditorState[index + 1];
@@ -140,7 +138,7 @@ export const ContentSection = (props: ContentSectionProps) => {
     childs = RenderComponents({
       componentData, renderFlags, editing,
       context: editorContext, moveUp, moveDown,
-      currentChildren, reorderRef, removeComponent, getComp,
+      currentChildren, removeComponent, getComp,
       buttonRenderState: (key) => [getButtonState(key), (val)=>setButtonState(key,val)]
     });
   }
@@ -454,7 +452,7 @@ export const ContentSection = (props: ContentSectionProps) => {
 const RenderComponents = ({
   componentData, renderFlags, editing, context, moveUp,
   moveDown, currentChildren, removeComponent, getComp,
-  buttonRenderState, reorderRef
+  buttonRenderState
 })=>{
   
   return componentData.map((item, index) => {
@@ -504,7 +502,7 @@ const RenderComponents = ({
     // if you don't treat this like a function call it will 
     // think you're calling your hooks outside a function
     return getComp({
-      data:item, uuid: item.uuid, index, reorderRef,
+      data:item, uuid: item.uuid, index,
       optionButtons, buttonRenderState: buttonRenderState(item.uuid)
     });
     //const Comp = getComp(item, key, optionButtons);
@@ -516,7 +514,7 @@ const RenderComponents = ({
 // get the component from the data that represents it
 export const getComponentFromData =
   (currentContext, setDomNode, editing=undefined) =>
-  ({data, reorderRef, uuid, index, optionButtons, buttonRenderState}) =>
+  ({data, uuid, index, optionButtons, buttonRenderState}) =>
 {
   const compData = currentContext.componentList[data.comp];
   const [buttonRender, setButtonRender] = buttonRenderState;
@@ -529,10 +527,10 @@ export const getComponentFromData =
   return (
     <EditorContext.Provider
         value={{...incState(currentContext, index), editing}}
-        key={reorderRef.current+'-'+index+"-slot-provider"}
+        key={uuid+"-slot-provider"}
     >
       <ComponentSlotWrapper
-        key={reorderRef.current+'-'+uuid+"-slot-wrapper"}
+        key={uuid+"-slot-wrapper"}
         optionButtons={optionButtons}
         componentName={compData.displayName}
         editing={editing}
@@ -541,7 +539,7 @@ export const getComponentFromData =
         setWrapperDomNode={setDomNode(uuid)}
       />
       <Comp
-        key={reorderRef.current+'-'+uuid+"-comp"}
+        key={uuid+"-comp"}
         {...currentProps}
         editing={editing}
         componentName={compData.displayName}
