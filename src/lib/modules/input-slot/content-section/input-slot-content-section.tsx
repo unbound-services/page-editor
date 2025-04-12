@@ -7,6 +7,7 @@ import { createPortal } from "react-dom";
 // import editorStyles from "unb-editor/unb-editor.css?inline";
 import Drawer from "../../common/drawer/common-drawer";
 import { cloneState, useEditorContext } from "../input-slot-hooks";
+import { v4  as uuidV4 } from "uuid";
 
 export type ContentSectionProps = & React.HTMLProps<HTMLButtonElement> & React.HTMLAttributes<HTMLButtonElement> & {
   sectionName?: string;
@@ -45,11 +46,11 @@ export const ContentSection = (props: ContentSectionProps) => {
     const handleRef = React.useRef(null);
     const reorderRef = React.useRef(0);
     const [compSearch, setCompSearch] = useState('');
-    const setWrapper = (key)=>(node)=>{
-      if(key==0) compRefs.current={};
-      if(compRefs.current[key]==node) return;
-      // setWrappers((wrappers)=>({...wrappers, [key]:node}));
-      compRefs.current[key] = node;
+    const setWrapper = (uuid)=>(node)=>{
+      if(uuid==0) compRefs.current={};
+      if(compRefs.current[uuid]==node) return;
+      // setWrappers((wrappers)=>({...wrappers, [uuid]:node}));
+      compRefs.current[uuid] = node;
      };
 
     const getButtonState = (key)=> {
@@ -89,54 +90,55 @@ export const ContentSection = (props: ContentSectionProps) => {
     let componentData = editorState;
     let currentChildren = editorState ? editorState : [];
     let childs = null;
-    const removeComponent = (key) => (e) => {
+    const removeComponent = (uuid) => (e) => {
       let neweditorState = [...currentChildren] ;
       e.preventDefault();
       e.stopPropagation();
 
       // probably should find a better way to do this
 
-      neweditorState.splice(key, 1);
+      const index = neweditorState.findIndex(item => item.uuid == uuid)
+      neweditorState.splice(index, 1);
       editorContext.setState(neweditorState);
     };
 
-    const moveUp = (key) => (e) => {
+    const moveUp = (uuid) => (e) => {
       let neweditorState = [...currentChildren] ;
       e.preventDefault();
       e.stopPropagation();
 
 
 
-      if (key == 0) return;
+      const index = neweditorState.findIndex(item => item.uuid == uuid);
+      if (index == 0) return;
       reorderRef.current++;
-      let holdValue = neweditorState[key];
-      neweditorState[key] = neweditorState[key - 1];
-      neweditorState[key - 1] = holdValue;
+      let holdValue = neweditorState[index];
+      neweditorState[index] = neweditorState[index - 1];
+      neweditorState[index - 1] = holdValue;
       
       // swap the button states
       
 
       // probably should find a better way to do this
       editorContext.setState(neweditorState);
-      setButtonStateRaw({});
     };
 
-    const moveDown = (key) => (e) => {
+    const moveDown = (uuid) => (e) => {
       let neweditorState = [...currentChildren] ;
       e.preventDefault();
       e.stopPropagation();
 
       
 
-      if (key == currentChildren.length - 1) return;
+      const index = neweditorState.findIndex(item => item.uuid == uuid);
+      if (index == currentChildren.length - 1) return;
       reorderRef.current++;
-      let holdValue = neweditorState[key];
-      neweditorState[key] = neweditorState[key + 1];
-      neweditorState[key + 1] = holdValue;
+      let holdValue = neweditorState[index];
+      neweditorState[index] = neweditorState[index + 1];
+      neweditorState[index + 1] = holdValue;
       
       // probably should find a better way to do this
       editorContext.setState(neweditorState);
-      setButtonStateRaw({});
     };
 
     if (componentData) {
@@ -166,7 +168,7 @@ export const ContentSection = (props: ContentSectionProps) => {
         whichComponent = component
           ? component
           : sortedComponentList[0];
-      neweditorState.push({ comp: whichComponent, props: {} });
+      neweditorState.push({ comp: whichComponent, props: {}, uuid: uuidV4() });
       editorContext.setState(neweditorState);
     };
 
@@ -179,13 +181,13 @@ export const ContentSection = (props: ContentSectionProps) => {
         <label>Search:<input placeholder="search" type="text" value={compSearch} onChange={(e)=>{
           setCompSearch(e.target.value);
         }} /></label>
-        <div className="componeent-drawer__component-list">{sortedComponentList.map((index) => {
-          const value = componentList[index];
+        <div className="componeent-drawer__component-list">{sortedComponentList.map((componentName) => {
+          const value = componentList[componentName];
           const displayName = value.displayName ? value.displayName : value;
           const displayDescription = value.description;
-          if(compSearch && displayName.toLowerCase().indexOf(compSearch.toLowerCase())==-1) return null;
+          if(compSearch && displayName.toLowerCase().componentNameOf(compSearch.toLowerCase())==-1) return null;
           return (
-            <div key={index} onClick={()=>addComponent(index)}  className="component-drawer__component">
+            <div key={componentName} onClick={()=>addComponent(componentName)}  className="component-drawer__component">
               {displayName}
               {displayDescription && <div className="component-drawer__description">{displayDescription}</div>}
             </div>
@@ -452,7 +454,7 @@ export const ContentSection = (props: ContentSectionProps) => {
 
 const RenderComponents = ({componentData, renderFlags,editing,context,moveUp,moveDown,currentChildren,removeComponent, getComp, buttonRenderState, reorderRef})=>{
   
-  return componentData.map((item, key) => {
+  return componentData.map((item, index) => {
     let optionButtons = null;
     // manage option buttons for deleting and moving components
     if (editing && context.componentList[item.comp]) {
@@ -466,17 +468,17 @@ const RenderComponents = ({componentData, renderFlags,editing,context,moveUp,mov
       // up and down buttons =======
       // ===========================
       if (!renderFlags?.noRearrange) {
-        if (key > 0)
+        if (index > 0)
           optionButtons.push(
-            <button key={`${item.comp}-up-button`} onClick={moveUp(key)}>
+            <button key={`${item.uuid}-up-button`} onClick={moveUp(item.uuid)}>
               ⬆️
             </button>
           );
-        if (key < currentChildren.length - 1)
+        if (index < currentChildren.length - 1)
           optionButtons.push(
             <button
-              key={`${item.comp}-down-button`}
-              onClick={moveDown(key)}>
+              key={`${item.uuid}-down-button`}
+              onClick={moveDown(item.uuid)}>
               ⬇️
             </button>
           );
@@ -490,7 +492,7 @@ const RenderComponents = ({componentData, renderFlags,editing,context,moveUp,mov
           <button
             className={"content-section-controls__delete-button"}
             key={`${item.comp}-delete-button`}
-            onClick={removeComponent(key)}>
+            onClick={removeComponent(item.uuid)}>
             X
           </button>
         );
@@ -500,16 +502,16 @@ const RenderComponents = ({componentData, renderFlags,editing,context,moveUp,mov
 
     // if you don't treat this like a function call it will 
     // think you're calling your hooks outside a function
-    return getComp({data:item, key,reorderRef, optionButtons,buttonRenderState:buttonRenderState(key)});
-    const Comp = getComp(item, key, optionButtons);
-    return <Comp key={key+"-wrapper"} />;
+    return getComp({data:item, uuid: item.uuid, index, reorderRef, optionButtons,buttonRenderState:buttonRenderState(item.uuid)});
+    //const Comp = getComp(item, key, optionButtons);
+    //return <Comp key={key+"-wrapper"} />;
   });
 
 }
 
 // get the component from the data that represents it
 export const getComponentFromData =
-  (currentContext,setDomNode, editing=undefined) => ({data,reorderRef, key, optionButtons,buttonRenderState}) =>{
+  (currentContext,setDomNode, editing=undefined) => ({data,reorderRef, uuid, index, optionButtons,buttonRenderState}) =>{
     const compData = currentContext.componentList[data.comp];
     const [buttonRender, setButtonRender] = buttonRenderState;
   
@@ -518,19 +520,19 @@ export const getComponentFromData =
     let currentProps = data.props;
     if(editing === undefined) editing = currentContext.editing;
 
-    return (<EditorContext.Provider value={{...currentContext[key], ...incState(currentContext, key),editing}} key={reorderRef.current+'-'+key+"-slot-provider"}>
+    return (<EditorContext.Provider value={{...incState(currentContext, index),editing}} key={reorderRef.current+'-'+index+"-slot-provider"}>
         <ComponentSlotWrapper
-          key={reorderRef.current+'-'+key+"-slot-wrapper"}
+          key={reorderRef.current+'-'+uuid+"-slot-wrapper"}
           optionButtons={optionButtons}
           componentName={compData.displayName}
           editing={editing}
           previewing={currentContext.previewing}
           buttonRender={buttonRender}
-          setWrapperDomNode={setDomNode(key)}>
+          setWrapperDomNode={setDomNode(uuid)}>
 
         </ComponentSlotWrapper>
         <Comp
-            key={reorderRef.current+'-'+key+"-comp"}
+            key={reorderRef.current+'-'+uuid+"-comp"}
             {...currentProps}
             editing={editing}
             componentName={compData.displayName}
