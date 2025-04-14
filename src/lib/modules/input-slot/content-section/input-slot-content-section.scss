@@ -54,6 +54,10 @@ $buttonHeight: 24px;
         }
 
         .content-section-controls__extra-buttons-wrapper {
+          button {
+            height: fit-content;
+          }
+
           display: inline-block;
         }
 

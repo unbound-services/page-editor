@@ -8,6 +8,7 @@ import { createPortal } from "react-dom";
 import Drawer from "../../common/drawer/common-drawer";
 import { cloneState, useEditorContext } from "../input-slot-hooks";
 import { v4  as uuidV4 } from "uuid";
+import { optionMenuReducer } from "./option-menu-reducer";
 
 export type ContentSectionProps = & React.HTMLProps<HTMLButtonElement> & React.HTMLAttributes<HTMLButtonElement> & {
   sectionName?: string;
@@ -35,7 +36,9 @@ export const ContentSection = (props: ContentSectionProps) => {
     ...otherProps
   } = props;
   const [componentDrawerOpen, setComponentDrawerOpen] = useState(false);
-  const [buttonState, setButtonStateRaw] = useState({});
+  const [optionMenus, optionMenusDispatch] = React.useReducer(optionMenuReducer, {
+    menus: {}
+  });
   const editorContext = useEditorContext(sectionName);
   const iframeHead = React.useRef(null);
   const [iframeBody, setIframeBody] = useState(null);
@@ -52,14 +55,19 @@ export const ContentSection = (props: ContentSectionProps) => {
     compRefs.current[uuid] = node;
   };
 
-  const getButtonState = (key)=> {
-    return buttonState[key];
-  }
+  const getButtonState = (uuid)=> {
+    return optionMenus.menus[uuid];
+  };
 
-  const setButtonState = (key, value) => {
-    console.log("Set button state ", key)
-    setButtonStateRaw({...buttonState, [key]: value});
-  }
+  const setButtonState = (uuid, value) => {
+    optionMenusDispatch({
+      type: "SET_OPTION_MENU",
+      payload: {
+        optionMenu: value,
+        componentUUID: uuid,
+      }
+    })
+  };
 
   const sortComponentList = (componentsToSort) => {
     if(!componentsToSort) return [];
