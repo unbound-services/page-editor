@@ -5,322 +5,329 @@ $buttonHeight: 24px;
 
 .content-section-controls {
 
-    
-
-    &__wrapper {
-        box-sizing: border-box;
-        position: absolute;
-        border: 2px #0084ff40 solid;
-        // border-color: transparent;
-        border-radius: 6px;
-        // padding-top:30px;
-        transition: border-color 0.25s;
-        transition-timing-function: ease-in-out;
-        overflow: visible;
-        min-height: 30px;
-        padding: 0;
-        pointer-events: none;
-
-        &.--unb-content-section {
-            position: relative;
-            padding-bottom: 30px;
-        }
-
-        &>* {
-            pointer-events: auto;
-        }
 
 
+  &__wrapper {
+    box-sizing: border-box;
+    position: absolute;
+    border: 2px #0084ff40 solid;
+    // border-color: transparent;
+    border-radius: 6px;
+    // padding-top:30px;
+    transition: border-color 0.25s;
+    transition-timing-function: ease-in-out;
+    overflow: visible;
+    min-height: 30px;
+    padding: 0;
+    pointer-events: none;
 
+    &.--unb-content-section {
+      position: relative;
+      padding-bottom: 30px;
+    }
 
-
-
-
-        &:hover {
-
-            border-color: $overlayColor;
-
-            &>.content-section-controls__inner {
-                // background:red;
-                opacity: 100%;
-                z-index: 12;
-                &:before {
-                    display:inline-block;
-    
-                    width:100%;
-                    content:"";
-                    border-radius: 5px;
-                }
-
-                .content-section-controls__extra-buttons-wrapper {
-                    display: inline-block;
-                }
-
-                button {
-                    display: inline-block;
-                }
-            }
-
-
-
-
-            &>.content-section-controls__component-type {
-                color: white;
-
-            }
-        }
+    &>* {
+      pointer-events: auto;
     }
 
 
-    &__inner {
-        position: absolute;
-        box-sizing: border-box;
-        height: auto;
-        bottom:100%;
-        right: 0;
-        padding: 0px 8px;
-        background: white;
-        z-index: 10;
-        transition: opacity 0.25s, width 0.25s, transform 0.25s, border-radius 0.25s;
-        opacity: 50%;
-        border-bottom-left-radius: 5px;
-        ;
-        display: flex;
 
+
+
+
+
+    &:hover {
+
+      border-color: $overlayColor;
+
+      &>.content-section-controls__inner {
+        // background:red;
+        opacity: 100%;
+        z-index: 12;
 
         &:before {
-            content: "";
-            position: absolute;
-            top: 0;
-            right: 0;
-            width: 0;
-            height: 100%;
-            background: $overlayColor;
-            transition: width 0.25s;
-            z-index: -1;
-            border-bottom-left-radius: 5px;
-            box-shadow: #00000060 -5px 5px 10px 0px;
+          display: inline-block;
+
+          width: 100%;
+          content: "";
+          border-radius: 5px;
+        }
+
+        .content-section-controls__extra-buttons-wrapper {
+          button {
+            height: fit-content;
+          }
+
+          display: inline-block;
         }
 
         button {
-            margin-right: 10px;
-            display: inline-block;
-            border-radius: 4px;
-            border: none;
-            text-transform: uppercase;
-            font-size: 0.9em;
-            font-weight: bold;
-            height: $buttonHeight;
-            display: none;
+          display: inline-block;
         }
-    }
+      }
 
-    &__delete-button {
-        background: #dd0000;
+
+
+
+      &>.content-section-controls__component-type {
         color: white;
-        font-weight: bold;
-        cursor: pointer;
+
+      }
+    }
+  }
+
+
+  &__inner {
+    position: absolute;
+    box-sizing: border-box;
+    height: auto;
+    bottom: 100%;
+    right: 0;
+    padding: 0px 8px;
+    background: white;
+    z-index: 10;
+    transition: opacity 0.25s, width 0.25s, transform 0.25s, border-radius 0.25s;
+    opacity: 50%;
+    border-bottom-left-radius: 5px;
+    ;
+    display: flex;
+
+
+    &:before {
+      content: "";
+      position: absolute;
+      top: 0;
+      right: 0;
+      width: 0;
+      height: 100%;
+      background: $overlayColor;
+      transition: width 0.25s;
+      z-index: -1;
+      border-bottom-left-radius: 5px;
+      box-shadow: #00000060 -5px 5px 10px 0px;
     }
 
-    &__extra-buttons {
-        position: absolute;
-        height: auto;
-        top: 0;
-        right: 0;
-        
-        padding: 8px 8px;
-        background: #7e7e7e;
-        border-radius: 4px;
-        z-index: 30;
+    button {
+      margin-right: 10px;
+      display: inline-block;
+      border-radius: 4px;
+      border: none;
+      text-transform: uppercase;
+      font-size: 0.9em;
+      font-weight: bold;
+      height: $buttonHeight;
+      display: none;
+    }
+  }
+
+  &__delete-button {
+    background: #dd0000;
+    color: white;
+    font-weight: bold;
+    cursor: pointer;
+  }
+
+  &__extra-buttons {
+    position: absolute;
+    height: auto;
+    top: 0;
+    right: 0;
+
+    padding: 8px 8px;
+    background: #7e7e7e;
+    border-radius: 4px;
+    z-index: 30;
 
 
-        transition: opacity 0.25s, transform 0.5s;
-        transition-timing-function: ease-in-out;
-        transform-origin: 100% top;
+    transition: opacity 0.25s, transform 0.5s;
+    transition-timing-function: ease-in-out;
+    transform-origin: 100% top;
 
 
-        transform: rotateY(90deg) translateX(10px);
-        transform-style: preserve-3d;
+    transform: rotateY(90deg) translateX(10px);
+    transform-style: preserve-3d;
 
-        opacity: 0%;
+    opacity: 0%;
+  }
+
+
+  &__extra-buttons-wrapper {
+    position: relative;
+    height: auto;
+
+    display: none;
+    width: 32px;
+
+    font-weight: bold;
+
+    z-index: 20;
+    overflow: hidden;
+
+
+
+    &::after {
+      content: "...";
+      display: inline-block;
+      font-size: 24px;
+      font-weight: bold;
+      text-align: center;
+      width: 32px;
+      overflow: hidden;
+      height: $buttonHeight;
+      line-height: $buttonHeight;
+      border-radius: 8px;
+      padding: 0;
+      margin: 0;
+
+      box-sizing: border-box;
+      background: #aaaaff;
     }
 
 
-    &__extra-buttons-wrapper {
-        position: relative;
-        height: auto;
+    &:hover,
+    &:focus {
+      &::after {
+        background: $overlayColor;
+      }
 
-        display: none;
-        width: 32px;
+      overflow: visible;
 
-        font-weight: bold;
-
-        z-index: 20;
-        overflow: hidden;
-
-
-
-        &::after {
-            content: "...";
-            display: inline-block;
-            font-size: 24px;
-            font-weight: bold;
-            text-align: center;
-            width: 32px;
-            overflow: hidden;
-            height: $buttonHeight;
-            line-height: $buttonHeight;
-            border-radius: 8px;
-            padding: 0;
-            margin: 0;
-
-            box-sizing: border-box;
-            background: #aaaaff;
-        }
-
-
-        &:hover,
-        &:focus {
-            &::after {
-                background: $overlayColor;
-            }
-
-            overflow: visible;
-
-            &>.content-section-controls__extra-buttons {
-                display: block;
-                opacity: 100%;
-                transform: translateX(0px) rotateY(0deg);
-            }
-        }
-
+      &>.content-section-controls__extra-buttons {
+        display: block;
+        opacity: 100%;
+        transform: translateX(0px) rotateY(0deg);
+      }
     }
 
+  }
 
 
 
 
-    &__component-type {
-        color: black;
-        font-weight: 400;
-        font-size: 12px;
-        padding: 0;
-        padding-right: 10px;
-        text-transform: uppercase;
-        letter-spacing: 1.5px;
-        font-family: arial;
-        margin: 0;
-        height: $buttonHeight;
-        line-height: $buttonHeight;
-        text-shadow: #00000070 1px 1px 4px;
-    }
+
+  &__component-type {
+    color: black;
+    font-weight: 400;
+    font-size: 12px;
+    padding: 0;
+    padding-right: 10px;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    font-family: arial;
+    margin: 0;
+    height: $buttonHeight;
+    line-height: $buttonHeight;
+    text-shadow: #00000070 1px 1px 4px;
+  }
 }
 
 .unb-comp-section__add-component {
 
-    display:block;
-    box-sizing:border-box;
-    max-width:100%;
+  display: block;
+  box-sizing: border-box;
+  max-width: 100%;
+  height: 0px;
+  background: red;
+
+  button,
+  select {
+    display: none;
+    height: 30px;
+    padding: 4px 0;
+    margin: 0;
+  }
+
+  &:before {
+    content: "+";
+    background: $greyBG;
+    width: 30px;
+    height: 30px;
+    display: block;
+    bottom: -20px;
+    left: 50%;
+    transform: translateX(-50%);
+    border-radius: 15px;
+    transition: width 0.1s, height 0.1s, padding 0.2s, background-color 0.5s;
+    position: absolute;
+    font-size: 2em;
+    font-weight: bold;
+    color: white;
+    text-align: center;
+    line-height: 30px;
+    cursor: pointer;
+    white-space: nowrap;
+    z-index: 5;
+  }
+
+  &:after {
     height: 0px;
-    background:red;
-    button,
-    select {
-        display: none;
-        height: 30px;
-        padding: 4px 0;
-        margin: 0;
-    }
+    display: block;
+    content: "";
+    transition: height 0.1s, width 0.1s, padding 0.2s, background-color 0.5s;
+    pointer-events: none;
+  }
 
-    &:before {
-        content: "+";
-        background: $greyBG;
-        width: 30px;
-        height: 30px;
-        display:block;
-        bottom:-20px;
-        left: 50%;
-        transform: translateX(-50%);
-        border-radius: 15px;
-        transition: width 0.1s, height 0.1s, padding 0.2s, background-color 0.5s;
-        position: absolute;
-        font-size: 2em;
-        font-weight: bold;
-        color: white;
-        text-align: center;
-        line-height:30px;
-        cursor:pointer;
-        white-space:nowrap;
-        z-index:5;
-    }
+  // highlight the box where the things will be added
 
-    &:after{
-        height:0px;
-        display:block;
-        content:"";
-        transition: height 0.1s, width 0.1s, padding 0.2s, background-color 0.5s;
-        pointer-events:none;
-    }
+  &:hover {
+    // width: 300px;
+    // height: 130px;
 
-    // highlight the box where the things will be added
-
-    &:hover {
-        // width: 300px;
-        // height: 130px;
-
-        &:after{
-            height:30px;
-            display:block;
-            content:"";
-            width:calc(100%);
-            left:50%;
-            bottom:0;
-            transform:translateX(-50%);
-            position:absolute;
-            background: linear-gradient(#00ddff00, #00ddff80);
-         
-        }
-
-        &::before{
-            content: "+ ADD COMPONENT";
-            width:250px;
-            z-index:15;
-            background:#00aadd;
-            font-size:1em;
-        }
-
-
+    &:after {
+      height: 30px;
+      display: block;
+      content: "";
+      width: calc(100%);
+      left: 50%;
+      bottom: 0;
+      transform: translateX(-50%);
+      position: absolute;
+      background: linear-gradient(#00ddff00, #00ddff80);
 
     }
+
+    &::before {
+      content: "+ ADD COMPONENT";
+      width: 250px;
+      z-index: 15;
+      background: #00aadd;
+      font-size: 1em;
+    }
+
+
+
+  }
 
 
 }
 
 .component-drawer {
-    color:white;
+  color: white;
 
-    &__h1{
-        color:#aaaaaa;
-        font-size:1.2em;
-        font-weight:bold;
-        border-bottom:2px #555555 solid;
-        padding-bottom:8px;
-        text-transform:uppercase;
+  &__h1 {
+    color: #aaaaaa;
+    font-size: 1.2em;
+    font-weight: bold;
+    border-bottom: 2px #555555 solid;
+    padding-bottom: 8px;
+    text-transform: uppercase;
+  }
+
+
+
+  &__component {
+    color: #333333;
+    cursor: pointer;
+    padding: 5px;
+    letter-spacing: 0.5px;
+    font-weight: bold;
+    background: linear-gradient(175deg, #dddddd, #aaaaaa);
+    border-bottom: 1px #555555 solid;
+
+    &:hover {
+      background: linear-gradient(175deg, #33ddff, #99eeee);
+      color: black;
     }
 
-
-
-    &__component{
-        color: #333333;
-        cursor:pointer;
-        padding:5px;
-        letter-spacing:0.5px;
-        font-weight:bold;
-        background: linear-gradient(175deg, #dddddd, #aaaaaa);
-        border-bottom:1px #555555 solid;
-        &:hover{
-            background: linear-gradient(175deg, #33ddff, #99eeee);
-            color:black;
-        }
-        
-    }
+  }
 }
