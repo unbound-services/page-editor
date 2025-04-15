@@ -1,6 +1,8 @@
 import { PageEditorApp as UNBEditor} from "./modules/page-editor/page-editor-app";
 import { PageEditor } from "./modules/page-editor/page-editor";
 import {componentList } from "./modules/page-editor/page-editor-components";
+import { useModal } from "./modules/hooks/useModal";
+import type { InsertCallback, InsertButton } from "./modules/input-slot/content-editable/input-slot-content-editable";
 import type { ComponentListType } from "./modules/page-editor/page-editor-components";
 import { ContentSection } from "./modules/input-slot/content-section/input-slot-content-section";
 import EditorValue from "./modules/input-slot/editor-value/input-slot-editor-value";
@@ -41,6 +43,9 @@ import { Tabs } from "./modules/components/repeater/components-repeater-tabs";
 export {
   PageEditor,
   componentList,
+  useModal,
+  InsertCallback,
+  InsertButton,
   HTTPStreamFields,
   Tabs,
   // components

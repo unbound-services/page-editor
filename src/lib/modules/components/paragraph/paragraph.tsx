@@ -4,7 +4,7 @@ import * as React from "react"
 import { CE } from "../../input-slot/content-editable/input-slot-content-editable";
 
 export const Paragraph = (props) => {
-  const { text = "", customClass = "", sectionName } = props;
+  const { text = "", customClass = "", sectionName, setButtonRender } = props;
 
   return (<CE.p {...props}></CE.p>);
 };
