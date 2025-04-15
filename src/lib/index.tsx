@@ -38,7 +38,7 @@ import ColumnSection from "./modules/components/columns/components-columns";
 import { Spacer } from "./modules/components/spacer/spacer";
 import { CheckboxInput } from "./modules/input-slot/checkbox/input-slot-checkbox";
 import { Tabs } from "./modules/components/repeater/components-repeater-tabs";
-
+export { RawHTMLComponent } from "./modules/input-slot/input-slot-raw-html";
 
 export {
   PageEditor,
