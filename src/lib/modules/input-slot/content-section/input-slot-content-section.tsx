@@ -366,6 +366,7 @@ export const ContentSection = (props: ContentSectionProps) => {
         editorContext.updateViewportDimension('width',diff.x,true);
         editorContext.updateViewportDimension('height',diff.y,true);-
 
+
         window.removeEventListener('mousemove',mouseMove);
         window.removeEventListener('mouseup',mouseUp);
         window.removeEventListener('mousein',mouseIn);
@@ -374,8 +375,13 @@ export const ContentSection = (props: ContentSectionProps) => {
       window.addEventListener('mousemove',mouseMove);
       window.addEventListener('mouseup',mouseUp);
       window.addEventListener('mousein',mouseIn);
+      return () => {
+        window.removeEventListener('mousemove',mouseMove);
+        window.removeEventListener('mouseup',mouseUp);
+        window.removeEventListener('mousein',mouseIn);
+      }
     });
-  },[]);
+  },[editorReady]);
 
   if(missingUUIDs){
     return null;

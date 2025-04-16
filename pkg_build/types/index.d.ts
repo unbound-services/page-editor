@@ -243,7 +243,7 @@ declare type PageEditorAppOptions = {
     contextualPageData?: any;
 };
 
-declare type PageEditorComponentType = (props: any) => JSX.Element;
+declare type PageEditorComponentType = JSX.Element | default_2.Component<any> | default_2.FC<any>;
 
 declare type PageEditorOnsaveFunction = (data: any) => void;
 
@@ -297,6 +297,10 @@ declare type PageEditorStateType = {
     advancedOpen: boolean;
     pageEditorDrawerOpen: boolean;
 };
+
+export declare const RawHTMLComponent: (props: default_2.PropsWithChildren<{
+    sectionName?: string;
+}>) => default_2.JSX.Element | default_2.JSX.Element[];
 
 export declare const Repeater: (props: RepeaterProps) => default_2.JSX.Element;
 
@@ -447,6 +451,7 @@ declare interface StringInputProps {
 export declare const Tabs: (props: default_2.PropsWithChildren<{
     tabNames: string[];
     setButtonRender: any;
+    renderTab?: (tabIndex: number) => default_2.ReactNode;
 }>) => default_2.JSX.Element;
 
 declare type tagTypeMap = {
