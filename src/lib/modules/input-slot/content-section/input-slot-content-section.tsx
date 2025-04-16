@@ -48,6 +48,9 @@ export const ContentSection = (props: ContentSectionProps) => {
   const [wrappers,setWrappers] = useState({});
   const handleRef = React.useRef(null);
   const [compSearch, setCompSearch] = useState('');
+
+
+
   const setWrapper = (uuid)=>(node)=> {
     if(uuid==0) compRefs.current={};
     if(compRefs.current[uuid]==node) return;
@@ -90,6 +93,34 @@ export const ContentSection = (props: ContentSectionProps) => {
 
   let { editing } = editorContext;
   if(editingProp!==undefined) editing = editingProp;
+
+
+  // check for uuids
+  let missingUUIDs = false;
+  if(editorState && editorState.length > 0) {
+    for(let i=0;i<editorState.length;i++){
+      if(!editorState[i].uuid) {
+        missingUUIDs = true;
+      }
+    }
+  }
+
+  useEffect(()=>{
+    if(missingUUIDs){
+      let newEditorState = [...editorState];
+    for(let i=0;i<editorState.length;i++){
+      if(!editorState[i].uuid) {
+        newEditorState[i] = {...editorState[i], uuid:uuidV4()};
+      }
+    }
+    editorContext.setState(newEditorState);
+    
+  }
+
+  },[])
+
+
+
 
   let componentData = editorState;
   let currentChildren = editorState ? editorState : [];
@@ -346,6 +377,10 @@ export const ContentSection = (props: ContentSectionProps) => {
     });
   },[]);
 
+  if(missingUUIDs){
+    return null;
+  }
+
   let final= (
     <SectionControlWrapper editing={editing} >
       <TagName {...otherProps as any}>
@@ -529,7 +564,7 @@ export const getComponentFromData =
   
   if (!compData) return null;
   const Comp = currentContext.componentList[data.comp].comp;
-  let currentProps = data.props;
+  let {key, ...currentProps} = data.props;
   if(editing === undefined) editing = currentContext.editing;
 
   return (

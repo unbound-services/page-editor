@@ -1,48 +1,41 @@
 import React, { useEffect } from "react";
 import { useEditorContext } from "./input-slot-hooks";
-import * as prettier from "prettier/standalone";
-import * as prettierPluginJs from "prettier/plugins/babel";
+import { CodeInputSlot } from "./code/input-slot-code";
 
-export const RawHTMLComponent = (props:React.PropsWithChildren) => {
+export const RawHTMLComponent = (props:React.PropsWithChildren<{sectionName?:string}>) => {
     const {editing, setState} = useEditorContext();
     const {html, script, css} = props as any;
-    const [showScripts, setShowscripts] = React.useState(false);
-    const [showStyles, setShowStyles] = React.useState(false);
-    const [formattedCode, setFormattedCode] = React.useState(false);
-    // execute the javascript
-      useEffect(()=>{
-        if(!editing){
-        eval(script);
-        }
+    const [currentTab, setCurrentTab] = React.useState(0);
+    let tabVal = [html,css,script]
+    const tabNames = ["HTML", "CSS", "JS"];
+    const tabs = [
+    <CodeInputSlot language="html" sectionName="html" onRender={html=><div dangerouslySetInnerHTML={{__html:html as string}}></div>} />,
+    <CodeInputSlot language="css" sectionName="css" onRender={css=><style>{css}</style>} />,
+    <CodeInputSlot language="javascript" sectionName="script" onRender={code=><script>{code}</script>} />
+    ];
 
-      }, [editing])
 
-    useEffect(()=>{
-      (async () => {
-        const formatted = await prettier.format("type Query { hello: String }", {
-          parser: "graphql",
-          plugins: [prettierPluginJs],
-        });
-      })();
-    }, [script])
-  
     if(editing){
-      let textArea = <textarea style={{width:"100%", minHeight:200}} value={html} onInput={(e)=>{setState(e.currentTarget.value, 'html')}} />
-      
+
       return <div>
-          <strong>HTML:</strong>
-          {textArea}
-          <strong onClick={()=>setShowscripts(v=>!v)}>Scripts {showScripts ? '-' : '+'}</strong>:
-          <textarea style={{width:"100%", minHeight:200, display:`${showScripts ? "block" : "none"}`}} value={script} onInput={(e)=>{setState(e.currentTarget.value, 'script')}} />
-          <strong onClick={()=>setShowStyles(v=>!v)}>Styles {showStyles ? '-' : '+'}</strong>:
-          <textarea style={{width:"100%", minHeight:200, display:`${showStyles ? "block" : "none"}`}} value={css} onInput={(e)=>{setState(e.currentTarget.value, 'css')}} />
+        <ul style={{display:"flex", listStyle:"none", padding:0, margin:0, background:"#dddddd", border:"2px #dddddd solid", borderBottom:"none",
+          
+        }}>
+          {tabNames.map((name, index) => <li key={index} style={{padding:"4px 8px",
+          cursor:'pointer',
+            color:currentTab==index? 'black' : '#888888', 
+            background:currentTab==index? 'white' : '#ffffffaa', 
+            fontWeight: currentTab==index || tabVal[index] ? "bold" : (html ? "bold" : "normal")}} onClick={() => setCurrentTab(index)}>{name}{tabVal[index] ? "*" : ""}</li>)}
+        </ul>
+        <div style={{ padding: 10 }} key={currentTab}>
+          {tabs[currentTab]}
+        </div>
       </div>
+    
     }
-  
-    let styleTag = null;
-    if(css){
-      styleTag = <style>{css}</style>
-    }
-  
-    return <><div dangerouslySetInnerHTML={{__html:html as string}}></div>{styleTag}</>
+
+    return tabs
   }
+
+
+  

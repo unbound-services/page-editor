@@ -4,14 +4,14 @@ import { ContentSection } from "../../input-slot/content-section/input-slot-cont
 import { CE, HideIfRendering } from "../../..";
 
 
-export const Tabs = (props:React.PropsWithChildren<{tabNames:string[],setButtonRender:any}>) => {
-    const {children,tabNames} = props;
+export const Tabs = (props:React.PropsWithChildren<{tabNames:string[],setButtonRender:any, renderTab?: (tabIndex: number) => React.ReactNode}>) => {
+    const {children,tabNames, renderTab} = props;
     const [currentTab, setCurrentTab] = React.useState(0);
     return <div className="tabs">
         <ul><Repeater hideCounter={true} addLabel="Tab" sectionName="tabs"><Tab setTab={setCurrentTab} currentTab={currentTab}/></Repeater></ul>
         
         <Repeater hideCounter={true} hideAddButton={true} sectionName="tabs">
-        <TabBody currentTab={currentTab} />
+        <TabBody currentTab={currentTab} renderTab={renderTab} />
         </Repeater>
     </div>
 }
@@ -40,8 +40,8 @@ const Tab = ({repeaterIndex=0, currentTab, setTab}) => {
     return <><HideIfRendering><input type="radio" checked={isSelected} onClick={e=>setTab(repeaterIndex)} /></HideIfRendering><CE.li style={style} onClick={e=>setTab(repeaterIndex)} sectionName="tabName" placeholder="Tab Name" /></>
 }
 
-const TabBody = ({repeaterIndex=0, currentTab}) => {
+const TabBody = ({repeaterIndex=0, currentTab, renderTab}) => {
     const style ={display:"block",zIndex:2,position:"relative", background:"white", padding:16};
     if(repeaterIndex !== currentTab) style.display = "none";
-    return <div style={style as any}><HideIfRendering><strong>Tab {repeaterIndex+1}</strong></HideIfRendering><ContentSection /></div>
+    return <div style={style as any}><HideIfRendering><strong>Tab {repeaterIndex+1}</strong></HideIfRendering>{renderTab ? renderTab(repeaterIndex) : <ContentSection />}</div>
 }

@@ -1,6 +1,6 @@
 {
   "name": "unb-editor",
-  "version": "0.3.25",
+  "version": "0.3.28",
   "private": false,
   "description": "Drop-In document editor to generate webpages and pdfs",
   "author": {
@@ -115,8 +115,10 @@
     "preact": "^10.25.3",
     "preact-render-to-string": "^6.5.12",
     "prettier": "^3.4.2",
+    "prismjs": "^1.30.0",
     "react": "^18.0.0",
     "react-dom": "^18.0.0",
+    "react-simple-code-editor": "^0.14.1",
     "rimraf": "^6.0.1",
     "sass": "^1.83.1",
     "sass-loader": "^16.0.4",
@@ -127,6 +129,7 @@
     "ts-node": "^10.9.2",
     "types-webpack-bundler": "^1.0.2",
     "typescript": "^5.7.3",
+    "uuid": "^11.1.0",
     "vite": "^6.0.11",
     "vite-bundle-analyzer": "^0.16.1",
     "vite-plugin-dts": "^4.5.0",
@@ -135,7 +138,7 @@
     "webpack-cli": "^6.0.1",
     "webpack-node-externals": "^3.0.0",
     "ws": "^8.18.0",
-    "uuid": "^11.1.0"
+        "@types/prismjs": "^1.26.5"
   },
   "overrides": {
     "jest-environment-jsdom": {
@@ -147,6 +150,6 @@
     "react-dom": "^17.0.0 || ^18.0.0"
   },
   "dependencies": {
-  
+
   }
 }

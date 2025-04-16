@@ -165,7 +165,6 @@ export const ContentEditableInputSlot = ({
     editing = editingProp;
   }
 
-  console.log("myState", editorState);
 
   const insertIntoContentRef: InsertCallback = (e, contentToInsert: string) => {
     // console.log("IN range", range);
@@ -222,6 +221,7 @@ export const ContentEditableInputSlot = ({
     if (curHtml !== lastHtml.current) {
       // lastHtml.current = curHtml;
       editorContext.setState(curHtml);
+
     }
   };
 
@@ -233,8 +233,9 @@ export const ContentEditableInputSlot = ({
     // console.log('children changed!!', lastHtml.current, props.children);
     if(!editorState && !lastHtml.current && props.children){
       const innerHtml = renderToString(props.children);
-      lastHtml.current = innerHtml;
+      
       editorContext.setState(innerHtml);
+      lastHtml.current = innerHtml;
     } 
   }, []);
 

@@ -21,7 +21,7 @@ import {Spacer} from "../components/spacer/spacer";
 //         </div>
 // }
 
-export type PageEditorComponentType = (props: any) => JSX.Element;
+export type PageEditorComponentType = JSX.Element | React.Component<any> | React.FC<any> ;
 
 export type ComponentListType = {
   [componentKey: string]: {

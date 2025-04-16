@@ -181,7 +181,7 @@ export default class PageEditorApp {
   }
 
   addComponents(
-    components: PageEditorComponentType | PageEditorComponentType[],
+    components: PageEditorComponentType | PageEditorComponentType[] ,
     compSlug: string = null,
     compDisplayName: string = null
   ) {
