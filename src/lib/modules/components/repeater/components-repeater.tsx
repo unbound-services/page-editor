@@ -31,15 +31,14 @@ export const Repeater = (props: RepeaterProps) => {
   const {count = (state && state[countStateName]) ? state[countStateName] : 1} = otherProps;
 
   const childrenWithProps = (i,children) => React.Children.map(children, (child) => {
-
-      // Checking isValidElement is the safe way and avoids a
-      // typescript error too.
-      if (React.isValidElement(child)) {
-        let currentState = (state && state[rowSectionName] && state[rowSectionName][i]) ? state[rowSectionName][i] : {};
-        return React.cloneElement(child, { repeaterIndex: i,...currentState} as any);
-      }
-      return child;
-    });
+    // Checking isValidElement is the safe way and avoids a
+    // typescript error too.
+    if (React.isValidElement(child)) {
+      let currentState = (state && state[rowSectionName] && state[rowSectionName][i]) ? state[rowSectionName][i] : {};
+      return React.cloneElement(child, { repeaterIndex: i,...currentState} as any);
+    }
+    return child;
+  });
 
   // render the children count times, changing the values each time
   let children = [];
