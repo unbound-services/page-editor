@@ -1,4 +1,4 @@
-import React, { CSSProperties, Dispatch, FC, JSX, PropsWithChildren, ReactNode, SetStateAction } from "react"
+import React, { CSSProperties, Dispatch, FC, JSX, MouseEvent, PropsWithChildren, ReactNode, SetStateAction } from "react"
 import {
   useContext,
   useEffect,
@@ -10,6 +10,8 @@ import { useEditorContext } from "../input-slot-hooks";
 import "./input-slot-content-editable.scss";
 import {renderToString} from "react-dom/server";
 import { json } from "stream/consumers";
+import { useContextMenu } from "../../common/context-menu/use-context-menu";
+import { ContextMenu } from "../../common/context-menu/context-menu";
 
 
 
@@ -177,6 +179,17 @@ export const ContentEditableInputSlot = ({
   const [range, setRange] = useState<Range>();
   // console.log("range", range);
 
+  const contextMenuState = useContextMenu();
+
+  const onContextMenu = (e: MouseEvent<HTMLDivElement>) => {
+    e.preventDefault();
+    contextMenuState.setContextMenuOpen(true);
+    contextMenuState.setContextMenuPOS({
+      x: e.pageX,
+      y: e.pageY,
+    });
+  };
+  
   const openInsertButton = (e: any, setModalOpen: React.Dispatch<React.SetStateAction<boolean>>) => {
     const el = contentRef.current;
     if (!el) return;
@@ -345,9 +358,11 @@ export const ContentEditableInputSlot = ({
       <TagName
         className={finalClassName}
         suppressContentEditableWarning 
+        onContextMenu={onContextMenu}
         {...editingProps}
         {...props}
       />
+      <ContextMenu {...contextMenuState} />
       {insertButtons?.map((ib) => ib.makeModal(insertIntoContentRef))}
 
       {/* <label style={{background:"#000000aa", color:"white"}} >Edit HTML:<input type="checkbox"  checked={editingHTML} onChange={e=>changeHTMLMode(!!e.currentTarget.checked)} /></label> */}

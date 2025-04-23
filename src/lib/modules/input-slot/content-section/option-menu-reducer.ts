@@ -24,15 +24,26 @@ const setOptionMenu: ActionReducer<IOptionMenusState, SetOptionMenuAction>
   return newState;
 };
 
-export type OptionMenuStateAction = SetOptionMenuAction;
+type ClearMenusAction = {
+  type: "CLEAR_MENUS",
+}
+
+const clearMenus: ActionReducer<IOptionMenusState, ClearMenusAction>
+  = (state, action) => {
+  return { menus: {} };
+};
+
+export type OptionMenuStateAction = SetOptionMenuAction | ClearMenusAction;
 
 const reducerMap = {
   "SET_OPTION_MENU" : setOptionMenu,
+  "CLEAR_MENUS" : clearMenus,
 };
 
 export const optionMenuReducer = (state: IOptionMenusState, action: OptionMenuStateAction) => {
   const reducer = reducerMap[action.type];
   const newState = {...state};
+  /*@ts-ignore I'm not worried about action being never*/
   if (reducer) return reducer(newState, action);
   return state;
 };

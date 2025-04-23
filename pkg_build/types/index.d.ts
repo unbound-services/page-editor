@@ -313,6 +313,7 @@ declare type RepeaterProps = default_2.PropsWithChildren<{
     hideCounter?: boolean;
     rowSectionName?: string;
     hideAddButton?: boolean;
+    setButtonRender?: (content: any) => void;
 }>;
 
 export declare const SelectInput: (props: SelectInputProps) => React_2.JSX.Element;

@@ -1,0 +1,36 @@
+.context-menu-item-wrapper {
+  position: relative;
+}
+
+.context-menu-item {
+  padding: 4px;
+  cursor: pointer;
+}
+
+.context-menu-item:hover {
+  background-color: #ccc;
+}
+
+.context-menu-item:hover .context-submenu {
+  display: block;
+}
+
+.context-submenu {
+  position: absolute;
+  top: 0;
+  left: 100%;
+  background: #fff;
+  border: 1px solid #ccc;
+  padding: 0.5rem;
+  min-width: 150px;
+  display: none;
+}
+
+.context-submenu-item:hover {
+  background-color: #ccc;
+}
+
+.context-submenu-item {
+  padding: 0.5rem;
+  height: 42px;
+}
