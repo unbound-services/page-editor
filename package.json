@@ -1,6 +1,6 @@
 {
   "name": "unb-editor",
-  "version": "0.3.28",
+  "version": "0.3.29",
   "private": false,
   "description": "Drop-In document editor to generate webpages and pdfs",
   "author": {

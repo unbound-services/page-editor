@@ -6,7 +6,7 @@ import React from "react"
 import { createContentEditable } from "./lib/modules/input-slot/content-editable/input-slot-content-editable";
 import {Repeater} from "./lib/modules/components/repeater/components-repeater";
 
-const editor = new UNBEditor({pageOptions:{renderInIframe:false}});
+const editor = new UNBEditor({pageOptions:{renderInIframe:true}});
 
 const CE = createContentEditable({bem:true, bemPrefix:"ce"});
 const UL = (props)=><div><ul><Repeater addLabel="Item"><CE.li onKeyDown={console.log} /></Repeater></ul></div> 

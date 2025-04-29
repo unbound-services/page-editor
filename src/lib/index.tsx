@@ -39,9 +39,14 @@ import { Spacer } from "./modules/components/spacer/spacer";
 import { CheckboxInput } from "./modules/input-slot/checkbox/input-slot-checkbox";
 import { Tabs } from "./modules/components/repeater/components-repeater-tabs";
 import { RawHTMLComponent } from "./modules/input-slot/input-slot-raw-html";
+import { CodeInputSlot, CSSInputSlot, HTMLInputSlot, JSInputSlot } from "./modules/input-slot/code/input-slot-code";
 
 export {
   RawHTMLComponent,
+  CodeInputSlot,
+  CSSInputSlot,
+  HTMLInputSlot,
+  JSInputSlot,
   PageEditor,
   componentList,
   useModal,

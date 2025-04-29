@@ -43,3 +43,10 @@ export const CodeInputSlot = ({ language="text",onRender=undefined, sectionName=
       
     /></div>
   }
+
+
+export const CSSInputSlot = (props:React.PropsWithChildren<{sectionName?:string}>) => CodeInputSlot({language:"css", ...props});
+
+export const JSInputSlot = (props:React.PropsWithChildren<{sectionName?:string}>) => CodeInputSlot({language:"javascript", ...props});
+
+export const HTMLInputSlot = (props:React.PropsWithChildren<{sectionName?:string}>) => CodeInputSlot({language:"html", ...props});
