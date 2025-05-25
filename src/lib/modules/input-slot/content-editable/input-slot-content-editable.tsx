@@ -1,15 +1,14 @@
-import React, { CSSProperties, Dispatch, FC, JSX, PropsWithChildren, ReactNode, SetStateAction } from "react"
+import React, { CSSProperties, Dispatch, JSX, ReactNode, SetStateAction } from "react"
 import {
   useContext,
   useEffect,
-  useLayoutEffect,
   useRef,
   useState,
 } from "react"
 import { useEditorContext } from "../input-slot-hooks";
 import "./input-slot-content-editable.scss";
 import {renderToString} from "react-dom/server";
-import { json } from "stream/consumers";
+import { ContentEditableToolbar } from "./input-slot-content-editable-toolbar";
 
 
 
@@ -191,19 +190,17 @@ export const ContentEditableInputSlot = ({
   }
 
   const insertButtons: Array<InsertButton> = props.insertButtons;
-  useEffect(() => {
-    if (insertButtons && props.setButtonRender) {
-      const insButtons = insertButtons?.map((content) => (
+  const toolBar = insertButtons?.length > 0 ? (
+    <ContentEditableToolbar editing={true} {...props} >
+      {insertButtons?.map((content) => (
         <button onClick={ (e) => openInsertButton(e, content.setModalOpen) }>
           { content.buttonText }
         </button>)
-      );
+      )}
+    </ContentEditableToolbar>
+  ) : <></>;
 
-      props.setButtonRender(() => <>
-        {insButtons}
-      </>);
-    }
-  }, [insertButtons]);
+  const modals = insertButtons?.map((ib) => ib.makeModal(insertIntoContentRef));
 
   let html = editorState
     ? editorState
@@ -342,13 +339,14 @@ export const ContentEditableInputSlot = ({
 
   return (
     <>
+      {toolBar}
       <TagName
         className={finalClassName}
         suppressContentEditableWarning 
         {...editingProps}
         {...props}
       />
-      {insertButtons?.map((ib) => ib.makeModal(insertIntoContentRef))}
+      {modals}
 
       {/* <label style={{background:"#000000aa", color:"white"}} >Edit HTML:<input type="checkbox"  checked={editingHTML} onChange={e=>changeHTMLMode(!!e.currentTarget.checked)} /></label> */}
     </>
