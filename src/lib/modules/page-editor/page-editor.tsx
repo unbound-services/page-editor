@@ -176,9 +176,7 @@ export const PageEditor = (props: PageEditorPropType) => {
       if(isRender && !editorOptions?.pageOptions?.includeWrapperInRender) return <ContentSection isRoot {...props
       } />;
       const WrapperComponent = editorOptions.pageOptions.wrapperComponent;
-      return <WrapperComponent>
-        <ContentSection isRoot {...props} />
-      </WrapperComponent>
+      return <ContentSection WrapperComponent={WrapperComponent} isRoot {...props} />
     }
     return <ContentSection isRoot {...props} />
   }

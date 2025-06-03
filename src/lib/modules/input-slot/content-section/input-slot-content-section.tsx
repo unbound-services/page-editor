@@ -18,6 +18,7 @@ export type ContentSectionProps = & React.HTMLProps<HTMLButtonElement> & React.H
   editing?: boolean;
   editorOnly?: boolean;
   iframeRef?: React.MutableRefObject<HTMLIFrameElement>;
+  WrapperComponent?: React.ComponentType<any>;
 } 
 
 export type ContentSectionState = {
@@ -33,6 +34,7 @@ export const ContentSection = (props: ContentSectionProps) => {
     iframeRef,
     editing:editingProp=undefined,
     editorOnly,
+    WrapperComponent,
     ...otherProps
   } = props;
   const [componentDrawerOpen, setComponentDrawerOpen] = useState(false);
@@ -387,14 +389,31 @@ export const ContentSection = (props: ContentSectionProps) => {
     return null;
   }
 
-  let final= (
-    <SectionControlWrapper editing={editing} >
-      <TagName {...otherProps as any}>
-        {childs}
-        {addButton}
-      </TagName>
-    </SectionControlWrapper>
+  let final;
+  if(WrapperComponent){
+    final =  (<WrapperComponent
+          editing={editing}
+          className="content-section-controls__wrapper --unb-content-section">
+      <SectionControlWrapper editing={editing} >
+        
+        <TagName {...otherProps as any}>
+          {childs}
+          {addButton}
+        </TagName>
+      </SectionControlWrapper>
+    </WrapperComponent>
   );
+  } else{
+    final = (
+      <SectionControlWrapper editing={editing} >
+        <TagName {...otherProps as any}>
+          {childs}
+          {addButton}
+        </TagName>
+      </SectionControlWrapper>
+    );
+  }
+
 
 
   // render into a react portal if we're root
