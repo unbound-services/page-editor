@@ -191,7 +191,7 @@ export const ContentEditableInputSlot = ({
 
   const insertButtons: Array<InsertButton> = props.insertButtons;
   const toolBar = insertButtons?.length > 0 ? (
-    <ContentEditableToolbar editing={true} {...props} >
+    <ContentEditableToolbar editing={editing} {...props} >
       {insertButtons?.map((content) => (
         <button onClick={ (e) => openInsertButton(e, content.setModalOpen) }>
           { content.buttonText }

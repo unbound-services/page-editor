@@ -31,6 +31,13 @@ export declare const CheckboxInput: (props: {
     tagName?: any;
 }) => React_2.JSX.Element;
 
+export declare const CodeInputSlot: ({ language, onRender, sectionName, ...props }: {
+    [x: string]: any;
+    language?: string;
+    onRender?: any;
+    sectionName?: any;
+}) => any;
+
 export declare const ColumnSection: (props: ColumnSectionProps) => React_2.JSX.Element;
 
 declare type ColumnSectionProps = {
@@ -69,7 +76,7 @@ export declare const ContentEditableInputSlot: ({ placeholder, ref, className, s
     children?: any;
 }) => JSX_2.Element;
 
-export declare const ContentSection: (props: ContentSectionProps) => React_2.JSX.Element;
+export declare const ContentSection: (props: ContentSectionProps) => any;
 
 declare type ContentSectionProps = React_2.HTMLProps<HTMLButtonElement> & React_2.HTMLAttributes<HTMLButtonElement> & {
     sectionName?: string;
@@ -79,6 +86,7 @@ declare type ContentSectionProps = React_2.HTMLProps<HTMLButtonElement> & React_
     editing?: boolean;
     editorOnly?: boolean;
     iframeRef?: React_2.MutableRefObject<HTMLIFrameElement>;
+    WrapperComponent?: React_2.ComponentType<any>;
 };
 
 export declare const createContentEditable: ({ bem, bemPrefix, classFunction }: {
@@ -87,6 +95,10 @@ export declare const createContentEditable: ({ bem, bemPrefix, classFunction }: 
     bemName?: string;
     classFunction?: (tagName: string, props: any) => string;
 }) => CEType;
+
+export declare const CSSInputSlot: (props: default_2.PropsWithChildren<{
+    sectionName?: string;
+}>) => any;
 
 declare type editableTagList = keyof tagTypeMap;
 
@@ -135,6 +147,10 @@ export declare const HideIfRendering: (props: default_2.PropsWithChildren<{
     editing?: boolean;
 }>) => default_2.JSX.Element;
 
+export declare const HTMLInputSlot: (props: default_2.PropsWithChildren<{
+    sectionName?: string;
+}>) => any;
+
 export declare class HTTPStream<FieldType extends HTTPStreamFields, CallbackValueType, APIReturnType = any> extends StreamBase<FieldType, CallbackValueType> {
     protected url: string;
     protected _callback: (data: any) => CallbackValueType[];
@@ -174,6 +190,10 @@ export declare type InsertButton = {
 };
 
 export declare type InsertCallback = (e: any, contentToInsert: string) => void;
+
+export declare const JSInputSlot: (props: default_2.PropsWithChildren<{
+    sectionName?: string;
+}>) => any;
 
 export declare const NumberSelect: (props: any) => default_2.JSX.Element;
 
